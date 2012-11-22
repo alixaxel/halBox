@@ -1,0 +1,15 @@
+/var/log/authpriv
+/var/log/cron
+/var/log/mail
+/var/log/messages
+{
+	rotate 4
+	weekly
+	missingok
+	notifempty
+	compress
+	sharedscripts
+	postrotate
+		/etc/init.d/inetutils-syslogd reload > /dev/null
+	endscript
+}

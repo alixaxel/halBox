@@ -1,0 +1,30 @@
+server {
+	autoindex on;
+	index index.php index.html;
+	root /var/www/html;
+	server_name localhost;
+
+	location / {
+		try_files $uri $uri/ /index.php /index.html;
+	}
+	
+	location ~ /(?:favicon[.]ico|robots.txt)$ {
+		log_not_found off;
+	}
+
+	location ~* [.]((?:c|le)ss|eot|gif|html?|ico|jpe?g|js|png|svg|ttf|txt|woff)$ {
+		access_log off;
+		expires max;
+	}
+
+	location ~* [.]php$ {
+		fastcgi_index index.php;
+		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_split_path_info ^(.+\.php)(/.+)$; # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+		include fastcgi_params;
+	}
+
+	location ~* [.]ht {
+		deny all;
+	}
+}
