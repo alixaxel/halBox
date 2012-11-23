@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.15.4\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.15.5\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -37,7 +37,7 @@ halBox_packages=$( dialog \
 		clamav "anti-virus utility for Unix" off \
 		curl "client URL" on \
 		dash "POSIX-compliant shell" off \
-		dropbear "lightweight SSH2 server and client" on \
+		dropbear "lightweight SSH2 server and client" off \
 		exim4 "mail transport agent" on \
 		git-core "distributed revision control system" off \
 		htop "interactive processes viewer" on \
@@ -129,7 +129,7 @@ clear && echo -e "\e[1;31mI'm completely operational, and all my circuits are fu
 
 echo -e "\e[1;32mDave, I'm removing the bloatware.\e[0m" && for halBox_package in apache2 bind9 nscd portmap rsyslog samba sendmail; do
 	if [[ -f /etc/init.d/$halBox_package ]]; then
-		( invoke-rc.d $halBox_package stop ) > /dev/null
+		( service $halBox_package stop ) > /dev/null
 	fi
 
 	( apt-get -qq -y remove --purge "$halBox_package*" ) > /dev/null 2>&1
@@ -188,7 +188,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 				sed -i "s/NO_START=1/NO_START=0/" /etc/default/dropbear
 			fi
 
-			( update-rc.d -f dropbear remove && invoke-rc.d ssh stop && cp -r ~/halBox-master/halBox/dropbear/* / && update-rc.d -f ssh remove ) > /dev/null
+			( update-rc.d -f dropbear remove && service ssh stop && cp -r ~/halBox-master/halBox/dropbear/* / && update-rc.d -f ssh remove ) > /dev/null
 		elif [[ $halBox_package == "exim4" ]]; then
 			if [[ -f /etc/exim4/update-exim4.conf.conf ]]; then
 				sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
@@ -198,7 +198,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 				rm -rf $halBox_path
 			done
 
-			( invoke-rc.d inetutils-syslogd stop && cp -r ~/halBox-master/halBox/inetutils-syslogd/* / ) > /dev/null
+			( service inetutils-syslogd stop && cp -r ~/halBox-master/halBox/inetutils-syslogd/* / ) > /dev/null
 		elif [[ $halBox_package == "iptables" ]]; then
 			( chmod +x /etc/network/if-pre-up.d/iptables && iptables-restore < /etc/iptables.rules ) > /dev/null
 		elif [[ $halBox_package == "mysql" ]]; then
@@ -262,7 +262,7 @@ done
 
 for halBox_service in exim4 nginx mysql php5-fpm inetutils-syslogd xinetd; do
 	if [[ -f /etc/init.d/$halBox_service ]]; then
-		echo -e "\e[1;32mDave, I'm restarting the '$halBox_service' service.\e[0m" && ( invoke-rc.d $halBox_service restart ) > /dev/null
+		echo -e "\e[1;32mDave, I'm restarting the '$halBox_service' service.\e[0m" && ( service $halBox_service restart ) > /dev/null
 	elif [[ $halBox_packages == *$halBox_service* ]]; then
 		echo -e "\e[1;32mDave, I was unable to restart the '$halBox_service' service.\e[0m"
 	fi
