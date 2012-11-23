@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.15.9\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.15.10\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -253,9 +253,9 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 			done
 
 			for halBox_PHP_INI in interbase mssql mysql odbc pgsql sqlite; do
-				for halBox_PHP_INI_File in /etc/php5/conf.d/{,20-}$halBox_PHP_INI*ini; do
-					if [[ -f $halBox_PHP_INI_File ]]; then
-						echo -e "\e[1;32mDave, I'm removing the non-PDO '$halBox_PHP_INI_File' INI file.\e[0m" && ( rm $halBox_PHP_INI_File ) > /dev/null
+				for halBox_PHP_INI_file in /etc/php5/conf.d/{,20-}$halBox_PHP_INI*ini; do
+					if [[ -f $halBox_PHP_INI_file ]]; then
+						echo -e "\e[1;32mDave, I'm removing the non-PDO '$halBox_PHP_INI_file' INI file.\e[0m" && ( rm $halBox_PHP_INI_file ) > /dev/null
 					fi
 				done
 			done
