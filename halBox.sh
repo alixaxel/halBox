@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.15.2\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.15.3\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -91,7 +91,7 @@ if [[ $halBox_packages == *"php"* ]]; then
 			php5-mssql "MsSQL Driver" off \
 			php5-mysql "MySQL Driver" on \
 			php5-odbc "ODBC Driver" off \
-			php-pear "PEAR & PECL" off \
+			php-pear "PEAR & PECL" on \
 			php5-pgsql "PostgreSQL Driver" off \
 			php5-ps "PostScript" off \
 			php5-pspell "GNU Aspell" off \
@@ -246,6 +246,14 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables loca
 					( apt-get -qq -y install php-pear php5-dev ) > /dev/null
 				else
 					( apt-get -qq -y install $halBox_PHP_extension ) > /dev/null
+				fi
+			done
+
+			echo -e "\e[1;32mDave, I'm disabling non-PDO database drivers.\e[0m" && for halBox_PHP_INI in interbase mssql mysql mysqli odbc pgsql sqlite3; do
+				if [[ -f /etc/php5/conf.d/$halBox_PHP_INI.ini ]]; then
+					( rm /etc/php5/conf.d/$halBox_PHP_INI.ini ) > /dev/null
+				elif [[ -f /etc/php5/conf.d/20-$halBox_PHP_INI.ini ]]; then
+					( rm /etc/php5/conf.d/20-$halBox_PHP_INI.ini ) > /dev/null
 				fi
 			done
 		fi
