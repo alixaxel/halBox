@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.15.6\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.15.7\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -47,6 +47,7 @@ halBox_packages=$( dialog \
 		iptables "tools for packet filtering and NAT" on \
 		maldet "linux malware scanner" off \
 		mc "powerful file manager " off \
+		memcached "high-performance memory object caching system" off \
 		mysql "MySQL database server and client" on \
 		nano "small, friendly text editor" on \
 		nginx "small, powerful & scalable web/proxy server" on \
