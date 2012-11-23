@@ -1,29 +1,31 @@
 [mysqld]
-character-set-server			= utf8
-collation-server				= utf8_general_ci
-default_storage_engine			= MyISAM
+character-set-server            = utf8
+collation-server                = utf8_general_ci
+default_storage_engine          = MyISAM
 skip-innodb
 
-key_buffer_size					= 8M
-max_heap_table_size				= 4M
-query_cache_limit				= 512K
-query_cache_min_res_unit		= 4K
-query_cache_size				= 4M
-query_cache_type				= 1
-tmp_table_size					= 4M
+key_buffer_size                 = 8M
+max_heap_table_size             = 4M
+query_cache_limit               = 512K
+query_cache_min_res_unit        = 4K
+query_cache_size                = 4M
+query_cache_type                = 1
+tmp_table_size                  = 4M
 
-bulk_insert_buffer_size			= 4M
-join_buffer_size				= 128K
-max_connections					= 128
-myisam_sort_buffer_size			= 8M
-preload_buffer_size				= 32K
-read_buffer_size 				= 128K
-read_rnd_buffer_size			= 128K
-sort_buffer_size				= 256K
-thread_stack					= 128K
+bulk_insert_buffer_size         = 4M
+join_buffer_size                = 128K
+max_allowed_packet              = 4M
+max_connections                 = 128
+myisam_sort_buffer_size         = 8M
+net_buffer_length               = 1K
+preload_buffer_size             = 32K
+read_buffer_size                = 128K
+read_rnd_buffer_size            = 128K
+sort_buffer_size                = 256K
+thread_stack                    = 128K
 
-table_definition_cache			= 512
-table_open_cache				= 64
+table_definition_cache          = 512
+table_open_cache                = 64
 
-concurrent_insert				= 2
-low-priority-updates			= 1
+concurrent_insert               = 2
+low-priority-updates            = 1

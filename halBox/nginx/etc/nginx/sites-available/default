@@ -8,11 +8,11 @@ server {
 		try_files $uri $uri/ /index.php /index.html;
 	}
 	
-	location ~ /(?:favicon[.]ico|robots.txt)$ {
+	location ~ /(?:favicon[.]ico|robots[.]txt)$ {
 		log_not_found off;
 	}
 
-	location ~* [.]((?:c|le)ss|eot|gif|html?|ico|jpe?g|js|png|svg|ttf|txt|woff)$ {
+	location ~* [.]((?:c|le)ss|eot|gif|html?|ico|jpe?g|js|png|svg|swf|ttf|txt|woff)$ {
 		access_log off;
 		expires max;
 	}
