@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.15.10\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.15.11\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -190,8 +190,6 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 			if [[ -f /etc/init.d/ssh ]]; then
 				( service ssh stop && update-rc.d -f ssh remove ) > /dev/null
 			fi
-
-			( touch /etc/ssh/sshd_not_to_be_run ) > /dev/null
 		elif [[ $halBox_package == "exim4" ]]; then
 			if [[ -f /etc/exim4/update-exim4.conf.conf ]]; then
 				sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
