@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.15.8\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.15.9\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -48,6 +48,7 @@ halBox_packages=$( dialog \
 		maldet "linux malware scanner" off \
 		mc "powerful file manager " off \
 		memcached "high-performance memory object caching system" off \
+		mongodb-server "object/document-oriented database" off \
 		mysql "MySQL database server and client" on \
 		nano "small, friendly text editor" on \
 		nginx "small, powerful & scalable web/proxy server" on \
@@ -89,6 +90,7 @@ if [[ $halBox_packages == *"php"* ]]; then
 			php5-memcache "Memcache" off \
 			php5-memcached "Memcached" off \
 			php5-mhash "Mhash" off \
+			pecl-mongo "MongoDB driver" off \
 			php5-mssql "MsSQL Driver" off \
 			php5-mysql "MySQL Driver" on \
 			php5-odbc "ODBC Driver" off \
@@ -250,12 +252,12 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 				fi
 			done
 
-			echo -e "\e[1;32mDave, I'm disabling non-PDO database drivers.\e[0m" && for halBox_PHP_INI in interbase mssql mysql mysqli odbc pgsql sqlite3; do
-				if [[ -f /etc/php5/conf.d/$halBox_PHP_INI.ini ]]; then
-					( rm /etc/php5/conf.d/$halBox_PHP_INI.ini ) > /dev/null
-				elif [[ -f /etc/php5/conf.d/20-$halBox_PHP_INI.ini ]]; then
-					( rm /etc/php5/conf.d/20-$halBox_PHP_INI.ini ) > /dev/null
-				fi
+			for halBox_PHP_INI in interbase mssql mysql odbc pgsql sqlite; do
+				for halBox_PHP_INI_File in /etc/php5/conf.d/{,20-}$halBox_PHP_INI*ini; do
+					if [[ -f $halBox_PHP_INI_File ]]; then
+						echo -e "\e[1;32mDave, I'm removing the non-PDO '$halBox_PHP_INI_File' INI file.\e[0m" && ( rm $halBox_PHP_INI_File ) > /dev/null
+					fi
+				done
 			done
 		fi
 	fi
