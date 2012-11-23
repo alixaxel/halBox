@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.15.14\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.15.15\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -274,4 +274,9 @@ for halBox_service in dropbear exim4 nginx mysql php5-fpm inetutils-syslogd xine
 done
 
 echo -e "\e[1;32mDave, I'm cleaning up the leftovers.\e[0m" && ( apt-get -qq -y autoremove && apt-get -qq -y autoclean ) > /dev/null
+
+if [[ -f ~/halBox.tar.gz ]]; then
+	( rm ~/halBox.tar.gz ) > /dev/null
+fi
+
 echo -e "\e[1;31mAffirmative, Dave. I read you.\e[0m" && exit 0
