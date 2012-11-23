@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.15.13\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.15.14\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -153,7 +153,7 @@ for halBox_package in $halBox_packages; do
 		( mkdir -p ~/halBox-master/_/ && wget -q http://www.rfxn.com/downloads/maldetect-current.tar.gz -O ~/halBox-master/_/maldet.tar.gz ) > /dev/null
 
 		if [[ -f ~/halBox-master/_/maldet.tar.gz ]]; then
-			( cd ~/halBox-master/_/ && tar -xzvf ./maldet.tar.gz && cd ./maldetect-*/ chmod +x ./install.sh && ./install.sh && cd ~ ) > /dev/null
+			( cd ~/halBox-master/_/ && tar -xzvf ./maldet.tar.gz && rm ./maldet.tar.gz && cd ./maldetect-*/ chmod +x ./install.sh && ./install.sh && cd ~ ) > /dev/null
 		fi
 	elif [[ $halBox_package == "mysql" ]]; then
 		( cp -r ~/halBox-master/halBox/mysql/* / && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install mysql-server mysql-client mysqltuner ) > /dev/null
