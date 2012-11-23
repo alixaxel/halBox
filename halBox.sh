@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.15.5\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.15.6\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -159,9 +159,9 @@ for halBox_package in $halBox_packages; do
 	else
 		( apt-get -qq -y install $halBox_package ) > /dev/null
 
-		if [[ $halBox_package == "dropbear" ]]; then
-			( apt-get -qq -y install xinetd ) > /dev/null
-		fi
+		#if [[ $halBox_package == "dropbear" ]]; then
+		#	( apt-get -qq -y install xinetd ) > /dev/null
+		#fi
 	fi
 done
 
@@ -184,11 +184,13 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 		elif [[ $halBox_package == "dash" ]]; then
 			( chsh -s /bin/dash root ) > /dev/null
 		elif [[ $halBox_package == "dropbear" ]]; then
+			if [[ -f /etc/init.d/ssh ]]; then
+				( touch /etc/ssh/sshd_not_to_be_run && service ssh stop && update-rc.d -f ssh remove ) > /dev/null
+			fi
+
 			if [[ -f /etc/default/dropbear ]]; then
 				sed -i "s/NO_START=1/NO_START=0/" /etc/default/dropbear
 			fi
-
-			( update-rc.d -f dropbear remove && service ssh stop && cp -r ~/halBox-master/halBox/dropbear/* / && update-rc.d -f ssh remove ) > /dev/null
 		elif [[ $halBox_package == "exim4" ]]; then
 			if [[ -f /etc/exim4/update-exim4.conf.conf ]]; then
 				sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
@@ -260,7 +262,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 	fi
 done
 
-for halBox_service in exim4 nginx mysql php5-fpm inetutils-syslogd xinetd; do
+for halBox_service in dropbear exim4 nginx mysql php5-fpm inetutils-syslogd; do
 	if [[ -f /etc/init.d/$halBox_service ]]; then
 		echo -e "\e[1;32mDave, I'm restarting the '$halBox_service' service.\e[0m" && ( service $halBox_service restart ) > /dev/null
 	elif [[ $halBox_packages == *$halBox_service* ]]; then
