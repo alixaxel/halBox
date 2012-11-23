@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.15.3\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.15.4\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -165,7 +165,7 @@ for halBox_package in $halBox_packages; do
 	fi
 done
 
-for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables locales mysql nginx php; do
+for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysql nginx php; do
 	if [[ $halBox_packages == *$halBox_package* ]]; then
 		echo -e "\e[1;32mDave, I'm configuring '$halBox_package'.\e[0m"
 
