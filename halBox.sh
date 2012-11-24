@@ -231,7 +231,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 
 			( chown -R www-data:www-data /var/www/ ) > /dev/null
 		elif [[ $halBox_package == "php" ]]; then
-			echo -e "\e[1;32mDave, I'm downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/html/adminer/adminer.php ) > /dev/null
+			echo -e "\e[1;32mDave, I'm downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/html/adminer/adminer.php ) > /dev/null
 
 			if [[ ! -f /usr/local/bin/composer ]]; then
 				echo -e "\e[1;32mDave, I'm downloading 'composer'.\e[0m" && ( wget -q http://getcomposer.org/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer ) > /dev/null

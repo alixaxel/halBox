@@ -1,11 +1,16 @@
 server {
+	listen 80;
+	listen 443 ssl;
+	server_name default;
+	ssl_certificate /etc/nginx/certificates/halBox.crt;
+	ssl_certificate_key /etc/nginx/certificates/halBox.key;
+	
+	root /var/www/default/html;
+	index index.html index.php;
 	autoindex on;
-	index index.php index.html;
-	root /var/www/html;
-	server_name localhost;
 
 	location / {
-		try_files $uri $uri/ /index.php /index.html;
+		try_files $uri $uri/ /index.php;
 	}
 	
 	location ~ /(?:favicon[.]ico|robots[.]txt)$ {
@@ -18,10 +23,10 @@ server {
 	}
 
 	location ~* [.]php$ {
-		fastcgi_index index.php;
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
-		fastcgi_split_path_info ^(.+\.php)(/.+)$; # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+		try_files $uri =404;
 		include fastcgi_params;
+		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_index index.php;
 	}
 
 	location ~* [.]ht {
