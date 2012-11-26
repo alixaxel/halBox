@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.16.1\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.16.2\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -229,7 +229,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 				sed -i "s/worker_connections [0-9]*;/worker_connections 1024;/" /etc/nginx/nginx.conf
 			fi
 
-			( chown -R www-data:www-data /var/www/ ) > /dev/null
+			( chown -R www-data:www-data /var/www/ && make-ssl-cert generate-default-snakeoil ) > /dev/null
 		elif [[ $halBox_package == "php" ]]; then
 			echo -e "\e[1;32mDave, I'm downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/html/adminer/adminer.php ) > /dev/null
 
