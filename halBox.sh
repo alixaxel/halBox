@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.16.2\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.17.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -65,8 +65,16 @@ halBox_packages=$( dialog \
 		vim "enhanced vi editor" off \
 2>&1 1>&3 )
 
-#if [[ $halBox_packages == *"nodejs"* ]]; then
-#fi
+if [[ $halBox_packages == *"nodejs"* ]]; then
+	halBox_NodeJS_packages=$( dialog \
+		--no-cancel \
+		--ok-label "Okay" \
+		--separate-output \
+		--title "halBox" \
+		--checklist "Dave, select the Node.JS packages to install." 0 0 0 \
+			stylus "Robust, expressive, and feature-rich CSS superset" on \
+	2>&1 1>&3 )
+fi
 
 if [[ $halBox_packages == *"php"* ]]; then
 	halBox_PHP_extensions=$( dialog \
@@ -230,6 +238,10 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 			fi
 
 			( chown -R www-data:www-data /var/www/ && make-ssl-cert generate-default-snakeoil ) > /dev/null
+		elif [[ $halBox_package == "nodejs" ]]; then
+			for halBox_NodeJS_package in $halBox_NodeJS_packages; do
+				echo -e "\e[1;32mDave, I'm installing '$halBox_NodeJS_package'.\e[0m" && ( npm install $halBox_NodeJS_package -gs ) > /dev/null
+			done
 		elif [[ $halBox_package == "php" ]]; then
 			echo -e "\e[1;32mDave, I'm downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/html/adminer/adminer.php ) > /dev/null
 
