@@ -2,34 +2,49 @@ server {
 	listen 80;
 	listen 443 ssl;
 	server_name default;
-	ssl_certificate /etc/nginx/certificates/halBox.crt;
-	ssl_certificate_key /etc/nginx/certificates/halBox.key;
-	
 	root /var/www/default/html;
-	index index.html index.php;
+	error_log /var/www/default/log/error.log;
+	access_log /var/www/default/log/access.log;
+	ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
+	ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
+
 	autoindex on;
+	index index.html index.php;
 
 	location / {
-		try_files $uri $uri/ /index.php;
-	}
-	
-	location ~ /(?:favicon[.]ico|robots[.]txt)$ {
-		log_not_found off;
+		try_files $uri $uri/ @php;
 	}
 
-	location ~* [.]((?:c|le)ss|eot|gif|html?|ico|jpe?g|js|png|svg|swf|ttf|txt|woff)$ {
-		access_log off;
-		expires max;
-	}
-
-	location ~* [.]php$ {
-		try_files $uri =404;
-		include fastcgi_params;
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
-		fastcgi_index index.php;
-	}
-
-	location ~* [.]ht {
+	location ~ /[.] {
 		deny all;
+	}
+
+	location ~ /(?:favicon[.]ico|robots[.]txt)$ {
+		access_log off; expires 7d; log_not_found off;
+	}
+
+	location ~* [.](?:css|eot|gif|html?|ico|jpe?g|js|less|otf|png|svg|swf|ttf|woff)$ {
+		access_log off; expires 30d;
+	}
+
+	location ~* [.](?:php) {
+		fastcgi_buffer_size             128k;
+		fastcgi_buffers                 4 256k;
+		fastcgi_busy_buffers_size       256k;
+		fastcgi_connect_timeout         30;
+		fastcgi_ignore_client_abort     off;
+		fastcgi_index                   index.php;
+		fastcgi_intercept_errors        on;
+		fastcgi_pass                    unix:/var/run/php5-fpm.sock;
+		fastcgi_read_timeout            60;
+		fastcgi_send_timeout            60;
+		fastcgi_split_path_info         ^(.+[.]php)(/.*)$;
+		fastcgi_temp_file_write_size    256k;
+
+		include /etc/nginx/fastcgi_params;
+	}
+
+	location @php {
+		rewrite ^/(.*)/?$ /index.php/$1 last;
 	}
 }
