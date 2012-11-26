@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.17.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.18.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -48,11 +48,12 @@ halBox_packages=$( dialog \
 		maldet "linux malware scanner" off \
 		mc "powerful file manager " off \
 		memcached "high-performance memory object caching system" off \
+		meteor "platform for building HTML5 websites in JavaScript" off \
 		mongodb-server "object/document-oriented database" off \
 		mysql "MySQL database server and client" on \
 		nano "small, friendly text editor" on \
 		nginx "small, powerful & scalable web/proxy server" on \
-		nodejs "event-based server-side Javascript engine" off \
+		nodejs "event-based server-side JavaScript engine" off \
 		ntp "network time protocol deamon" off \
 		openjdk-7-jre "OpenJDK Java runtime" off \
 		php "server-side, HTML-embedded scripting language" on \
@@ -72,7 +73,19 @@ if [[ $halBox_packages == *"nodejs"* ]]; then
 		--separate-output \
 		--title "halBox" \
 		--checklist "Dave, select the Node.JS packages to install." 0 0 0 \
-			stylus "Robust, expressive, and feature-rich CSS superset" on \
+			calipso "content management system" on \
+			connect "high performance middleware framework" on \
+			express "Sinatra inspired web development framework" on \
+			forever "ensure that a given node script runs continuously" on \
+			hook.io "versatile distributed event emitter" on \
+			jade "Jade template engine" on \
+			log.io "real-time log monitoring in your browser" on \
+			nib "Stylus mixins and utilities" on \
+			pdfkit "PDF generation library" on \
+			request "simplified HTTP request client" on \
+			socket.io "WebSocket-like API" on \
+			stylus "robust, expressive, and feature-rich CSS superset" on \
+			underscore "functional programming helper library" on \
 	2>&1 1>&3 )
 fi
 
@@ -101,7 +114,7 @@ if [[ $halBox_packages == *"php"* ]]; then
 			php5-memcache "Memcache" off \
 			php5-memcached "Memcached" off \
 			php5-mhash "Mhash" off \
-			pecl-mongo "MongoDB driver" off \
+			pecl-mongo "MongoDB Driver" off \
 			php5-mssql "MsSQL Driver" off \
 			php5-mysql "MySQL Driver" on \
 			php5-odbc "ODBC Driver" off \
