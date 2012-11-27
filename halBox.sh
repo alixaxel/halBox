@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.18.5\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.18.6\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -37,7 +37,7 @@ halBox_packages=$( dialog \
 		clamav "anti-virus utility for Unix" off \
 		curl "client URL" on \
 		dash "POSIX-compliant shell" off \
-		dropbear "lightweight SSH2 server and client" off \
+		dropbear "lightweight SSH2 server and client" on \
 		exim4 "mail transport agent" on \
 		git-core "distributed revision control system" off \
 		htop "interactive processes viewer" on \
@@ -215,9 +215,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 		elif [[ $halBox_package == "dash" ]]; then
 			( chsh -s /bin/dash root ) > /dev/null
 		elif [[ $halBox_package == "dropbear" ]]; then
-			if [[ -f /etc/init.d/dropbear ]]; then
-				( update-rc.d -f dropbear remove ) > /dev/null
-			fi
+			( update-rc.d -f dropbear remove ) > /dev/null
 
 			if [[ -f /etc/init.d/ssh ]]; then
 				( service ssh stop && update-rc.d -f ssh remove ) > /dev/null
