@@ -27,8 +27,8 @@ server {
 		access_log off; expires 7d; log_not_found off;
 	}
 
-	location ~* [.](?:css|eot|gif|html?|ico|jpe?g|js|less|otf|png|svg|swf|ttf|woff)$ {
-		access_log off; expires 30d;
+	location ~* [.](?:css|eot|flv|gif|html?|ico|jpe?g|js|less|otf|pdf|png|svg|swf|ttf|woff)$ {
+		access_log off; expires max;
 	}
 
 	location ~* [.](?:php) {

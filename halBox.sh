@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.18.8\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.18.10\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -104,7 +104,7 @@ if [[ $halBox_packages == *"php"* ]]; then
 			php5-gearman "Gearman" off \
 			php5-geoip "MaxMind Geo IP" off \
 			php5-gmp "GNU Multiple Precision" on \
-			php5-http "HTTP" off \
+			pecl_http "HTTP" off \
 			php5-imagick "ImageMagick" off \
 			php5-imap "IMAP" on \
 			php5-interbase "Firebird/InterBase Driver" off \
@@ -234,7 +234,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 			fi
 		elif [[ $halBox_package == "inetutils-syslogd" ]]; then
 			for halBox_path in "/var/log/*.*" "/var/log/debug" "/var/log/messages" "/var/log/syslog" "/var/log/fsck/" "/var/log/news/"; do
-				rm -rf $halBox_path
+				( rm -rf $halBox_path ) > /dev/null
 			done
 
 			( service inetutils-syslogd stop && cp -r ~/halBox-master/halBox/inetutils-syslogd/* / ) > /dev/null
@@ -265,6 +265,10 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 			for halBox_NodeJS_module in $halBox_NodeJS_modules; do
 				echo -e "\e[1;32mDave, I'm installing '$halBox_NodeJS_package'.\e[0m" && ( npm install -gs $halBox_NodeJS_module ) > /dev/null
 			done
+
+			if [[ -d ~/tmp/ ]]; then
+				( rm -rf ~/tmp/ ) > /dev/null
+			fi
 		elif [[ $halBox_package == "php" ]]; then
 			echo -e "\e[1;32mDave, I'm downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/html/adminer/adminer.php ) > /dev/null
 
@@ -275,12 +279,16 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 			for halBox_PHP_extension in $halBox_PHP_extensions; do
 				echo -e "\e[1;32mDave, I'm installing '$halBox_PHP_extension'.\e[0m"
 
-				if [[ $halBox_PHP_extension == "pecl-"* ]]; then
+				if [[ $halBox_PHP_extension == "pecl"* ]]; then
 					if [[ ! $( type -P pecl ) ]]; then
 						( apt-get -qq -y install php-pear php5-dev ) > /dev/null
 					fi
 
-					( pecl install ${halBox_PHP_extension:5} ) > /dev/null
+					if [[ $halBox_PHP_extension == "pecl_http" ]]; then
+						( printf "no\n" | pecl install pecl_http ) > /dev/null
+					else
+						( pecl install ${halBox_PHP_extension:5} ) > /dev/null
+					fi
 
 					if [[ ! -f /etc/php5/conf.d/00-${halBox_PHP_extension:5}.ini ]]; then
 						echo -e "[${halBox_PHP_extension:5}]\nextension=${halBox_PHP_extension:5}.so\n" > /etc/php5/conf.d/00-${halBox_PHP_extension:5}.ini
