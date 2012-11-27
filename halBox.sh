@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.18.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.18.1\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -250,7 +250,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 				sed -i "s/worker_connections [0-9]*;/worker_connections 1024;/" /etc/nginx/nginx.conf
 			fi
 
-			( chown -R www-data:www-data /var/www/ && make-ssl-cert generate-default-snakeoil ) > /dev/null
+			( chown -R www-data:www-data /var/www/ && make-ssl-cert generate-default-snakeoil --force-overwrite ) > /dev/null
 		elif [[ $halBox_package == "nodejs" ]]; then
 			for halBox_NodeJS_package in $halBox_NodeJS_packages; do
 				echo -e "\e[1;32mDave, I'm installing '$halBox_NodeJS_package'.\e[0m" && ( npm install $halBox_NodeJS_package -gs ) > /dev/null
