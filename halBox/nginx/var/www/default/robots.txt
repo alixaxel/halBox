@@ -1,0 +1,8 @@
+User-Agent: *
+Allow: /
+
+User-Agent: Yahoo Pipes 1.0
+Disallow: /
+
+User-Agent: Baiduspider
+Disallow: /
