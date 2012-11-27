@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.18.2\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.18.3\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -218,6 +218,8 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 			if [[ -f /etc/init.d/ssh ]]; then
 				( service ssh stop && update-rc.d -f ssh remove ) > /dev/null
 			fi
+
+			( echo -e "\n/etc/environment\n" >> ~/.profile )
 		elif [[ $halBox_package == "exim4" ]]; then
 			if [[ -f /etc/exim4/update-exim4.conf.conf ]]; then
 				sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
@@ -291,7 +293,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 	fi
 done
 
-for halBox_service in dropbear exim4 nginx mysql php5-fpm inetutils-syslogd xinetd; do
+for halBox_service in exim4 nginx mysql php5-fpm inetutils-syslogd xinetd; do
 	if [[ -f /etc/init.d/$halBox_service ]]; then
 		echo -e "\e[1;32mDave, I'm restarting the '$halBox_service' service.\e[0m" && ( service $halBox_service restart ) > /dev/null
 	elif [[ $halBox_packages == *$halBox_service* ]]; then
