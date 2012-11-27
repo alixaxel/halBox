@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.18.4\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.18.5\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -67,25 +67,25 @@ halBox_packages=$( dialog \
 2>&1 1>&3 )
 
 if [[ $halBox_packages == *"nodejs"* ]]; then
-	halBox_NodeJS_packages=$( dialog \
+	halBox_NodeJS_modules=$( dialog \
 		--no-cancel \
 		--ok-label "Okay" \
 		--separate-output \
 		--title "halBox" \
-		--checklist "Dave, select the Node.JS packages to install." 0 0 0 \
-			calipso "content management system" on \
-			connect "high performance middleware framework" on \
-			express "Sinatra inspired web development framework" on \
-			forever "ensure that a given node script runs continuously" on \
-			hook.io "versatile distributed event emitter" on \
-			jade "Jade template engine" on \
-			log.io "real-time log monitoring in your browser" on \
-			nib "Stylus mixins and utilities" on \
-			pdfkit "PDF generation library" on \
-			request "simplified HTTP request client" on \
-			socket.io "WebSocket-like API" on \
-			stylus "robust, expressive, and feature-rich CSS superset" on \
-			underscore "functional programming helper library" on \
+		--checklist "Dave, select the Node.JS modules to install." 0 0 0 \
+			calipso "content management system" off \
+			connect "high performance middleware framework" off \
+			express "Sinatra inspired web development framework" off \
+			forever "ensure that a given node script runs continuously" off \
+			hook.io "versatile distributed event emitter" off \
+			jade "Jade template engine" off \
+			log.io "real-time log monitoring in your browser" off \
+			nib "Stylus mixins and utilities" off \
+			pdfkit "PDF generation library" off \
+			request "simplified HTTP request client" off \
+			socket.io "WebSocket-like API" off \
+			stylus "robust, expressive, and feature-rich CSS superset" off \
+			underscore "functional programming helper library" off \
 	2>&1 1>&3 )
 fi
 
@@ -196,7 +196,7 @@ for halBox_package in $halBox_packages; do
 	fi
 done
 
-for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysql nginx php; do
+for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysql nginx nodejs php; do
 	if [[ $halBox_packages == *$halBox_package* ]]; then
 		echo -e "\e[1;32mDave, I'm configuring '$halBox_package'.\e[0m"
 
@@ -262,8 +262,8 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 
 			( chown -R www-data:www-data /var/www/ && make-ssl-cert generate-default-snakeoil --force-overwrite ) > /dev/null
 		elif [[ $halBox_package == "nodejs" ]]; then
-			for halBox_NodeJS_package in $halBox_NodeJS_packages; do
-				echo -e "\e[1;32mDave, I'm installing '$halBox_NodeJS_package'.\e[0m" && ( npm install $halBox_NodeJS_package -gs ) > /dev/null
+			for halBox_NodeJS_module in $halBox_NodeJS_modules; do
+				echo -e "\e[1;32mDave, I'm installing '$halBox_NodeJS_package'.\e[0m" && ( npm install -gs $halBox_NodeJS_module ) > /dev/null
 			done
 		elif [[ $halBox_package == "php" ]]; then
 			echo -e "\e[1;32mDave, I'm downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/html/adminer/adminer.php ) > /dev/null
