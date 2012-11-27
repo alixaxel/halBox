@@ -50,9 +50,9 @@ server {
 
 	error_page 403 /403.html;
 	error_page 404 /404.html;
-	error_page 500 502 503 504 /50x.html;
+	error_page 500 501 502 503 504 /5xx.html;
 
-	location ~ /(?:40[34]|50[0234])[.]html$ {
+	location ^~ /(?:40[34]|50[01234])[.]html$ {
 		root /var/www/default/error;
 	}
 }
