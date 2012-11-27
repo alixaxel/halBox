@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.18.7\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.18.8\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -225,7 +225,9 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 				fi
 			fi
 
-			( cat /etc/environment >> ~/.profile ) > /dev/null
+			if [[ -f /etc/environment ]]; then
+				( cat /etc/environment >> ~/.profile ) > /dev/null
+			fi
 		elif [[ $halBox_package == "exim4" ]]; then
 			if [[ -f /etc/exim4/update-exim4.conf.conf ]]; then
 				sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
