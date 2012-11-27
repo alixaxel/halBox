@@ -27,7 +27,7 @@ server {
 		deny all;
 	}
 
-	location ~* [.](?:css|eot|flv|gif|html?|ico|jpe?g|js|less|otf|pdf|png|svg|swf|ttf|woff)$ {
+	location ~* [.](?:atom|css|eot|flv|gif|html?|ico|jpe?g|js(?:onp?)?|less|mp[34]|og[ag]|otf|png|rdf|rss|svgz?|swf|tiff?|tt[cf]|woff|xml)$ {
 		access_log off; expires max;
 	}
 
@@ -56,7 +56,7 @@ server {
 		root /var/www/default/error;
 	}
 
-	error_page 500 501 502 503 504 /5xx.html; location = /5xx.html{
+	error_page 500 501 502 503 504 /5xx.html; location = /5xx.html {
 		root /var/www/default/error;
 	}
 }
