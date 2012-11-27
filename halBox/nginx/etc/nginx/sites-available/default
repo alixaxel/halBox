@@ -47,4 +47,12 @@ server {
 	location @php {
 		rewrite ^/(.*)/?$ /index.php/$1 last;
 	}
+
+	error_page 403 /403.html;
+	error_page 404 /404.html;
+	error_page 500 502 503 504 /50x.html;
+
+	location ~ /(?:40[34]|50[0234])[.]html$ {
+		root /var/www/default/error;
+	}
 }
