@@ -19,12 +19,12 @@ server {
 		rewrite ^/(.*)/?$ /index.php/$1 last;
 	}
 
-	location ~ /[.] {
-		deny all;
-	}
-
 	location ~ /(?:favicon[.]ico|robots[.]txt)$ {
 		access_log off; expires 7d; log_not_found off;
+	}
+
+	location ~* /(?:[.]|(?:file|upload)s?/.*[.](?:php)) {
+		deny all;
 	}
 
 	location ~* [.](?:css|eot|flv|gif|html?|ico|jpe?g|js|less|otf|pdf|png|svg|swf|ttf|woff)$ {

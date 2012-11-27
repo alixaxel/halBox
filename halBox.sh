@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.18.10\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.18.12\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -104,7 +104,7 @@ if [[ $halBox_packages == *"php"* ]]; then
 			php5-gearman "Gearman" off \
 			php5-geoip "MaxMind Geo IP" off \
 			php5-gmp "GNU Multiple Precision" on \
-			pecl_http "HTTP" off \
+			pecl_http "HTTP (Beta)" off \
 			php5-imagick "ImageMagick" off \
 			php5-imap "IMAP" on \
 			php5-interbase "Firebird/InterBase Driver" off \
@@ -218,11 +218,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 			( update-rc.d -f dropbear remove ) > /dev/null
 
 			if [[ -f /etc/init.d/ssh ]]; then
-				( service ssh stop && update-rc.d -f ssh remove ) > /dev/null
-
-				if [[ ! -f /etc/ssh/sshd_not_to_be_run ]]; then
-					( touch /etc/ssh/sshd_not_to_be_run ) > /dev/null
-				fi
+				( service ssh stop && update-rc.d -f ssh remove && touch /etc/ssh/sshd_not_to_be_run ) > /dev/null
 			fi
 
 			if [[ -f /etc/environment ]]; then
