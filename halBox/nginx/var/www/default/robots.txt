@@ -1,8 +1,8 @@
 User-Agent: *
 Allow: /
 
-User-Agent: Yahoo Pipes 1.0
+User-Agent: Baiduspider
 Disallow: /
 
-User-Agent: Baiduspider
+User-Agent: Yahoo Pipes 1.0
 Disallow: /

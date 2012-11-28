@@ -48,6 +48,10 @@ server {
 		root /var/www/default/error;
 	}
 
+	error_page 405 /405.html; location = /405.html {
+		root /var/www/default/error;
+	}
+
 	error_page 500 501 502 503 504 /5xx.html; location = /5xx.html {
 		root /var/www/default/error;
 	}
