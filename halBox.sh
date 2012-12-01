@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.19.4\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.19.5\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -218,7 +218,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 			( update-rc.d -f dropbear remove ) > /dev/null
 
 			if [[ -f /etc/init.d/ssh ]]; then
-				( service ssh stop && update-rc.d -f ssh remove && touch /etc/ssh/sshd_not_to_be_run ) > /dev/null
+				( touch /etc/ssh/sshd_not_to_be_run && service ssh stop && update-rc.d -f ssh remove ) > /dev/null 2>&1
 			fi
 
 			if [[ -f /etc/environment ]]; then

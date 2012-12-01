@@ -40,40 +40,6 @@ server {
 		include /etc/nginx/fastcgi_params;
 	}
 
-	location ~* [.](?:appcache|html?|jsonp?|manifest|xml)$ {
-		expires -1;
-	}
-
-	location ~* [.](?:atom|rdf|rss)$ {
-		access_log off; add_header Cache-Control "public"; expires 1h;
-	}
-
-	location ~* [.](?:css|htc|js|less|xsl)$ {
-		access_log off; add_header Cache-Control "public"; expires 1y;
-	}
-
-	location ~* [.](?:eot|otf|tt[cf]|woff)$ {
-		access_log off; add_header Cache-Control "public"; expires 1y;
-	}
-
-	location ~* [.](?:flv|gif|ico|jpe?g|mp[34]|og[agv]|png|svgz?|swf|tiff?|webm)$ {
-		access_log off; add_header Cache-Control "public"; expires 1y;
-	}
-
-	location = /robots.txt {
-		access_log off; add_header Cache-Control "public"; expires 1d; log_not_found off;
-	}
-
-	location = /favicon.ico {
-		access_log off; add_header Cache-Control "public"; expires 1w; log_not_found off;
-	}
-
-	error_page 403 /error/403.html;
-	error_page 404 /error/404.html;
-	error_page 405 /error/405.html;
-	error_page 500 501 502 503 504 /error/5xx.html;
-
-	location ^~ /error/ {
-		root /var/www/default;
-	}
+	include /etc/nginx/include.d/error.conf;
+	include /etc/nginx/include.d/expires.conf;
 }
