@@ -68,11 +68,11 @@ image/vnd.wap.wbmp                                                           wbm
 image/webp                                                                   webp;
 image/x-icon                                                                 ico;
 text/cache-manifest                                                          appcache manifest;
-text/css                                                                     css;
+text/css                                                                     css less;
 text/csv                                                                     csv;
 text/html                                                                    htm html shtml;
 text/mathml                                                                  mml;
-text/plain                                                                   less txt;
+text/plain                                                                   txt;
 text/vnd.sun.j2me.app-descriptor                                             jad;
 text/vnd.wap.wml                                                             wml;
 text/x-component                                                             htc;
