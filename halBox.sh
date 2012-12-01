@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.19.5\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.19.7\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -41,8 +41,10 @@ halBox_packages=$( dialog \
 		exim4 "mail transport agent" on \
 		git-core "distributed revision control system" off \
 		htop "interactive processes viewer" on \
+		httperf "HTTP server performance tester" on \
 		iftop "displays bandwidth usage information" on \
 		inetutils-syslogd "system logging daemon" on \
+		innotop "powerful top-like clone for MySQL"
 		iotop "simple top-like I/O monitor" on \
 		iptables "tools for packet filtering and NAT" on \
 		maldet "linux malware scanner" off \
