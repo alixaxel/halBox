@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.20.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.20.1\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -25,7 +25,7 @@ if [[ $halBox_OS == "debian" ]]; then
 	fi
 
 	echo -e "\e[1;32mDave, I'm adding the DotDeb repository.\e[0m" && ( wget -q http://www.dotdeb.org/dotdeb.gpg -O - | apt-key add - ) > /dev/null 2>&1
-else [[ $halBox_OS == "ubuntu" ]]; then
+elif [[ $halBox_OS == "ubuntu" ]]; then
 	if [[ ! $( type -P add-apt-repository ) ]]; then
 		echo -e "\e[1;32mDave, hold on...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y install python-software-properties ) > /dev/null
 	fi
