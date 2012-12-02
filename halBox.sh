@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.20.1\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.20.2\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -21,10 +21,13 @@ fi
 
 if [[ $halBox_OS == "debian" ]]; then
 	if [[ ! -f /etc/apt/sources.list.d/dotdeb.list ]]; then
-		echo -e "deb http://packages.dotdeb.org/ $halBox_OS_Codename all\n" > /etc/apt/sources.list.d/dotdeb.list
-	fi
+		for halBox_branch in $halBox_OS_Codename "$halBox_OS_Codename-php54"; do
+			echo -e "deb http://packages.dotdeb.org/ $halBox_branch all\n" >> /etc/apt/sources.list.d/dotdeb.list
+			echo -e "deb-src http://packages.dotdeb.org/ $halBox_branch all\n" >> /etc/apt/sources.list.d/dotdeb.list
+		done
 
-	echo -e "\e[1;32mDave, I'm adding the DotDeb repository.\e[0m" && ( wget -q http://www.dotdeb.org/dotdeb.gpg -O - | apt-key add - ) > /dev/null 2>&1
+		echo -e "\e[1;32mDave, I'm adding the DotDeb repository.\e[0m" && ( wget -q http://www.dotdeb.org/dotdeb.gpg -O - | apt-key add - ) > /dev/null 2>&1
+	fi
 elif [[ $halBox_OS == "ubuntu" ]]; then
 	if [[ ! $( type -P add-apt-repository ) ]]; then
 		echo -e "\e[1;32mDave, hold on...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y install python-software-properties ) > /dev/null
