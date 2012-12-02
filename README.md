@@ -1,7 +1,7 @@
 halBox
 ======
 
-A set of Bash scripts to set up and tweak your Ubuntu Server.
+Bash script with a bit of unicornian magic dust to set up and tweak your Debian/Ubuntu server.
 
 Usage
 =====
@@ -11,9 +11,9 @@ Usage
 Screenshots
 ===========
 
-
+Wait for the stable release first! ;)
 
 Credits
 =======
 
-This script is based on TigersWay/VPS, Xeoncross/lowendscript and lowendbox/lowendscript as well as some StackScripts.
+This script is inspired by [TigersWay/VPS](https://github.com/TigersWay/VPS), [Xeoncross/lowendscript](https://github.com/Xeoncross/lowendscript) and [lowendbox/lowendscript](https://github.com/lowendbox/lowendscript), as well as some [Linode StackScripts](http://www.linode.com/stackscripts/).

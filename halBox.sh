@@ -8,15 +8,32 @@ fi
 
 if [[ ! -f /etc/debian_version ]]; then
 	echo -e "\e[1;31mI think you know what the problem is just as well as I do.\e[0m" && exit 1
+else
+	halBox_CPU=$( grep -h "^physical id" /proc/cpuinfo | sort -u | wc -l )
+	halBox_CPU_Cache=$( grep -h "^cache size" /proc/cpuinfo | sort -u | awk '{ print int($4 / 1024) }' )
+	halBox_CPU_Cores=$( grep -h "^core id" /proc/cpuinfo | sort -u | wc -l )
+	halBox_OS=$( lsb_release -si | awk '{ print tolower($0) }' )
+	halBox_OS_Codename=$( lsb_release -sc )
+	halBox_OS_Release=$( lsb_release -sr )
+	halBox_RAM=$( grep -h "^MemTotal:" /proc/meminfo | awk '{ print int($2 / 1024) }' )
+	halBox_RAM_Free=$( grep -h "^MemFree:" /proc/meminfo | awk '{ print int($2 / 1024) }' )
 fi
 
-if [[ ! $( type -P add-apt-repository ) ]]; then
-	echo -e "\e[1;32mDave, hold on...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y install python-software-properties ) > /dev/null
-fi
+if [[ $halBox_OS == "debian" ]]; then
+	if [[ ! -f /etc/apt/sources.list.d/dotdeb.list ]]; then
+		echo -e "deb http://packages.dotdeb.org/ $halBox_OS_Codename all\n" > /etc/apt/sources.list.d/dotdeb.list
+	fi
 
-for halBox_PPA in chris-lea/node.js ondrej/php5; do
-	echo -e "\e[1;32mDave, I'm adding the $halBox_PPA PPA.\e[0m" && ( add-apt-repository -y ppa:$halBox_PPA ) > /dev/null 2>&1
-done
+	echo -e "\e[1;32mDave, I'm adding the DotDeb repository.\e[0m" && ( wget -q http://www.dotdeb.org/dotdeb.gpg -O - | apt-key add - ) > /dev/null 2>&1
+else [[ $halBox_OS == "ubuntu" ]]; then
+	if [[ ! $( type -P add-apt-repository ) ]]; then
+		echo -e "\e[1;32mDave, hold on...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y install python-software-properties ) > /dev/null
+	fi
+
+	for halBox_PPA in chris-lea/node.js ondrej/php5; do
+		echo -e "\e[1;32mDave, I'm adding the $halBox_PPA PPA.\e[0m" && ( add-apt-repository -y ppa:$halBox_PPA ) > /dev/null 2>&1
+	done
+fi
 
 echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade && apt-get -qq -y install dialog ) > /dev/null 2>&1
 
@@ -41,10 +58,10 @@ halBox_packages=$( dialog \
 		exim4 "mail transport agent" on \
 		git-core "distributed revision control system" off \
 		htop "interactive processes viewer" on \
-		httperf "HTTP server performance tester" on \
+		httperf "HTTP server performance tester" off \
 		iftop "displays bandwidth usage information" on \
 		inetutils-syslogd "system logging daemon" on \
-		innotop "powerful top-like clone for MySQL" on \
+		innotop "powerful top clone for MySQL" off \
 		iotop "simple top-like I/O monitor" on \
 		iptables "tools for packet filtering and NAT" on \
 		maldet "linux malware scanner" off \
@@ -175,7 +192,9 @@ echo -e "\e[1;32mDave, I'm defaulting to the en_US.UTF-8 locale.\e[0m" && ( loca
 for halBox_package in $halBox_packages; do
 	echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m"
 
-	if [[ $halBox_package == "maldet" ]]; then
+	if [[ $halBox_package == "innotop" ]]; then
+		echo -e "\e[1;32mDave, I'm skipping '$halBox_package' for now.\e[0m"
+	elif [[ $halBox_package == "maldet" ]]; then
 		( mkdir -p ~/halBox-master/_/ && wget -q http://www.rfxn.com/downloads/maldetect-current.tar.gz -O ~/halBox-master/_/maldet.tar.gz ) > /dev/null
 
 		if [[ -f ~/halBox-master/_/maldet.tar.gz ]]; then
