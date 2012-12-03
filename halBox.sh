@@ -294,7 +294,15 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 				sed -i "s/worker_processes [0-9]*;/worker_processes $halBox_CPU_Cores;/" /etc/nginx/nginx.conf
 			fi
 
-			( chown -R www-data:www-data /var/www/ && make-ssl-cert generate-default-snakeoil --force-overwrite ) > /dev/null
+			for halBox_path in /var/cache/nginx/ /var/www/; do
+				if [[ ! -d $halBox_path ]]; then
+					mkdir -p $halBox_path
+				fi
+
+				chown -R www-data:www-data $halBox_path
+			done
+
+			( make-ssl-cert generate-default-snakeoil --force-overwrite ) > /dev/null
 		elif [[ $halBox_package == "nodejs" ]]; then
 			for halBox_NodeJS_module in $halBox_NodeJS_modules; do
 				echo -e "\e[1;32mDave, I'm installing '$halBox_NodeJS_package'.\e[0m" && ( npm install -gs $halBox_NodeJS_module ) > /dev/null
