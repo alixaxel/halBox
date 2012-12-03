@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.20.4\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.20.5\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -74,6 +74,7 @@ halBox_packages=$( dialog \
 		innotop              "powerful top clone for MySQL"                         off \
 		iotop                "simple top-like I/O monitor"                          on \
 		iptables             "tools for packet filtering and NAT"                   on \
+		java                 "Java runtime"                                         off \
 		maldet               "linux malware scanner"                                off \
 		mc                   "powerful file manager "                               off \
 		memcached            "high-performance memory object caching system"        off \
@@ -81,10 +82,9 @@ halBox_packages=$( dialog \
 		mongodb-server       "object/document-oriented database"                    off \
 		mysql                "MySQL database server and client"                     on \
 		nano                 "small, friendly text editor"                          on \
-		nginx                "small, powerful & scalable web/proxy server"          on \
+		nginx-light          "small, powerful & scalable web/proxy server"          on \
 		nodejs               "event-based server-side JavaScript engine"            off \
 		ntp                  "network time protocol deamon"                         off \
-		openjdk-7-jre        "OpenJDK Java runtime"                                 off \
 		php                  "server-side, HTML-embedded scripting language"        on \
 		ps_mem               "lists processes by memory usage"                      on \
 		rkhunter             "rootkit, backdoor, sniffer and exploit scanner"       off \
@@ -204,6 +204,10 @@ for halBox_package in $halBox_packages; do
 
 	if [[ $halBox_package == "innotop" ]]; then
 		echo -e "\e[1;32mDave, I'm skipping '$halBox_package' for now.\e[0m"
+	elif [[ $halBox_package == "java" ]]; then
+		if [[ $halBox_OS == "ubuntu" ]]; then
+			( apt-get -qq -y install openjdk-7-jre ) > /dev/null
+		fi
 	elif [[ $halBox_package == "maldet" ]]; then
 		( mkdir -p ~/halBox-master/_/ && wget -q http://www.rfxn.com/downloads/maldetect-current.tar.gz -O ~/halBox-master/_/maldet.tar.gz ) > /dev/null
 
@@ -231,7 +235,7 @@ for halBox_package in $halBox_packages; do
 	fi
 done
 
-for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysql nginx nodejs php; do
+for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysql nginx-light nodejs php; do
 	if [[ $halBox_packages == *$halBox_package* ]]; then
 		echo -e "\e[1;32mDave, I'm configuring '$halBox_package'.\e[0m"
 
@@ -285,7 +289,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 
 				echo -e "\e[1;31mDave, your MySQL root password is now '$halBox_MySQL_password'.\e[0m"
 			fi
-		elif [[ $halBox_package == "nginx" ]]; then
+		elif [[ $halBox_package == "nginx-light" ]]; then
 			if [[ -f /etc/nginx/nginx.conf ]]; then
 				sed -i "s/worker_processes [0-9]*;/worker_processes $halBox_CPU_Cores;/" /etc/nginx/nginx.conf
 			fi
