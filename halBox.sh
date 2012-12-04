@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.20.5\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.20.6\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -59,7 +59,6 @@ halBox_packages=$( dialog \
 	--title "halBox" \
 	--checklist "Dave, select the packages to install." 0 0 0 \
 		apache2-utils        "utility programs for webservers"                      off \
-		aptitude             "terminal-based package manager"                       off \
 		chkrootkit           "rootkit detector"                                     off \
 		clamav               "anti-virus utility for Unix"                          off \
 		curl                 "client URL"                                           on \
