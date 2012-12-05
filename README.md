@@ -6,7 +6,7 @@ Bash script with a bit of unicornian magic dust to set up and tweak your Debian/
 Usage
 =====
 
-	wget -q https://github.com/alixaxel/halBox/archive/master.tar.gz -O ~/halBox.tar.gz && tar -xzvf ~/halBox.tar.gz && chmod +x ~/halBox-master/halBox.sh && ~/halBox-master/halBox.sh
+	cd ~ && wget -q https://github.com/alixaxel/halBox/archive/master.tar.gz -O ~/halBox.tar.gz && tar -xzvf ~/halBox.tar.gz && chmod +x ~/halBox-master/halBox.sh && ~/halBox-master/halBox.sh
 
 Screenshots
 ===========
@@ -17,13 +17,12 @@ To-Do
 =====
 
 * add ElasticSearch?
-* add build-essential
 * tweak MongoDB setup
 * take care of innotop Perl dependencies
 * benchmark MySQL Server vs Percona Server
 * provide a better default list for node.js modules
-* make sure all the packages install correctly on Debian
 * tweak chkrootkit, clamav, maldet and rkhunter installs
+* make sure all the packages install correctly on Debian
 * assess if either nginx `fastcgi_cache` or Varnish are viable to implement
 
 Credits
