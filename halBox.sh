@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.21.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.21.1\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -46,7 +46,7 @@ fi
 
 echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
 
-for halBox_package in bc build-essential curl dialog htop iftop iotop locales nano units unzip zip; do
+for halBox_package in bc build-essential curl dialog htop iftop iotop locales nano strace units unzip zip; do
 	echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
 
 	if [[ $halBox_package == "locales" ]]; then
