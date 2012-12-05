@@ -1,4 +1,4 @@
-backend nginx {
+backend default {
 	.host = "127.0.0.1";
 	.port = "8000";
 }
@@ -67,3 +67,5 @@ sub vcl_fetch {
 
 	return(deliver);
 }
+
+#TO READ: http://serverfault.com/questions/111678/how-to-setup-nginx-with-varnish

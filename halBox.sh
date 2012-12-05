@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.20.6\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.21.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -44,10 +44,30 @@ fi
 
 ( wget -q http://repo.varnish-cache.org/debian/GPG-key.txt -O - | apt-key add - ) > /dev/null 2>&1
 
-echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade && apt-get -qq -y install dialog ) > /dev/null 2>&1
+echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
+
+for halBox_package in bc build-essential curl dialog htop iftop iotop locales nano units unzip zip; do
+	echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
+
+	if [[ $halBox_package == "locales" ]]; then
+		echo -e "\e[1;32mDave, I'm defaulting to the 'en_US.UTF-8' locale.\e[0m" && ( locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8 ) > /dev/null
+	fi
+done
+
+echo -e "\e[1;32mDave, I'm removing the bloatware.\e[0m" && for halBox_package in apache2 bind9 nscd php portmap rsyslog samba sendmail; do
+	if [[ -f /etc/init.d/$halBox_package ]]; then
+		( service $halBox_package stop ) > /dev/null
+	fi
+
+	( apt-get -qq -y remove --purge "$halBox_package*" ) > /dev/null 2>&1
+done
+
+echo -e "\e[1;32mDave, I'm defaulting to the UTC timezone.\e[0m" && ( echo "UTC" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata ) > /dev/null 2>&1
 
 if [[ ! $( type -P dialog ) ]]; then
 	echo -e "\e[1;31mI'm sorry, Dave. I'm afraid I can't do that.\e[0m" && exit 1
+else
+	sleep 3
 fi
 
 exec 3>&1
@@ -58,20 +78,15 @@ halBox_packages=$( dialog \
 	--separate-output \
 	--title "halBox" \
 	--checklist "Dave, select the packages to install." 0 0 0 \
-		apache2-utils        "utility programs for webservers"                      off \
+		apache2-utils        "ab and other utility programs for webservers"         on \
 		chkrootkit           "rootkit detector"                                     off \
 		clamav               "anti-virus utility for Unix"                          off \
-		curl                 "client URL"                                           on \
 		dash                 "POSIX-compliant shell"                                off \
 		dropbear             "lightweight SSH2 server and client"                   on \
 		exim4                "mail transport agent"                                 on \
 		git-core             "distributed revision control system"                  off \
-		htop                 "interactive processes viewer"                         on \
 		httperf              "HTTP server performance tester"                       off \
-		iftop                "displays bandwidth usage information"                 on \
 		inetutils-syslogd    "system logging daemon"                                on \
-		innotop              "powerful top clone for MySQL"                         off \
-		iotop                "simple top-like I/O monitor"                          on \
 		iptables             "tools for packet filtering and NAT"                   on \
 		java                 "Java runtime"                                         off \
 		maldet               "linux malware scanner"                                off \
@@ -80,7 +95,6 @@ halBox_packages=$( dialog \
 		meteor               "JavaScript platform for building HTML5 websites"      off \
 		mongodb-server       "object/document-oriented database"                    off \
 		mysql                "MySQL database server and client"                     on \
-		nano                 "small, friendly text editor"                          on \
 		nginx-light          "small, powerful & scalable web/proxy server"          on \
 		nodejs               "event-based server-side JavaScript engine"            off \
 		ntp                  "network time protocol deamon"                         off \
@@ -89,7 +103,6 @@ halBox_packages=$( dialog \
 		rkhunter             "rootkit, backdoor, sniffer and exploit scanner"       off \
 		rtorrent             "ncurses BitTorrent client"                            off \
 		tmux                 "terminal multiplexer"                                 on \
-		units                "converts between different systems of units"          on \
 		varnish              "high-performance web accelerator"                     off \
 		vim                  "enhanced vi editor"                                   off \
 2>&1 1>&3 )
@@ -159,7 +172,6 @@ if [[ $halBox_packages == *"php"* ]]; then
 			php5-sybase         "Sybase Driver"                                     off \
 			php5-tidy           "Tidy"                                              off \
 			pecl-timezonedb     "Olson timezone database"                           on \
-			php5-tokyo-tyrant   "Tokyo Tyrant"                                      off \
 			php5-xcache         "XCache"                                            off \
 			php5-xdebug         "Xdebug"                                            off \
 			php5-xhprof         "XHProf"                                            off \
@@ -182,28 +194,10 @@ exec 3>&-
 
 clear && echo -e "\e[1;31mI'm completely operational, and all my circuits are functioning perfectly.\e[0m\n"
 
-echo -e "\e[1;32mDave, I'm removing the bloatware.\e[0m" && for halBox_package in apache2 bind9 nscd portmap rsyslog samba sendmail; do
-	if [[ -f /etc/init.d/$halBox_package ]]; then
-		( service $halBox_package stop ) > /dev/null
-	fi
-
-	( apt-get -qq -y remove --purge "$halBox_package*" ) > /dev/null 2>&1
-done
-
-echo -e "\e[1;32mDave, I'm defaulting to the UTC timezone.\e[0m" && ( echo "UTC" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata ) > /dev/null 2>&1
-
-if [[ ! $( type -P locale ) ]]; then
-	echo -e "\e[1;32mDave, I'm installing 'locale'.\e[0m" && ( apt-get -qq -y install locale ) > /dev/null
-fi
-
-echo -e "\e[1;32mDave, I'm defaulting to the en_US.UTF-8 locale.\e[0m" && ( locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8 ) > /dev/null
-
 for halBox_package in $halBox_packages; do
 	echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m"
 
-	if [[ $halBox_package == "innotop" ]]; then
-		echo -e "\e[1;32mDave, I'm skipping '$halBox_package' for now.\e[0m"
-	elif [[ $halBox_package == "java" ]]; then
+	if [[ $halBox_package == "java" ]]; then
 		if [[ $halBox_OS == "ubuntu" ]]; then
 			( apt-get -qq -y install openjdk-7-jre ) > /dev/null
 		fi
@@ -214,7 +208,23 @@ for halBox_package in $halBox_packages; do
 			( cd ~/halBox-master/_/ && tar -xzvf ./maldet.tar.gz && rm ./maldet.tar.gz && cd ./maldetect-*/ chmod +x ./install.sh && ./install.sh && cd ~ ) > /dev/null
 		fi
 	elif [[ $halBox_package == "mysql" ]]; then
-		( cp -r ~/halBox-master/halBox/mysql/* / && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install mysql-server mysql-client mysqltuner ) > /dev/null
+		( cp -r ~/halBox-master/halBox/mysql/* / && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install mysql-server mysql-client ) > /dev/null
+
+		for halBox_MySQL_package in innotop mysqltuner tuning-primer; do
+			echo -e "\e[1;32mDave, I'm downloading '$halBox_MySQL_package'.\e[0m"
+
+			#if [[ $halBox_MySQL_package == "innotop" ]]; then
+				# http://innotop.googlecode.com/files/innotop-1.9.0.tar.gz
+			#elif [[ $halBox_MySQL_package == "mysqltuner" ]]; then
+				#( wget -q https://raw.github.com/rackerhacker/MySQLTuner-perl/master/mysqltuner.pl -O /usr/local/bin/mysqltuner ) > /dev/null
+			#elif [[ $halBox_MySQL_package == "tuning-primer" ]]; then
+				# ( wget -q https://launchpad.net/mysql-tuning-primer/trunk/1.6-r1/+download/tuning-primer.sh -O /usr/local/bin/tuning-primer ) > /dev/null
+			#fi
+
+			if [[ -f /usr/local/bin/$halBox_MySQL_package ]];
+				chmod +x /usr/local/bin/$halBox_MySQL_package
+			fi
+		done
 	elif [[ $halBox_package == "nodejs" ]]; then
 		if [[ $halBox_OS == "debian" ]]; then
 			( apt-get -qq -y install nodejs npm ) > /dev/null # TODO
@@ -353,8 +363,6 @@ done
 for halBox_service in exim4 nginx mysql php5-fpm inetutils-syslogd xinetd; do
 	if [[ -f /etc/init.d/$halBox_service ]]; then
 		echo -e "\e[1;32mDave, I'm restarting the '$halBox_service' service.\e[0m" && ( service $halBox_service restart ) > /dev/null
-	elif [[ $halBox_packages == *$halBox_service* ]]; then
-		echo -e "\e[1;32mDave, I was unable to restart the '$halBox_service' service.\e[0m"
 	fi
 done
 
