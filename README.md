@@ -18,7 +18,6 @@ To-Do
 
 * add ElasticSearch?
 * tweak MongoDB setup
-* take care of innotop Perl dependencies
 * benchmark MySQL Server vs Percona Server
 * provide a better default list for node.js modules
 * tweak chkrootkit, clamav, maldet and rkhunter installs

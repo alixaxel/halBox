@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.21.1\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.21.3\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
 	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -9,12 +9,12 @@ fi
 if [[ ! -f /etc/debian_version ]]; then
 	echo -e "\e[1;31mI think you know what the problem is just as well as I do.\e[0m" && exit 1
 else
-	halBox_CPU=$( grep -h "^physical id" /proc/cpuinfo | sort -u | wc -l )
-	halBox_CPU_Cache=$( grep -h "^cache size" /proc/cpuinfo | sort -u | awk '{ print int($4 / 1024) }' )
-	halBox_CPU_Cores=$( grep -h "^core id" /proc/cpuinfo | sort -u | wc -l )
+	halBox_CPU=$( grep "^physical id" /proc/cpuinfo | sort -u | wc -l )
+	halBox_CPU_Cache=$( grep "^cache size" /proc/cpuinfo | sort -u | awk '{ print int($4 / 1024) }' )
+	halBox_CPU_Cores=$( grep "^core id" /proc/cpuinfo | sort -u | wc -l )
 	halBox_OS=$( lsb_release -si | awk '{ print tolower($0) }' )
 	halBox_OS_Codename=$( lsb_release -sc | awk '{ print tolower($0) }' )
-	halBox_RAM=$( grep -h "^MemTotal:" /proc/meminfo | awk '{ print int($2 / 1024) }' )
+	halBox_RAM=$( grep "^MemTotal:" /proc/meminfo | awk '{ print int($2 / 1024) }' )
 fi
 
 if [[ $halBox_OS == "debian" ]]; then
@@ -78,57 +78,34 @@ halBox_packages=$( dialog \
 	--separate-output \
 	--title "halBox" \
 	--checklist "Dave, select the packages to install." 0 0 0 \
-		apache2-utils        "ab and other utility programs for webservers"         on \
-		chkrootkit           "rootkit detector"                                     off \
-		clamav               "anti-virus utility for Unix"                          off \
-		dash                 "POSIX-compliant shell"                                off \
-		dropbear             "lightweight SSH2 server and client"                   on \
-		exim4                "mail transport agent"                                 on \
-		git-core             "distributed revision control system"                  off \
-		httperf              "HTTP server performance tester"                       off \
-		inetutils-syslogd    "system logging daemon"                                on \
-		iptables             "tools for packet filtering and NAT"                   on \
-		java                 "Java runtime"                                         off \
-		maldet               "linux malware scanner"                                off \
-		mc                   "powerful file manager "                               off \
-		memcached            "high-performance memory object caching system"        off \
-		meteor               "JavaScript platform for building HTML5 websites"      off \
-		mongodb-server       "object/document-oriented database"                    off \
-		mysql                "MySQL database server and client"                     on \
-		nginx-light          "small, powerful & scalable web/proxy server"          on \
-		nodejs               "event-based server-side JavaScript engine"            off \
-		ntp                  "network time protocol deamon"                         off \
-		php                  "server-side, HTML-embedded scripting language"        on \
-		ps_mem               "lists processes by memory usage"                      on \
-		rkhunter             "rootkit, backdoor, sniffer and exploit scanner"       off \
-		rtorrent             "ncurses BitTorrent client"                            off \
-		tmux                 "terminal multiplexer"                                 on \
-		varnish              "high-performance web accelerator"                     off \
-		vim                  "enhanced vi editor"                                   off \
+			apache2-utils		"utility programs for webservers"					on \
+			chkrootkit			"rootkit detector"									off \
+			clamav				"anti-virus utility for Unix"						off \
+			dash				"POSIX-compliant shell"								off \
+			dropbear			"lightweight SSH2 server and client"				on \
+			exim4				"mail transport agent"								on \
+			git-core			"distributed revision control system"				off \
+			httperf				"HTTP server performance tester"					off \
+			inetutils-syslogd	"system logging daemon"								on \
+			iptables			"tools for packet filtering and NAT"				on \
+			java				"Java runtime"										off \
+			maldet				"linux malware scanner"								off \
+			mc					"powerful file manager"								off \
+			memcached			"high-performance memory object caching system"		off \
+			meteor				"JavaScript platform for building HTML5 websites"	off \
+			mongodb-server		"object/document-oriented database"					off \
+			mysql				"MySQL database server and client"					on \
+			nginx-light			"small, powerful & scalable web/proxy server"		on \
+			nodejs				"event-based server-side JavaScript engine"			off \
+			ntp					"network time protocol deamon"						off \
+			php					"server-side, HTML-embedded scripting language"		on \
+			ps_mem				"lists processes by memory usage"					on \
+			rkhunter			"rootkit, backdoor, sniffer and exploit scanner"	off \
+			rtorrent			"ncurses BitTorrent client"							off \
+			tmux				"terminal multiplexer"								on \
+			varnish				"high-performance web accelerator"					off \
+			vim					"enhanced vi editor"								off \
 2>&1 1>&3 )
-
-if [[ $halBox_packages == *"nodejs"* ]]; then
-	halBox_NodeJS_modules=$( dialog \
-		--no-cancel \
-		--ok-label "Okay" \
-		--separate-output \
-		--title "halBox" \
-		--checklist "Dave, select the Node.JS modules to install." 0 0 0 \
-			calipso             "content management system"                         off \
-			connect             "high performance middleware framework"             off \
-			express             "Sinatra inspired web development framework"        off \
-			forever             "run a given node script continuously"              off \
-			hook.io             "versatile distributed event emitter"               off \
-			jade                "Jade template engine"                              off \
-			log.io              "real-time log monitoring in your browser"          off \
-			nib                 "Stylus mixins and utilities"                       off \
-			pdfkit              "PDF generation library"                            off \
-			request             "simplified HTTP request client"                    off \
-			socket.io           "WebSocket-like API"                                off \
-			stylus              "expressive, feature-rich CSS superset"             off \
-			underscore          "functional programming helper library"             off \
-	2>&1 1>&3 )
-fi
 
 if [[ $halBox_packages == *"php"* ]]; then
 	halBox_PHP_extensions=$( dialog \
@@ -137,46 +114,46 @@ if [[ $halBox_packages == *"php"* ]]; then
 		--separate-output \
 		--title "halBox" \
 		--checklist "Dave, select the PHP extensions to install." 0 0 0 \
-			php-apc             "Alternative PHP Cache"                             on \
-			php5-curl           "cURL"                                              on \
-			php5-enchant        "Enchant Spelling Library"                          off \
-			php5-ffmpeg         "FFmpeg"                                            off \
-			php5-gd             "GD"                                                on \
-			php5-gearman        "Gearman"                                           off \
-			php5-geoip          "MaxMind Geo IP"                                    off \
-			php5-gmp            "GNU Multiple Precision"                            on \
-			pecl_http           "HTTP (Beta)"                                       off \
-			php5-imagick        "ImageMagick"                                       off \
-			php5-imap           "IMAP"                                              on \
-			php5-interbase      "Firebird/InterBase Driver"                         off \
-			php5-intl           "Internationalization"                              on \
-			php5-ldap           "LDAP"                                              off \
-			php5-mcrypt         "Mcrypt"                                            on \
-			php5-memcache       "Memcache"                                          off \
-			php5-memcached      "Memcached"                                         off \
-			php5-mhash          "Mhash"                                             off \
-			pecl-mongo          "MongoDB Driver"                                    off \
-			php5-mssql          "MsSQL Driver"                                      off \
-			php5-mysql          "MySQL Driver"                                      on \
-			php5-odbc           "ODBC Driver"                                       off \
-			php-pear            "PEAR & PECL"                                       on \
-			php5-pgsql          "PostgreSQL Driver"                                 off \
-			php5-ps             "PostScript"                                        off \
-			php5-pspell         "GNU Aspell"                                        off \
-			php5-recode         "GNU Recode"                                        off \
-			php5-redis          "Redis"                                             off \
-			php5-snmp           "SNMP"                                              off \
-			php5-sqlite         "SQLite Driver"                                     on \
-			php5-ssh2           "SSH2"                                              off \
-			php5-suhosin        "Suhosin Patch"                                     off \
-			php5-sybase         "Sybase Driver"                                     off \
-			php5-tidy           "Tidy"                                              off \
-			pecl-timezonedb     "Olson timezone database"                           on \
-			php5-xcache         "XCache"                                            off \
-			php5-xdebug         "Xdebug"                                            off \
-			php5-xhprof         "XHProf"                                            off \
-			php5-xmlrpc         "XML-RPC"                                           off \
-			php5-xsl            "XSL"                                               off \
+			php-apc				"Alternative PHP Cache"								on \
+			php5-curl			"cURL"												on \
+			php5-enchant		"Enchant Spelling Library"							off \
+			php5-ffmpeg			"FFmpeg"											off \
+			php5-gd				"GD"												on \
+			php5-gearman		"Gearman"											off \
+			php5-geoip			"MaxMind Geo IP"									off \
+			php5-gmp			"GNU Multiple Precision"							on \
+			pecl_http			"HTTP (Beta)"										off \
+			php5-imagick		"ImageMagick"										off \
+			php5-imap			"IMAP"												on \
+			php5-interbase		"Firebird/InterBase Driver"							off \
+			php5-intl			"Internationalization"								on \
+			php5-ldap			"LDAP"												off \
+			php5-mcrypt			"Mcrypt"											on \
+			php5-memcache		"Memcache"											off \
+			php5-memcached		"Memcached"											off \
+			php5-mhash			"Mhash"												off \
+			pecl-mongo			"MongoDB Driver"									off \
+			php5-mssql			"MsSQL Driver"										off \
+			php5-mysql			"MySQL Driver"										on \
+			php5-odbc			"ODBC Driver"										off \
+			php-pear			"PEAR & PECL"										on \
+			php5-pgsql			"PostgreSQL Driver"									off \
+			php5-ps				"PostScript"										off \
+			php5-pspell			"GNU Aspell"										off \
+			php5-recode			"GNU Recode"										off \
+			php5-redis			"Redis"												off \
+			php5-snmp			"SNMP"												off \
+			php5-sqlite			"SQLite Driver"										on \
+			php5-ssh2			"SSH2"												off \
+			php5-suhosin		"Suhosin Patch"										off \
+			php5-sybase			"Sybase Driver"										off \
+			php5-tidy			"Tidy"												off \
+			pecl-timezonedb		"Olson timezone database"							on \
+			php5-xcache			"XCache"											off \
+			php5-xdebug			"Xdebug"											off \
+			php5-xhprof			"XHProf"											off \
+			php5-xmlrpc			"XML-RPC"											off \
+			php5-xsl			"XSL"												off \
 	2>&1 1>&3 )
 fi
 
@@ -202,10 +179,10 @@ for halBox_package in $halBox_packages; do
 			( apt-get -qq -y install openjdk-7-jre ) > /dev/null
 		fi
 	elif [[ $halBox_package == "maldet" ]]; then
-		( mkdir -p ~/halBox-master/_/ && wget -q http://www.rfxn.com/downloads/maldetect-current.tar.gz -O ~/halBox-master/_/maldet.tar.gz ) > /dev/null
+		( wget -q http://www.rfxn.com/downloads/maldetect-current.tar.gz -O ~/halBox-master/_/maldet.tar.gz ) > /dev/null
 
 		if [[ -f ~/halBox-master/_/maldet.tar.gz ]]; then
-			( cd ~/halBox-master/_/ && tar -xzvf ./maldet.tar.gz && rm ./maldet.tar.gz && cd ./maldetect-*/ chmod +x ./install.sh && ./install.sh && cd ~ ) > /dev/null
+			( cd ~/halBox-master/_/ && tar -xzvf ./maldet.tar.gz && cd ./maldetect-*/ && chmod +x ./install.sh && ./install.sh && cd ~ ) > /dev/null
 		fi
 	elif [[ $halBox_package == "mysql" ]]; then
 		( cp -r ~/halBox-master/halBox/mysql/* / && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install mysql-server mysql-client ) > /dev/null
@@ -213,15 +190,23 @@ for halBox_package in $halBox_packages; do
 		for halBox_MySQL_package in innotop mysqltuner tuning-primer; do
 			echo -e "\e[1;32mDave, I'm downloading '$halBox_MySQL_package'.\e[0m"
 
-			#if [[ $halBox_MySQL_package == "innotop" ]]; then
-				# http://innotop.googlecode.com/files/innotop-1.9.0.tar.gz
-			#elif [[ $halBox_MySQL_package == "mysqltuner" ]]; then
-				#( wget -q https://raw.github.com/rackerhacker/MySQLTuner-perl/master/mysqltuner.pl -O /usr/local/bin/mysqltuner ) > /dev/null
-			#elif [[ $halBox_MySQL_package == "tuning-primer" ]]; then
-				# ( wget -q https://launchpad.net/mysql-tuning-primer/trunk/1.6-r1/+download/tuning-primer.sh -O /usr/local/bin/tuning-primer ) > /dev/null
-			#fi
+			if [[ $halBox_MySQL_package == "innotop" ]]; then
+				( wget -q http://innotop.googlecode.com/files/innotop-1.9.0.tar.gz -O ~/halBox-master/_/innotop.tar.gz ) > /dev/null
 
-			if [[ -f /usr/local/bin/$halBox_MySQL_package ]];
+				if [[ -f ~/halBox-master/_/innotop.tar.gz ]]; then
+					for halBox_innotop_prerequisite in libterm-readkey-perl libdbi-perl libdbd-mysql; do
+						( DEBIAN_FRONTEND=noninteractive apt-get -qq -y install $halBox_innotop_prerequisite ) > /dev/null
+					done
+
+					( cd ~/halBox-master/_/ && tar -xzvf ./innotop.tar.gz && cd ./innotop-*/ && perl ./Makefile.PL && make install && cd ~ ) > /dev/null
+				fi
+			elif [[ $halBox_MySQL_package == "mysqltuner" ]]; then
+				( wget -q https://raw.github.com/rackerhacker/MySQLTuner-perl/master/mysqltuner.pl -O /usr/local/bin/mysqltuner ) > /dev/null
+			elif [[ $halBox_MySQL_package == "tuning-primer" ]]; then
+				( wget -q https://launchpad.net/mysql-tuning-primer/trunk/1.6-r1/+download/tuning-primer.sh -O /usr/local/bin/tuning-primer ) > /dev/null
+			fi
+
+			if [[ -f /usr/local/bin/$halBox_MySQL_package ]]; then
 				chmod +x /usr/local/bin/$halBox_MySQL_package
 			fi
 		done
@@ -312,14 +297,6 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 			done
 
 			( make-ssl-cert generate-default-snakeoil --force-overwrite ) > /dev/null
-		elif [[ $halBox_package == "nodejs" ]]; then
-			for halBox_NodeJS_module in $halBox_NodeJS_modules; do
-				echo -e "\e[1;32mDave, I'm installing '$halBox_NodeJS_package'.\e[0m" && ( npm install -gs $halBox_NodeJS_module ) > /dev/null
-			done
-
-			if [[ -d ~/tmp/ ]]; then
-				( rm -rf ~/tmp/ ) > /dev/null
-			fi
 		elif [[ $halBox_package == "php" ]]; then
 			echo -e "\e[1;32mDave, I'm downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/html/adminer/adminer.php ) > /dev/null
 
