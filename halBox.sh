@@ -1,45 +1,45 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.21.3\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.21.4\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
-	echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
+    echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
 fi
 
 if [[ ! -f /etc/debian_version ]]; then
-	echo -e "\e[1;31mI think you know what the problem is just as well as I do.\e[0m" && exit 1
+    echo -e "\e[1;31mI think you know what the problem is just as well as I do.\e[0m" && exit 1
 else
-	halBox_CPU=$( grep "^physical id" /proc/cpuinfo | sort -u | wc -l )
-	halBox_CPU_Cache=$( grep "^cache size" /proc/cpuinfo | sort -u | awk '{ print int($4 / 1024) }' )
-	halBox_CPU_Cores=$( grep "^core id" /proc/cpuinfo | sort -u | wc -l )
-	halBox_OS=$( lsb_release -si | awk '{ print tolower($0) }' )
-	halBox_OS_Codename=$( lsb_release -sc | awk '{ print tolower($0) }' )
-	halBox_RAM=$( grep "^MemTotal:" /proc/meminfo | awk '{ print int($2 / 1024) }' )
+    halBox_CPU=$( grep "^physical id" /proc/cpuinfo | sort -u | wc -l )
+    halBox_CPU_Cache=$( grep "^cache size" /proc/cpuinfo | sort -u | awk '{ print int($4 / 1024) }' )
+    halBox_CPU_Cores=$( grep "^core id" /proc/cpuinfo | sort -u | wc -l )
+    halBox_OS=$( lsb_release -si | awk '{ print tolower($0) }' )
+    halBox_OS_Codename=$( lsb_release -sc | awk '{ print tolower($0) }' )
+    halBox_RAM=$( grep "^MemTotal:" /proc/meminfo | awk '{ print int($2 / 1024) }' )
 fi
 
 if [[ $halBox_OS == "debian" ]]; then
-	if [[ ! -f /etc/apt/sources.list.d/dotdeb.list ]]; then
-		echo -e "\e[1;32mDave, I'm adding the DotDeb repository.\e[0m"
+    if [[ ! -f /etc/apt/sources.list.d/dotdeb.list ]]; then
+        echo -e "\e[1;32mDave, I'm adding the DotDeb repository.\e[0m"
 
-		for halBox_branch in $halBox_OS_Codename "$halBox_OS_Codename-php54"; do
-			echo -e "deb http://packages.dotdeb.org/ $halBox_branch all\n" >> /etc/apt/sources.list.d/dotdeb.list
-			echo -e "deb-src http://packages.dotdeb.org/ $halBox_branch all\n" >> /etc/apt/sources.list.d/dotdeb.list
-		done
-	fi
+        for halBox_branch in $halBox_OS_Codename "$halBox_OS_Codename-php54"; do
+            echo -e "deb http://packages.dotdeb.org/ $halBox_branch all\n" >> /etc/apt/sources.list.d/dotdeb.list
+            echo -e "deb-src http://packages.dotdeb.org/ $halBox_branch all\n" >> /etc/apt/sources.list.d/dotdeb.list
+        done
+    fi
 
-	( wget -q http://www.dotdeb.org/dotdeb.gpg -O - | apt-key add - ) > /dev/null 2>&1
+    ( wget -q http://www.dotdeb.org/dotdeb.gpg -O - | apt-key add - ) > /dev/null 2>&1
 elif [[ $halBox_OS == "ubuntu" ]]; then
-	if [[ ! $( type -P add-apt-repository ) ]]; then
-		echo -e "\e[1;32mDave, hold on...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y install python-software-properties ) > /dev/null
-	fi
+    if [[ ! $( type -P add-apt-repository ) ]]; then
+        echo -e "\e[1;32mDave, hold on...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y install python-software-properties ) > /dev/null
+    fi
 
-	for halBox_PPA in chris-lea/node.js ondrej/php5; do
-		echo -e "\e[1;32mDave, I'm adding the $halBox_PPA PPA.\e[0m" && ( add-apt-repository -y ppa:$halBox_PPA ) > /dev/null 2>&1
-	done
+    for halBox_PPA in chris-lea/node.js ondrej/php5; do
+        echo -e "\e[1;32mDave, I'm adding the $halBox_PPA PPA.\e[0m" && ( add-apt-repository -y ppa:$halBox_PPA ) > /dev/null 2>&1
+    done
 fi
 
 echo -e "\e[1;32mDave, I'm adding the Varnish repository.\e[0m" && if [[ ! -f /etc/apt/sources.list.d/varnish.list ]]; then
-	echo -e "deb http://repo.varnish-cache.org/$halBox_OS/ $halBox_OS_Codename varnish-3.0\n" > /etc/apt/sources.list.d/varnish.list
+    echo -e "deb http://repo.varnish-cache.org/$halBox_OS/ $halBox_OS_Codename varnish-3.0\n" > /etc/apt/sources.list.d/varnish.list
 fi
 
 ( wget -q http://repo.varnish-cache.org/debian/GPG-key.txt -O - | apt-key add - ) > /dev/null 2>&1
@@ -47,124 +47,124 @@ fi
 echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
 
 for halBox_package in bc build-essential curl dialog htop iftop iotop locales nano strace units unzip zip; do
-	echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
+    echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
 
-	if [[ $halBox_package == "locales" ]]; then
-		echo -e "\e[1;32mDave, I'm defaulting to the 'en_US.UTF-8' locale.\e[0m" && ( locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8 ) > /dev/null
-	fi
+    if [[ $halBox_package == "locales" ]]; then
+        echo -e "\e[1;32mDave, I'm defaulting to the 'en_US.UTF-8' locale.\e[0m" && ( locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8 ) > /dev/null
+    fi
 done
 
 echo -e "\e[1;32mDave, I'm removing the bloatware.\e[0m" && for halBox_package in apache2 bind9 nscd php portmap rsyslog samba sendmail; do
-	if [[ -f /etc/init.d/$halBox_package ]]; then
-		( service $halBox_package stop ) > /dev/null
-	fi
+    if [[ -f /etc/init.d/$halBox_package ]]; then
+        ( service $halBox_package stop ) > /dev/null
+    fi
 
-	( apt-get -qq -y remove --purge "$halBox_package*" ) > /dev/null 2>&1
+    ( apt-get -qq -y remove --purge "$halBox_package*" ) > /dev/null 2>&1
 done
 
 echo -e "\e[1;32mDave, I'm defaulting to the UTC timezone.\e[0m" && ( echo "UTC" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata ) > /dev/null 2>&1
 
 if [[ ! $( type -P dialog ) ]]; then
-	echo -e "\e[1;31mI'm sorry, Dave. I'm afraid I can't do that.\e[0m" && exit 1
+    echo -e "\e[1;31mI'm sorry, Dave. I'm afraid I can't do that.\e[0m" && exit 1
 else
-	sleep 3
+    sleep 3
 fi
 
 exec 3>&1
 
 halBox_packages=$( dialog \
-	--cancel-label "Nevermind HAL" \
-	--ok-label "Okay" \
-	--separate-output \
-	--title "halBox" \
-	--checklist "Dave, select the packages to install." 0 0 0 \
-			apache2-utils		"utility programs for webservers"					on \
-			chkrootkit			"rootkit detector"									off \
-			clamav				"anti-virus utility for Unix"						off \
-			dash				"POSIX-compliant shell"								off \
-			dropbear			"lightweight SSH2 server and client"				on \
-			exim4				"mail transport agent"								on \
-			git-core			"distributed revision control system"				off \
-			httperf				"HTTP server performance tester"					off \
-			inetutils-syslogd	"system logging daemon"								on \
-			iptables			"tools for packet filtering and NAT"				on \
-			java				"Java runtime"										off \
-			maldet				"linux malware scanner"								off \
-			mc					"powerful file manager"								off \
-			memcached			"high-performance memory object caching system"		off \
-			meteor				"JavaScript platform for building HTML5 websites"	off \
-			mongodb-server		"object/document-oriented database"					off \
-			mysql				"MySQL database server and client"					on \
-			nginx-light			"small, powerful & scalable web/proxy server"		on \
-			nodejs				"event-based server-side JavaScript engine"			off \
-			ntp					"network time protocol deamon"						off \
-			php					"server-side, HTML-embedded scripting language"		on \
-			ps_mem				"lists processes by memory usage"					on \
-			rkhunter			"rootkit, backdoor, sniffer and exploit scanner"	off \
-			rtorrent			"ncurses BitTorrent client"							off \
-			tmux				"terminal multiplexer"								on \
-			varnish				"high-performance web accelerator"					off \
-			vim					"enhanced vi editor"								off \
+    --cancel-label "Nevermind HAL" \
+    --ok-label "Okay" \
+    --separate-output \
+    --title "halBox" \
+    --checklist "Dave, select the packages to install." 0 0 0 \
+            apache2-utils       "utility programs for webservers"                   on \
+            chkrootkit          "rootkit detector"                                  off \
+            clamav              "anti-virus utility for Unix"                       off \
+            dash                "POSIX-compliant shell"                             off \
+            dropbear            "lightweight SSH2 server and client"                on \
+            exim4               "mail transport agent"                              on \
+            git-core            "distributed revision control system"               off \
+            httperf             "HTTP server performance tester"                    off \
+            inetutils-syslogd   "system logging daemon"                             on \
+            iptables            "tools for packet filtering and NAT"                on \
+            java                "Java runtime"                                      off \
+            maldet              "linux malware scanner"                             off \
+            mc                  "powerful file manager"                             off \
+            memcached           "high-performance memory object caching system"     off \
+            meteor              "JavaScript platform for building HTML5 websites"   off \
+            mongodb-server      "object/document-oriented database"                 off \
+            mysql               "MySQL database server and client"                  on \
+            nginx-light         "small, powerful & scalable web/proxy server"       on \
+            nodejs              "event-based server-side JavaScript engine"         off \
+            ntp                 "network time protocol deamon"                      off \
+            php                 "server-side, HTML-embedded scripting language"     on \
+            ps_mem              "lists processes by memory usage"                   on \
+            rkhunter            "rootkit, backdoor, sniffer and exploit scanner"    off \
+            rtorrent            "ncurses BitTorrent client"                         off \
+            tmux                "terminal multiplexer"                              on \
+            varnish             "high-performance web accelerator"                  off \
+            vim                 "enhanced vi editor"                                off \
 2>&1 1>&3 )
 
 if [[ $halBox_packages == *"php"* ]]; then
-	halBox_PHP_extensions=$( dialog \
-		--no-cancel \
-		--ok-label "Okay" \
-		--separate-output \
-		--title "halBox" \
-		--checklist "Dave, select the PHP extensions to install." 0 0 0 \
-			php-apc				"Alternative PHP Cache"								on \
-			php5-curl			"cURL"												on \
-			php5-enchant		"Enchant Spelling Library"							off \
-			php5-ffmpeg			"FFmpeg"											off \
-			php5-gd				"GD"												on \
-			php5-gearman		"Gearman"											off \
-			php5-geoip			"MaxMind Geo IP"									off \
-			php5-gmp			"GNU Multiple Precision"							on \
-			pecl_http			"HTTP (Beta)"										off \
-			php5-imagick		"ImageMagick"										off \
-			php5-imap			"IMAP"												on \
-			php5-interbase		"Firebird/InterBase Driver"							off \
-			php5-intl			"Internationalization"								on \
-			php5-ldap			"LDAP"												off \
-			php5-mcrypt			"Mcrypt"											on \
-			php5-memcache		"Memcache"											off \
-			php5-memcached		"Memcached"											off \
-			php5-mhash			"Mhash"												off \
-			pecl-mongo			"MongoDB Driver"									off \
-			php5-mssql			"MsSQL Driver"										off \
-			php5-mysql			"MySQL Driver"										on \
-			php5-odbc			"ODBC Driver"										off \
-			php-pear			"PEAR & PECL"										on \
-			php5-pgsql			"PostgreSQL Driver"									off \
-			php5-ps				"PostScript"										off \
-			php5-pspell			"GNU Aspell"										off \
-			php5-recode			"GNU Recode"										off \
-			php5-redis			"Redis"												off \
-			php5-snmp			"SNMP"												off \
-			php5-sqlite			"SQLite Driver"										on \
-			php5-ssh2			"SSH2"												off \
-			php5-suhosin		"Suhosin Patch"										off \
-			php5-sybase			"Sybase Driver"										off \
-			php5-tidy			"Tidy"												off \
-			pecl-timezonedb		"Olson timezone database"							on \
-			php5-xcache			"XCache"											off \
-			php5-xdebug			"Xdebug"											off \
-			php5-xhprof			"XHProf"											off \
-			php5-xmlrpc			"XML-RPC"											off \
-			php5-xsl			"XSL"												off \
-	2>&1 1>&3 )
+    halBox_PHP_extensions=$( dialog \
+        --no-cancel \
+        --ok-label "Okay" \
+        --separate-output \
+        --title "halBox" \
+        --checklist "Dave, select the PHP extensions to install." 0 0 0 \
+            php-apc             "Alternative PHP Cache"                             on \
+            php5-curl           "cURL"                                              on \
+            php5-enchant        "Enchant Spelling Library"                          off \
+            php5-ffmpeg         "FFmpeg"                                            off \
+            php5-gd             "GD"                                                on \
+            php5-gearman        "Gearman"                                           off \
+            php5-geoip          "MaxMind Geo IP"                                    off \
+            php5-gmp            "GNU Multiple Precision"                            on \
+            pecl_http           "HTTP (Beta)"                                       off \
+            php5-imagick        "ImageMagick"                                       off \
+            php5-imap           "IMAP"                                              on \
+            php5-interbase      "Firebird/InterBase Driver"                         off \
+            php5-intl           "Internationalization"                              on \
+            php5-ldap           "LDAP"                                              off \
+            php5-mcrypt         "Mcrypt"                                            on \
+            php5-memcache       "Memcache"                                          off \
+            php5-memcached      "Memcached"                                         off \
+            php5-mhash          "Mhash"                                             off \
+            pecl-mongo          "MongoDB Driver"                                    off \
+            php5-mssql          "MsSQL Driver"                                      off \
+            php5-mysql          "MySQL Driver"                                      on \
+            php5-odbc           "ODBC Driver"                                       off \
+            php-pear            "PEAR & PECL"                                       on \
+            php5-pgsql          "PostgreSQL Driver"                                 off \
+            php5-ps             "PostScript"                                        off \
+            php5-pspell         "GNU Aspell"                                        off \
+            php5-recode         "GNU Recode"                                        off \
+            php5-redis          "Redis"                                             off \
+            php5-snmp           "SNMP"                                              off \
+            php5-sqlite         "SQLite Driver"                                     on \
+            php5-ssh2           "SSH2"                                              off \
+            php5-suhosin        "Suhosin Patch"                                     off \
+            php5-sybase         "Sybase Driver"                                     off \
+            php5-tidy           "Tidy"                                              off \
+            pecl-timezonedb     "Olson timezone database"                           on \
+            php5-xcache         "XCache"                                            off \
+            php5-xdebug         "Xdebug"                                            off \
+            php5-xhprof         "XHProf"                                            off \
+            php5-xmlrpc         "XML-RPC"                                           off \
+            php5-xsl            "XSL"                                               off \
+    2>&1 1>&3 )
 fi
 
 if [[ $halBox_packages == *"mysql"* ]]; then
-	halBox_MySQL_password=$( dialog \
-		--insecure \
-		--no-cancel \
-		--ok-label "Okay" \
-		--title "halBox" \
-		--passwordbox "Dave, I also need a root password for MySQL." 0 80 \
-	2>&1 1>&3 )
+    halBox_MySQL_password=$( dialog \
+        --insecure \
+        --no-cancel \
+        --ok-label "Okay" \
+        --title "halBox" \
+        --passwordbox "Dave, I also need a root password for MySQL." 0 80 \
+    2>&1 1>&3 )
 fi
 
 exec 3>&-
@@ -172,181 +172,181 @@ exec 3>&-
 clear && echo -e "\e[1;31mI'm completely operational, and all my circuits are functioning perfectly.\e[0m\n"
 
 for halBox_package in $halBox_packages; do
-	echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m"
+    echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m"
 
-	if [[ $halBox_package == "java" ]]; then
-		if [[ $halBox_OS == "ubuntu" ]]; then
-			( apt-get -qq -y install openjdk-7-jre ) > /dev/null
-		fi
-	elif [[ $halBox_package == "maldet" ]]; then
-		( wget -q http://www.rfxn.com/downloads/maldetect-current.tar.gz -O ~/halBox-master/_/maldet.tar.gz ) > /dev/null
+    if [[ $halBox_package == "java" ]]; then
+        if [[ $halBox_OS == "ubuntu" ]]; then
+            ( apt-get -qq -y install openjdk-7-jre ) > /dev/null
+        fi
+    elif [[ $halBox_package == "maldet" ]]; then
+        ( wget -q http://www.rfxn.com/downloads/maldetect-current.tar.gz -O ~/halBox-master/_/maldet.tar.gz ) > /dev/null
 
-		if [[ -f ~/halBox-master/_/maldet.tar.gz ]]; then
-			( cd ~/halBox-master/_/ && tar -xzvf ./maldet.tar.gz && cd ./maldetect-*/ && chmod +x ./install.sh && ./install.sh && cd ~ ) > /dev/null
-		fi
-	elif [[ $halBox_package == "mysql" ]]; then
-		( cp -r ~/halBox-master/halBox/mysql/* / && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install mysql-server mysql-client ) > /dev/null
+        if [[ -f ~/halBox-master/_/maldet.tar.gz ]]; then
+            ( cd ~/halBox-master/_/ && tar -xzvf ./maldet.tar.gz && cd ./maldetect-*/ && chmod +x ./install.sh && ./install.sh && cd ~ ) > /dev/null
+        fi
+    elif [[ $halBox_package == "mysql" ]]; then
+        ( cp -r ~/halBox-master/halBox/mysql/* / && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install mysql-server mysql-client ) > /dev/null
+    elif [[ $halBox_package == "nodejs" ]]; then
+        if [[ $halBox_OS == "debian" ]]; then
+            ( apt-get -qq -y install nodejs npm ) > /dev/null # TODO
+        elif [[ $halBox_OS == "ubuntu" ]]; then
+            ( apt-get -qq -y install nodejs npm ) > /dev/null
+        fi
+    elif [[ $halBox_package == "php" ]]; then
+        ( apt-get -qq -y install php5-cli php5-fpm ) > /dev/null
+    elif [[ $halBox_package == "ps_mem" ]]; then
+        ( wget -q http://www.pixelbeat.org/scripts/ps_mem.py -O /usr/local/bin/ps_mem && chmod +x /usr/local/bin/ps_mem ) > /dev/null
+    else
+        ( apt-get -qq -y install $halBox_package ) > /dev/null
 
-		for halBox_MySQL_package in innotop mysqltuner tuning-primer; do
-			echo -e "\e[1;32mDave, I'm downloading '$halBox_MySQL_package'.\e[0m"
-
-			if [[ $halBox_MySQL_package == "innotop" ]]; then
-				( wget -q http://innotop.googlecode.com/files/innotop-1.9.0.tar.gz -O ~/halBox-master/_/innotop.tar.gz ) > /dev/null
-
-				if [[ -f ~/halBox-master/_/innotop.tar.gz ]]; then
-					for halBox_innotop_prerequisite in libterm-readkey-perl libdbi-perl libdbd-mysql; do
-						( DEBIAN_FRONTEND=noninteractive apt-get -qq -y install $halBox_innotop_prerequisite ) > /dev/null
-					done
-
-					( cd ~/halBox-master/_/ && tar -xzvf ./innotop.tar.gz && cd ./innotop-*/ && perl ./Makefile.PL && make install && cd ~ ) > /dev/null
-				fi
-			elif [[ $halBox_MySQL_package == "mysqltuner" ]]; then
-				( wget -q https://raw.github.com/rackerhacker/MySQLTuner-perl/master/mysqltuner.pl -O /usr/local/bin/mysqltuner ) > /dev/null
-			elif [[ $halBox_MySQL_package == "tuning-primer" ]]; then
-				( wget -q https://launchpad.net/mysql-tuning-primer/trunk/1.6-r1/+download/tuning-primer.sh -O /usr/local/bin/tuning-primer ) > /dev/null
-			fi
-
-			if [[ -f /usr/local/bin/$halBox_MySQL_package ]]; then
-				chmod +x /usr/local/bin/$halBox_MySQL_package
-			fi
-		done
-	elif [[ $halBox_package == "nodejs" ]]; then
-		if [[ $halBox_OS == "debian" ]]; then
-			( apt-get -qq -y install nodejs npm ) > /dev/null # TODO
-		elif [[ $halBox_OS == "ubuntu" ]]; then
-			( apt-get -qq -y install nodejs npm ) > /dev/null
-		fi
-	elif [[ $halBox_package == "php" ]]; then
-		( apt-get -qq -y install php5-cli php5-fpm ) > /dev/null
-	elif [[ $halBox_package == "ps_mem" ]]; then
-		( wget -q http://www.pixelbeat.org/scripts/ps_mem.py -O /usr/local/bin/ps_mem && chmod +x /usr/local/bin/ps_mem ) > /dev/null
-	else
-		( apt-get -qq -y install $halBox_package ) > /dev/null
-
-		if [[ $halBox_package == "dropbear" ]]; then
-			( apt-get -qq -y install xinetd ) > /dev/null
-		fi
-	fi
+        if [[ $halBox_package == "dropbear" ]]; then
+            ( apt-get -qq -y install xinetd ) > /dev/null
+        fi
+    fi
 done
 
 for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysql nginx-light nodejs php; do
-	if [[ $halBox_packages == *$halBox_package* ]]; then
-		echo -e "\e[1;32mDave, I'm configuring '$halBox_package'.\e[0m"
+    if [[ $halBox_packages == *$halBox_package* ]]; then
+        echo -e "\e[1;32mDave, I'm configuring '$halBox_package'.\e[0m"
 
-		if [[ -d ~/halBox-master/halBox/$halBox_package/ ]]; then
-			( cp -r ~/halBox-master/halBox/$halBox_package/* / ) > /dev/null
-		fi
+        if [[ -d ~/halBox-master/halBox/$halBox_package/ ]]; then
+            ( cp -r ~/halBox-master/halBox/$halBox_package/* / ) > /dev/null
+        fi
 
-		if [[ $halBox_package == "clamav" ]]; then
-			( freshclam ) > /dev/null
+        if [[ $halBox_package == "clamav" ]]; then
+            ( freshclam ) > /dev/null
 
-			if [[ -d /var/quarantine/ ]]; then
-				chmod -R 0700 /var/quarantine/
-			fi
+            if [[ -d /var/quarantine/ ]]; then
+                chmod -R 0700 /var/quarantine/
+            fi
 
-			( ( crontab -l; echo "@daily freshclam && clamscan -ir /var/www/ --log=/var/log/clamscan.log --move=/var/quarantine/ --scan-mail=no" ) | crontab - ) > /dev/null 2>&1
-		elif [[ $halBox_package == "dash" ]]; then
-			( chsh -s /bin/dash root ) > /dev/null
-		elif [[ $halBox_package == "dropbear" ]]; then
-			( update-rc.d -f dropbear remove ) > /dev/null
+            ( ( crontab -l; echo "@daily freshclam && clamscan -ir /var/www/ --log=/var/log/clamscan.log --move=/var/quarantine/ --scan-mail=no" ) | crontab - ) > /dev/null 2>&1
+        elif [[ $halBox_package == "dash" ]]; then
+            ( chsh -s /bin/dash root ) > /dev/null
+        elif [[ $halBox_package == "dropbear" ]]; then
+            ( update-rc.d -f dropbear remove ) > /dev/null
 
-			if [[ -f /etc/init.d/ssh ]]; then
-				( touch /etc/ssh/sshd_not_to_be_run && service ssh stop && update-rc.d -f ssh remove ) > /dev/null 2>&1
-			fi
+            if [[ -f /etc/init.d/ssh ]]; then
+                ( touch /etc/ssh/sshd_not_to_be_run && service ssh stop && update-rc.d -f ssh remove ) > /dev/null 2>&1
+            fi
 
-			if [[ -f /etc/environment ]]; then
-				( cat /etc/environment >> ~/.profile ) > /dev/null
-			fi
-		elif [[ $halBox_package == "exim4" ]]; then
-			if [[ -f /etc/exim4/update-exim4.conf.conf ]]; then
-				sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
-			fi
-		elif [[ $halBox_package == "inetutils-syslogd" ]]; then
-			for halBox_path in "/var/log/*.*" "/var/log/debug" "/var/log/messages" "/var/log/syslog" "/var/log/fsck/" "/var/log/news/"; do
-				( rm -rf $halBox_path ) > /dev/null
-			done
+            if [[ -f /etc/environment ]]; then
+                ( cat /etc/environment >> ~/.profile ) > /dev/null
+            fi
+        elif [[ $halBox_package == "exim4" ]]; then
+            if [[ -f /etc/exim4/update-exim4.conf.conf ]]; then
+                sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
+            fi
+        elif [[ $halBox_package == "inetutils-syslogd" ]]; then
+            for halBox_path in "/var/log/*.*" "/var/log/debug" "/var/log/messages" "/var/log/syslog" "/var/log/fsck/" "/var/log/news/"; do
+                ( rm -rf $halBox_path ) > /dev/null
+            done
 
-			( service inetutils-syslogd stop && cp -r ~/halBox-master/halBox/inetutils-syslogd/* / ) > /dev/null
-		elif [[ $halBox_package == "iptables" ]]; then
-			( chmod +x /etc/network/if-pre-up.d/iptables && iptables-restore < /etc/iptables.rules ) > /dev/null
-		elif [[ $halBox_package == "mysql" ]]; then
-			if [[ ! $( type -P expect ) ]]; then
-				( apt-get -qq -y install expect ) > /dev/null
-			fi
+            ( service inetutils-syslogd stop && cp -r ~/halBox-master/halBox/inetutils-syslogd/* / ) > /dev/null
+        elif [[ $halBox_package == "iptables" ]]; then
+            ( chmod +x /etc/network/if-pre-up.d/iptables && iptables-restore < /etc/iptables.rules ) > /dev/null
+        elif [[ $halBox_package == "mysql" ]]; then
+            if [[ ! $( type -P expect ) ]]; then
+                ( apt-get -qq -y install expect ) > /dev/null
+            fi
 
-			( chmod +x ~/halBox-master/bin/mysql.sh && expect -f ~/halBox-master/bin/mysql.sh $halBox_MySQL_password ) > /dev/null
+            ( chmod +x ~/halBox-master/bin/mysql.sh && expect -f ~/halBox-master/bin/mysql.sh $halBox_MySQL_password ) > /dev/null
 
-			if [[ $? == 0 ]]; then
-				if [[ ! -f ~/.my.cnf ]]; then
-					( echo -e "[client]\nuser=root\npass=$halBox_MySQL_password\n" > ~/.my.cnf && chmod 0600 ~/.my.cnf )
-				fi
+            if [[ $? == 0 ]]; then
+                if [[ ! -f ~/.my.cnf ]]; then
+                    ( echo -e "[client]\nuser=root\npass=$halBox_MySQL_password\n" > ~/.my.cnf && chmod 0600 ~/.my.cnf )
+                fi
 
-				echo -e "\e[1;31mDave, your MySQL root password is now '$halBox_MySQL_password'.\e[0m"
-			fi
-		elif [[ $halBox_package == "nginx-light" ]]; then
-			if [[ -f /etc/nginx/nginx.conf ]]; then
-				sed -i "s/worker_processes [0-9]*;/worker_processes $halBox_CPU_Cores;/" /etc/nginx/nginx.conf
-			fi
+                echo -e "\e[1;31mDave, your MySQL root password is now '$halBox_MySQL_password'.\e[0m"
+            fi
 
-			for halBox_path in /var/cache/nginx/ /var/www/; do
-				if [[ ! -d $halBox_path ]]; then
-					mkdir -p $halBox_path
-				fi
+            for halBox_MySQL_package in innotop mysqltuner tuning-primer; do
+                echo -e "\e[1;32mDave, I'm downloading '$halBox_MySQL_package'.\e[0m"
 
-				chown -R www-data:www-data $halBox_path
-			done
+                if [[ $halBox_MySQL_package == "innotop" ]]; then
+                    ( wget -q http://innotop.googlecode.com/files/innotop-1.9.0.tar.gz -O ~/halBox-master/_/innotop.tar.gz ) > /dev/null
 
-			( make-ssl-cert generate-default-snakeoil --force-overwrite ) > /dev/null
-		elif [[ $halBox_package == "php" ]]; then
-			echo -e "\e[1;32mDave, I'm downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/html/adminer/adminer.php ) > /dev/null
+                    if [[ -f ~/halBox-master/_/innotop.tar.gz ]]; then
+                        for halBox_innotop_prerequisite in libterm-readkey-perl libdbi-perl libdbd-mysql; do
+                            ( DEBIAN_FRONTEND=noninteractive apt-get -qq -y install $halBox_innotop_prerequisite ) > /dev/null
+                        done
 
-			if [[ ! -f /usr/local/bin/composer ]]; then
-				echo -e "\e[1;32mDave, I'm downloading 'composer'.\e[0m" && ( wget -q http://getcomposer.org/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer ) > /dev/null
-			fi
+                        ( cd ~/halBox-master/_/ && tar -xzvf ./innotop.tar.gz && cd ./innotop-*/ && perl ./Makefile.PL && make install && cd ~ ) > /dev/null
+                    fi
+                elif [[ $halBox_MySQL_package == "mysqltuner" ]]; then
+                    ( wget -q https://raw.github.com/rackerhacker/MySQLTuner-perl/master/mysqltuner.pl -O /usr/local/bin/mysqltuner ) > /dev/null
+                elif [[ $halBox_MySQL_package == "tuning-primer" ]]; then
+                    ( wget -q https://launchpad.net/mysql-tuning-primer/trunk/1.6-r1/+download/tuning-primer.sh -O /usr/local/bin/tuning-primer ) > /dev/null
+                fi
 
-			for halBox_PHP_extension in $halBox_PHP_extensions; do
-				echo -e "\e[1;32mDave, I'm installing '$halBox_PHP_extension'.\e[0m"
+                if [[ -f /usr/local/bin/$halBox_MySQL_package ]]; then
+                    chmod +x /usr/local/bin/$halBox_MySQL_package
+                fi
+            done
+        elif [[ $halBox_package == "nginx-light" ]]; then
+            if [[ -f /etc/nginx/nginx.conf ]]; then
+                sed -i "s/worker_processes [0-9]*;/worker_processes $halBox_CPU_Cores;/" /etc/nginx/nginx.conf
+            fi
 
-				if [[ $halBox_PHP_extension == "pecl"* ]]; then
-					if [[ ! $( type -P pecl ) ]]; then
-						( apt-get -qq -y install php-pear php5-dev ) > /dev/null
-					fi
+            for halBox_path in /var/cache/nginx/ /var/www/; do
+                if [[ ! -d $halBox_path ]]; then
+                    mkdir -p $halBox_path
+                fi
 
-					if [[ $halBox_PHP_extension == "pecl_http" ]]; then
-						( printf "no\n" | pecl install pecl_http ) > /dev/null
-					else
-						( pecl install ${halBox_PHP_extension:5} ) > /dev/null
-					fi
+                chown -R www-data:www-data $halBox_path
+            done
 
-					if [[ ! -f /etc/php5/conf.d/00-${halBox_PHP_extension:5}.ini ]]; then
-						echo -e "[${halBox_PHP_extension:5}]\nextension=${halBox_PHP_extension:5}.so\n" > /etc/php5/conf.d/00-${halBox_PHP_extension:5}.ini
-					fi
-				elif [[ $halBox_PHP_extension == "php-pear" ]]; then
-					( apt-get -qq -y install php-pear php5-dev ) > /dev/null
-				else
-					( apt-get -qq -y install $halBox_PHP_extension ) > /dev/null
-				fi
-			done
+            ( make-ssl-cert generate-default-snakeoil --force-overwrite ) > /dev/null
+        elif [[ $halBox_package == "php" ]]; then
+            echo -e "\e[1;32mDave, I'm downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/html/adminer/adminer.php ) > /dev/null
 
-			for halBox_PHP_INI in /etc/php5/conf.d/{,20-}{interbase,mssql,mysql,odbc,pgsql,sqlite}*ini; do
-				if [[ -f $halBox_PHP_INI ]]; then
-					echo -e "\e[1;32mDave, I'm removing the non-PDO '$halBox_PHP_INI' file.\e[0m" && ( rm $halBox_PHP_INI ) > /dev/null
-				fi
-			done
-		fi
-	fi
+            if [[ ! -f /usr/local/bin/composer ]]; then
+                echo -e "\e[1;32mDave, I'm downloading 'composer'.\e[0m" && ( wget -q http://getcomposer.org/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer ) > /dev/null
+            fi
+
+            for halBox_PHP_extension in $halBox_PHP_extensions; do
+                echo -e "\e[1;32mDave, I'm installing '$halBox_PHP_extension'.\e[0m"
+
+                if [[ $halBox_PHP_extension == "pecl"* ]]; then
+                    if [[ ! $( type -P pecl ) ]]; then
+                        ( apt-get -qq -y install php-pear php5-dev ) > /dev/null
+                    fi
+
+                    if [[ $halBox_PHP_extension == "pecl_http" ]]; then
+                        ( printf "no\n" | pecl install pecl_http ) > /dev/null
+                    else
+                        ( pecl install ${halBox_PHP_extension:5} ) > /dev/null
+                    fi
+
+                    if [[ ! -f /etc/php5/conf.d/00-${halBox_PHP_extension:5}.ini ]]; then
+                        echo -e "[${halBox_PHP_extension:5}]\nextension=${halBox_PHP_extension:5}.so\n" > /etc/php5/conf.d/00-${halBox_PHP_extension:5}.ini
+                    fi
+                elif [[ $halBox_PHP_extension == "php-pear" ]]; then
+                    ( apt-get -qq -y install php-pear php5-dev ) > /dev/null
+                else
+                    ( apt-get -qq -y install $halBox_PHP_extension ) > /dev/null
+                fi
+            done
+
+            for halBox_PHP_INI in /etc/php5/conf.d/{,20-}{interbase,mssql,mysql,odbc,pgsql,sqlite}*ini; do
+                if [[ -f $halBox_PHP_INI ]]; then
+                    echo -e "\e[1;32mDave, I'm removing the non-PDO '$halBox_PHP_INI' file.\e[0m" && ( rm $halBox_PHP_INI ) > /dev/null
+                fi
+            done
+        fi
+    fi
 done
 
 for halBox_service in exim4 nginx mysql php5-fpm inetutils-syslogd xinetd; do
-	if [[ -f /etc/init.d/$halBox_service ]]; then
-		echo -e "\e[1;32mDave, I'm restarting the '$halBox_service' service.\e[0m" && ( service $halBox_service restart ) > /dev/null
-	fi
+    if [[ -f /etc/init.d/$halBox_service ]]; then
+        echo -e "\e[1;32mDave, I'm restarting the '$halBox_service' service.\e[0m" && ( service $halBox_service restart ) > /dev/null
+    fi
 done
 
 echo -e "\e[1;32mDave, I'm cleaning up the leftovers.\e[0m" && ( apt-get -qq -y autoremove && apt-get -qq -y autoclean ) > /dev/null
 
 if [[ -f ~/halBox.tar.gz ]]; then
-	( rm ~/halBox.tar.gz ) > /dev/null
+    ( rm ~/halBox.tar.gz ) > /dev/null
 fi
 
 echo -e "\e[1;31mAffirmative, Dave. I read you.\e[0m" && exit 0
