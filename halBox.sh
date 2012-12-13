@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.22.3\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.22.4\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -9,12 +9,17 @@ fi
 if [[ ! -f /etc/debian_version ]]; then
     echo -e "\e[1;31mI think you know what the problem is just as well as I do.\e[0m" && exit 1
 else
+    halBox_Bits=32
     halBox_CPU=$( grep "^physical id" /proc/cpuinfo | sort -u | wc -l )
     halBox_CPU_Cache=$( grep "^cache size" /proc/cpuinfo | sort -u | awk '{ print int($4 / 1024) }' )
     halBox_CPU_Cores=$( grep "^core id" /proc/cpuinfo | sort -u | wc -l )
     halBox_OS=$( lsb_release -si | awk '{ print tolower($0) }' )
     halBox_OS_Codename=$( lsb_release -sc | awk '{ print tolower($0) }' )
     halBox_RAM=$( grep "^MemTotal:" /proc/meminfo | awk '{ print int($2 / 1024) }' )
+
+    if [[ `uname -m` == *"64" ]]; then
+        halBox_Bits=64
+    fi
 fi
 
 if [[ $halBox_OS == "debian" ]]; then
