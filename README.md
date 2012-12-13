@@ -38,14 +38,20 @@ Here's what a default install looks like after a fresh *reboot* (under Ubuntu 12
                              16.0 MiB
     =================================
 
+Of course, some features and configurations had to be sacrificed, most notably:
+
+* InnoDB engine is not available on MySQL
+* MyISAM [key_buffer_size directive](http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_key_buffer_size) is set to 8MB
+* *non*-PDO database drivers are disabled by default (this includes `mysql` and `mysqli`)
+
 Screenshots *(Ubuntu)*
 ======================
 
-[Pre-Requesites and Must-Haves](http://i.imgur.com/9fYnK.png)
-[Package Selection](http://i.imgur.com/OTRaW)
-[PHP Extensions](http://i.imgur.com/4BETz)
-[MySQL Root Password](http://i.imgur.com/8ptkh)
-[Progress](http://i.imgur.com/KnsWQ)
+![Pre-Requesites and Must-Haves](http://i.imgur.com/9fYnK.png "Pre-Requesites and Must-Haves")
+![Package Selection](http://i.imgur.com/OTRaW "Package Selection")
+![PHP Extensions](http://i.imgur.com/4BETz "PHP Extensions")
+![MySQL Root Password](http://i.imgur.com/8ptkh "MySQL Root Password")
+![Progress](http://i.imgur.com/KnsWQ "Progress")
 
 To-Do
 =====
