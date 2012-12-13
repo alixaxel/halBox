@@ -40,7 +40,7 @@ Here's what a default install looks like after a fresh *reboot* (under Ubuntu 12
 
 Of course, some features and configurations had to be sacrificed, most notably:
 
-* InnoDB engine is not available on MySQL
+* InnoDB engine is disabled
 * MyISAM [`key_buffer_size` directive](http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_key_buffer_size) is set to 8MB
 * *non*-PDO database drivers are disabled by default (this includes `mysql` and `mysqli`)
 
