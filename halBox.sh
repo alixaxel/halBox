@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.22.2\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.22.3\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -106,7 +106,7 @@ if [[ $halBox_packages == *"php"* ]]; then
         --separate-output \
         --title "halBox" \
         --checklist "Dave, select the PHP extensions to install." 0 0 0 \
-            php-apc             "Alternative PHP Cache"                             on \
+            php5-apc            "Alternative PHP Cache"                             on \
             php5-curl           "cURL"                                              on \
             php5-enchant        "Enchant Spelling Library"                          off \
             php5-ffmpeg         "FFmpeg"                                            off \
@@ -308,6 +308,8 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                     fi
                 elif [[ $halBox_PHP_extension == "php-pear" ]]; then
                     ( apt-get -qq -y install php-pear php5-dev ) > /dev/null
+                elif [[ $halBox_PHP_extension == "php5-apc" && $halBox_OS == "ubuntu" ]]; then
+                    ( apt-get -qq -y install php-apc ) > /dev/null
                 else
                     ( apt-get -qq -y install $halBox_PHP_extension ) > /dev/null
                 fi
