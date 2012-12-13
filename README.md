@@ -47,14 +47,14 @@ Of course, some features and configurations had to be sacrificed, most notably:
 Screenshots *(Ubuntu)*
 ======================
 
-![Pre-Requesites and Must-Haves](http://i.imgur.com/9fYnK.png "Pre-Requesites and Must-Haves")
-![Package Selection](http://i.imgur.com/OTRaW.png "Package Selection")
-![PHP Extensions](http://i.imgur.com/4BETz.png "PHP Extensions")
+![Pre-Requesites and Must-Haves](http://i.imgur.com/h2y7q.png "Pre-Requesites and Must-Haves")
+![Package Selection](http://i.imgur.com/pXFaf.png "Package Selection")
+![PHP Extensions](http://i.imgur.com/dMMWM.png "PHP Extensions")
 ![MySQL Root Password](http://i.imgur.com/8ptkh.png "MySQL Root Password")
-![Progress](http://i.imgur.com/KnsWQ.png "Progress")
+![Progress](http://i.imgur.com/6frQn.png "Progress")
 ---
-![index.html](http://i.imgur.com/5yuoj.png?1 "index.html")
-![info.php](http://i.imgur.com/ehqEm.png?1 "info.php")
+![index.html](http://i.imgur.com/K8fg8.png "index.html")
+![info.php](http://i.imgur.com/Ftld3.png "info.php")
 
 To-Do
 =====
