@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.21.5\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.22.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -38,15 +38,9 @@ elif [[ $halBox_OS == "ubuntu" ]]; then
     done
 fi
 
-echo -e "\e[1;32mDave, I'm adding the Varnish repository.\e[0m" && if [[ ! -f /etc/apt/sources.list.d/varnish.list ]]; then
-    echo -e "deb http://repo.varnish-cache.org/$halBox_OS/ $halBox_OS_Codename varnish-3.0\n" > /etc/apt/sources.list.d/varnish.list
-fi
-
-( wget -q http://repo.varnish-cache.org/debian/GPG-key.txt -O - | apt-key add - ) > /dev/null 2>&1
-
 echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
 
-for halBox_package in bc build-essential curl dialog htop iftop iotop locales nano strace units unzip zip; do
+for halBox_package in bc bcrypt build-essential curl dialog dstat host htop iftop iotop locales nano scrypt strace units unzip zip; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
 
     if [[ $halBox_package == "locales" ]]; then
@@ -78,17 +72,14 @@ halBox_packages=$( dialog \
     --separate-output \
     --title "halBox" \
     --checklist "Dave, select the packages to install." 0 0 0 \
-            apache2-utils       "utility programs for webservers"                   on \
             chkrootkit          "rootkit detector"                                  off \
             clamav              "anti-virus utility for Unix"                       off \
             dash                "POSIX-compliant shell"                             off \
             dropbear            "lightweight SSH2 server and client"                on \
             exim4               "mail transport agent"                              on \
             git-core            "distributed revision control system"               off \
-            httperf             "HTTP server performance tester"                    off \
             inetutils-syslogd   "system logging daemon"                             on \
             iptables            "tools for packet filtering and NAT"                on \
-            java                "Java runtime"                                      off \
             maldet              "linux malware scanner"                             off \
             mc                  "powerful file manager"                             off \
             memcached           "high-performance memory object caching system"     off \
@@ -98,13 +89,14 @@ halBox_packages=$( dialog \
             nginx-light         "small, powerful & scalable web/proxy server"       on \
             nodejs              "event-based server-side JavaScript engine"         off \
             ntp                 "network time protocol deamon"                      off \
+            openjdk-7-jre       "OpenJDK Java Runtime, using Hotspot JIT"           off \
             php                 "server-side, HTML-embedded scripting language"     on \
             ps_mem              "lists processes by memory usage"                   on \
             rkhunter            "rootkit, backdoor, sniffer and exploit scanner"    off \
             rtorrent            "ncurses BitTorrent client"                         off \
             tmux                "terminal multiplexer"                              on \
-            varnish             "high-performance web accelerator"                  off \
             vim                 "enhanced vi editor"                                off \
+            virtualbox-guest    "VirtualBox guest addition module"                  off \
 2>&1 1>&3 )
 
 if [[ $halBox_packages == *"php"* ]]; then
@@ -149,7 +141,6 @@ if [[ $halBox_packages == *"php"* ]]; then
             php5-sybase         "Sybase Driver"                                     off \
             php5-tidy           "Tidy"                                              off \
             pecl-timezonedb     "Olson timezone database"                           on \
-            php5-xcache         "XCache"                                            off \
             php5-xdebug         "Xdebug"                                            off \
             php5-xhprof         "XHProf"                                            off \
             php5-xmlrpc         "XML-RPC"                                           off \
@@ -174,11 +165,7 @@ clear && echo -e "\e[1;31mI'm completely operational, and all my circuits are fu
 for halBox_package in $halBox_packages; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m"
 
-    if [[ $halBox_package == "java" ]]; then
-        if [[ $halBox_OS == "ubuntu" ]]; then
-            ( apt-get -qq -y install openjdk-7-jre ) > /dev/null
-        fi
-    elif [[ $halBox_package == "maldet" ]]; then
+    if [[ $halBox_package == "maldet" ]]; then
         ( wget -q http://www.rfxn.com/downloads/maldetect-current.tar.gz -O ~/halBox-master/_/maldet.tar.gz ) > /dev/null
 
         if [[ -f ~/halBox-master/_/maldet.tar.gz ]]; then
@@ -187,15 +174,13 @@ for halBox_package in $halBox_packages; do
     elif [[ $halBox_package == "mysql" ]]; then
         ( cp -r ~/halBox-master/halBox/mysql/* / && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install mysql-server mysql-client ) > /dev/null
     elif [[ $halBox_package == "nodejs" ]]; then
-        if [[ $halBox_OS == "debian" ]]; then
-            ( apt-get -qq -y install nodejs npm ) > /dev/null # TODO
-        elif [[ $halBox_OS == "ubuntu" ]]; then
-            ( apt-get -qq -y install nodejs npm ) > /dev/null
-        fi
+        ( apt-get -qq -y install nodejs npm ) > /dev/null
     elif [[ $halBox_package == "php" ]]; then
         ( apt-get -qq -y install php5-cli php5-fpm ) > /dev/null
     elif [[ $halBox_package == "ps_mem" ]]; then
         ( wget -q http://www.pixelbeat.org/scripts/ps_mem.py -O /usr/local/bin/ps_mem && chmod +x /usr/local/bin/ps_mem ) > /dev/null
+    elif [[ $halBox_package == "virtualbox-guest" ]]; then
+        ( DEBIAN_FRONTEND=noninteractive apt-get -qq -y install virtualbox-guest-dkms ) > /dev/null
     else
         ( apt-get -qq -y install $halBox_package ) > /dev/null
 
@@ -238,7 +223,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                 sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
             fi
         elif [[ $halBox_package == "inetutils-syslogd" ]]; then
-            for halBox_path in "/var/log/*.*" "/var/log/debug" "/var/log/messages" "/var/log/syslog" "/var/log/fsck/" "/var/log/news/"; do
+            for halBox_path in /var/log/{"*.*",debug,messages,syslog,fsck/,news/}; do
                 ( rm -rf $halBox_path ) > /dev/null
             done
 
@@ -253,22 +238,22 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
             ( chmod +x ~/halBox-master/bin/mysql.sh && expect -f ~/halBox-master/bin/mysql.sh $halBox_MySQL_password ) > /dev/null
 
             if [[ $? == 0 ]]; then
-                if [[ ! -f ~/.my.cnf ]]; then
-                    ( echo -e "[client]\nuser=root\npass=$halBox_MySQL_password\n" > ~/.my.cnf && chmod 0600 ~/.my.cnf )
+                if [[ -f ~/.my.cnf ]]; then
+                    ( sed -i -r "s/^pass([[:blank:]]*)=$;/pass\1= $halBox_MySQL_password;/" ~/.my.cnf && chmod 0600 ~/.my.cnf )
                 fi
 
                 echo -e "\e[1;31mDave, your MySQL root password is now '$halBox_MySQL_password'.\e[0m"
             fi
 
             for halBox_MySQL_package in innotop mysqltuner tuning-primer; do
-                echo -e "\e[1;32mDave, I'm downloading '$halBox_MySQL_package'.\e[0m"
+                echo -e "\e[1;32mDave, I'm also downloading '$halBox_MySQL_package'.\e[0m"
 
                 if [[ $halBox_MySQL_package == "innotop" ]]; then
                     ( wget -q http://innotop.googlecode.com/files/innotop-1.9.0.tar.gz -O ~/halBox-master/_/innotop.tar.gz ) > /dev/null
 
                     if [[ -f ~/halBox-master/_/innotop.tar.gz ]]; then
                         for halBox_innotop_prerequisite in libterm-readkey-perl libdbi-perl libdbd-mysql; do
-                            ( DEBIAN_FRONTEND=noninteractive apt-get -qq -y install $halBox_innotop_prerequisite ) > /dev/null
+                            ( apt-get -qq -y install $halBox_innotop_prerequisite ) > /dev/null
                         done
 
                         ( cd ~/halBox-master/_/ && tar -xzvf ./innotop.tar.gz && cd ./innotop-*/ && perl ./Makefile.PL && make install && cd ~ ) > /dev/null
@@ -285,23 +270,23 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
             done
         elif [[ $halBox_package == "nginx-light" ]]; then
             if [[ -f /etc/nginx/nginx.conf ]]; then
-                sed -i "s/worker_processes [0-9]*;/worker_processes $halBox_CPU_Cores;/" /etc/nginx/nginx.conf
-            fi
-
-            for halBox_path in /var/cache/nginx/ /var/www/; do
-                if [[ ! -d $halBox_path ]]; then
-                    mkdir -p $halBox_path
+                if [[ $halBox_CPU_Cores -ge 2 ]]; then
+                    sed -i -r "s/worker_processes([[:blank:]]*)[0-9]*;/worker_processes\1$halBox_CPU_Cores;/" /etc/nginx/nginx.conf
                 fi
 
-                chown -R www-data:www-data $halBox_path
+                ( make-ssl-cert generate-default-snakeoil --force-overwrite ) > /dev/null
+            fi
+
+            for halBox_nginx_package in apache2-utils httperf siege; do
+                echo -e "\e[1;32mDave, I'm also installing '$halBox_nginx_package'.\e[0m" && ( apt-get -qq -y install $halBox_nginx_package ) > /dev/null
             done
 
-            ( make-ssl-cert generate-default-snakeoil --force-overwrite ) > /dev/null
+            mkdir -p /var/{cache/nginx/,www/} && chown -R www-data:www-data /var/{cache/nginx/,www/}
         elif [[ $halBox_package == "php" ]]; then
-            echo -e "\e[1;32mDave, I'm downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/html/adminer/adminer.php ) > /dev/null
+            echo -e "\e[1;32mDave, I'm also downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/htdocs/adminer/adminer.php ) > /dev/null
 
             if [[ ! -f /usr/local/bin/composer ]]; then
-                echo -e "\e[1;32mDave, I'm downloading 'composer'.\e[0m" && ( wget -q http://getcomposer.org/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer ) > /dev/null
+                echo -e "\e[1;32mDave, I'm also downloading 'composer'.\e[0m" && ( wget -q http://getcomposer.org/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer ) > /dev/null
             fi
 
             for halBox_PHP_extension in $halBox_PHP_extensions; do

@@ -1,4 +1,4 @@
-# https://help.ubuntu.com/community/IptablesHowTo
+# //help.ubuntu.com/community/IptablesHowTo
 
 *filter
 :INPUT DROP [0:0]
@@ -9,6 +9,6 @@
 -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 -A INPUT -p icmp -m icmp --icmp-type 8 -m limit --limit 1/second -j ACCEPT
 -A INPUT -p icmp -m icmp --icmp-type 11 -m limit --limit 1/second -j ACCEPT
--A INPUT -p tcp -m tcp --dport 22 -m limit --limit 3/hour --limit-burst 5 -j ACCEPT
--A INPUT -p tcp -m tcp -m multiport --dports 80,443,8080 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -m limit --limit 5/hour --limit-burst 10 -j ACCEPT
+-A INPUT -p tcp -m tcp -m multiport --dports 80,443 -j ACCEPT
 COMMIT

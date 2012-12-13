@@ -1,10 +1,10 @@
 service ssh
 {
-	disable      = no
-	only_from    = 0.0.0.0
-	server       = /usr/sbin/dropbear
-	server_args  = -m -i -I 1800
-	socket_type  = stream
-	user         = root
-	wait         = no
+    disable     = no
+    only_from   = 0.0.0.0
+    server      = /usr/sbin/dropbear
+    server_args = -m -i -I 1800
+    socket_type = stream
+    user        = root
+    wait        = no
 }

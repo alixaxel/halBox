@@ -3,13 +3,13 @@
 /var/log/mail
 /var/log/messages
 {
-	rotate 4
-	weekly
-	missingok
-	notifempty
-	compress
-	sharedscripts
-	postrotate
-		/etc/init.d/inetutils-syslogd reload > /dev/null
-	endscript
+    compress
+    endscript
+    missingok
+    notifempty
+    postrotate
+        /etc/init.d/inetutils-syslogd reload > /dev/null
+    rotate 4
+    sharedscripts
+    weekly
 }

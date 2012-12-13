@@ -16,13 +16,9 @@ Wait for the stable release first! ;)
 To-Do
 =====
 
-* add ElasticSearch?
 * tweak MongoDB setup
-* benchmark MySQL Server vs Percona Server
-* provide a better default list for node.js modules
 * tweak chkrootkit, clamav, maldet and rkhunter installs
 * make sure all the packages install correctly on Debian
-* assess if either nginx `fastcgi_cache` or Varnish are viable to implement
 
 Credits
 =======
