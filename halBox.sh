@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.22.1\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.22.2\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -74,7 +74,7 @@ halBox_packages=$( dialog \
     --checklist "Dave, select the packages to install." 0 0 0 \
             chkrootkit          "rootkit detector"                                  off \
             clamav              "anti-virus utility for Unix"                       off \
-            dash                "POSIX-compliant shell"                             off \
+            dash                "POSIX-compliant shell"                             on \
             dropbear            "lightweight SSH2 server and client"                on \
             exim4               "mail transport agent"                              on \
             git-core            "distributed revision control system"               off \

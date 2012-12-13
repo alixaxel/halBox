@@ -8,6 +8,7 @@ server {
     include             /etc/nginx/include.d/http.conf;
     include             /etc/nginx/include.d/http_autoindex.conf;
     include             /etc/nginx/include.d/http_charset.conf;
+    include             /etc/nginx/include.d/http_empty_gif.conf;
     include             /etc/nginx/include.d/http_gzip.conf;
     include             /etc/nginx/include.d/http_gzip_static.conf;
     include             /etc/nginx/include.d/http_index.conf;
@@ -65,8 +66,8 @@ server {
     error_page          405 /error/405.html;
     error_page          500 501 502 503 504 /error/5xx.html;
 
-    location ~ ^/(?:40[3-5]|5xx)[.]html$ {
+    location ^~ /error/ {
         internal;
-        root /var/www/$server_name/error;
+        root            /var/www/$server_name;
     }
 }
