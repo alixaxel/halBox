@@ -52,6 +52,9 @@ Screenshots *(Ubuntu)*
 ![PHP Extensions](http://i.imgur.com/4BETz.png "PHP Extensions")
 ![MySQL Root Password](http://i.imgur.com/8ptkh.png "MySQL Root Password")
 ![Progress](http://i.imgur.com/KnsWQ.png "Progress")
+---
+![index.html](http://i.imgur.com/5yuoj.png?1 "index.html")
+![info.php](http://i.imgur.com/ehqEm.png?1 "info.php")
 
 To-Do
 =====
