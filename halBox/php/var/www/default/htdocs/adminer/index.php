@@ -11,6 +11,8 @@ if (is_file('./adminer.php') === true) {
 
 			$plugins = array (
                 new AdminerDatabaseHide(explode('|', 'information_schema|mysql|performance_schema')),
+                new AdminerDumpXml(),
+                new AdminerDumpZip(),
                 new AdminerEditForeign(),
                 new AdminerEnumOption(),
                 new AdminerForeignConvention(),
