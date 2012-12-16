@@ -7,6 +7,7 @@ types {
     application/mac-binhex40                                                    hqx;
     application/msword                                                          doc;
     application/ogg                                                             ogx;
+    application/owl+xml                                                         owl owx;
     application/pdf                                                             pdf;
     application/postscript                                                      ai eps ps;
     application/rdf+xml                                                         rdf;

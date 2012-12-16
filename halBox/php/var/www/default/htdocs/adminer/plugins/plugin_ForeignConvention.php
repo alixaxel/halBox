@@ -9,10 +9,8 @@ class AdminerForeignConvention {
     function foreignKeys($table) {
 		$result = array();
 
-		foreach (array_keys(fields($table)) as $field) {
-			if (preg_match('~^id_|_id$~', $field) > 0) {
-				$result[] = array('table' => preg_replace('~^id_|_id$~', '', $field), 'source' => array($field), 'target' => array('id'));
-			}
+		foreach (preg_grep('~^id_|_id$~', array_keys(fields($table))) as $field) {
+			$result[] = array('table' => preg_replace('~^id_|_id$~', '', $field), 'source' => array($field), 'target' => array('id'));
 		}
 
 		return $result;
