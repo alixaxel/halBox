@@ -23,7 +23,7 @@ server {
         rewrite         ^/(.*)/?$ /index.php/$1 last;
     }
 
-    location ~* /(?:[.]|.*[.](?:bak|fla|inc|ini|log|psd|sh|sql|swp)|(?:file|upload)s?/.*[.](?:php)) {
+    location ~* /(?:[.]|.*[.](?:bak|db|fla|inc|ini|log|phar|psd|sh|sql|swp)|(?:file|upload)s?/.*[.](?:php)) {
         deny            all;
     }
 
