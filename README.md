@@ -21,7 +21,7 @@ Here's what a default install looks like after a fresh *reboot* (under Ubuntu 12
 
     # ps_mem
      Private  +   Shared  =  RAM used       Program
-    
+
     100.0 KiB +  40.5 KiB = 140.5 KiB       sleep
      80.0 KiB +  85.0 KiB = 165.0 KiB       dash
     104.0 KiB +  83.0 KiB = 187.0 KiB       ondemand
@@ -48,21 +48,18 @@ Screenshots *(Ubuntu)*
 ======================
 
 ![Pre-Requesites and Must-Haves](http://i.imgur.com/h2y7q.png "Pre-Requesites and Must-Haves")
+---
 ![Package Selection](http://i.imgur.com/pXFaf.png "Package Selection")
+---
 ![PHP Extensions](http://i.imgur.com/dMMWM.png "PHP Extensions")
+---
 ![MySQL Root Password](http://i.imgur.com/8ptkh.png "MySQL Root Password")
+---
 ![Progress](http://i.imgur.com/6frQn.png "Progress")
 ---
 ![index.html](http://i.imgur.com/K8fg8.png "index.html")
+---
 ![info.php](http://i.imgur.com/Ftld3.png "info.php")
-
-To-Do
-=====
-
-* tweak APC
-* tweak MongoDB setup
-* tweak chkrootkit, clamav, maldet and rkhunter installs
-* make sure that all the packages install correctly under Debian
 
 Credits
 =======

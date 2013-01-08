@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.23.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.24.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -45,13 +45,23 @@ fi
 
 echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
 
-for halBox_package in bc bcrypt build-essential curl dialog dstat host htop iftop iotop locales nano scrypt strace units unzip zip; do
+for halBox_package in bc bcrypt build-essential curl dialog dstat host htop iftop iotop locales nano scrypt strace units unzip virt-what zip; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
 
     if [[ $halBox_package == "locales" ]]; then
         echo -e "\e[1;32mDave, I'm defaulting to the 'en_US.UTF-8' locale.\e[0m" && ( locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8 ) > /dev/null
     fi
 done
+
+if [[ $( virt-what ) == "virtualbox" ]]; then
+    echo -e "\e[1;32mDave, I'm installing VirtualBox Guest Additions...\e[0m"
+
+    if [[ $halBox_OS == "debian" ]]; then
+        ( DEBIAN_FRONTEND=noninteractive apt-get -qq -y install virtualbox-ose-guest-dkms ) > /dev/null
+    elif [[ $halBox_OS == "ubuntu" ]]; then
+        ( DEBIAN_FRONTEND=noninteractive apt-get -qq -y install virtualbox-guest-dkms ) > /dev/null
+    fi
+fi
 
 echo -e "\e[1;32mDave, I'm removing the bloatware.\e[0m" && for halBox_package in apache2 bind9 nscd php portmap rsyslog samba sendmail; do
     if [[ -f /etc/init.d/$halBox_package ]]; then
@@ -89,19 +99,17 @@ halBox_packages=$( dialog \
             mc                  "powerful file manager"                             off \
             memcached           "high-performance memory object caching system"     off \
             meteor              "JavaScript platform for building HTML5 websites"   off \
-            mongodb-server      "object/document-oriented database"                 off \
+            mongodb             "object/document-oriented database"                 off \
             mysql               "MySQL database server and client"                  on \
             nginx-light         "small, powerful & scalable web/proxy server"       on \
             nodejs              "event-based server-side JavaScript engine"         off \
             ntp                 "network time protocol deamon"                      off \
-            openjdk-7-jre       "OpenJDK Java Runtime, using Hotspot JIT"           off \
             php                 "server-side, HTML-embedded scripting language"     on \
             ps_mem              "lists processes by memory usage"                   on \
             rkhunter            "rootkit, backdoor, sniffer and exploit scanner"    off \
             rtorrent            "ncurses BitTorrent client"                         off \
             tmux                "terminal multiplexer"                              on \
             vim                 "enhanced vi editor"                                off \
-            virtualbox-guest    "VirtualBox guest addition module"                  off \
 2>&1 1>&3 )
 
 if [[ $halBox_packages == *"php"* ]]; then
@@ -176,16 +184,24 @@ for halBox_package in $halBox_packages; do
         if [[ -f ~/halBox-master/_/maldet.tar.gz ]]; then
             ( cd ~/halBox-master/_/ && tar -xzvf ./maldet.tar.gz && cd ./maldetect-*/ && chmod +x ./install.sh && ./install.sh && cd ~ ) > /dev/null
         fi
+    elif [[ $halBox_package == "meteor" ]]; then
+        ( curl -s https://install.meteor.com/ | /bin/sh ) > /dev/null 2>&1
     elif [[ $halBox_package == "mysql" ]]; then
         ( cp -r ~/halBox-master/halBox/mysql/* / && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install mysql-server mysql-client ) > /dev/null
     elif [[ $halBox_package == "nodejs" ]]; then
-        ( apt-get -qq -y install nodejs npm ) > /dev/null
+        if [[ $halBox_OS == "debian" ]]; then
+            ( wget -q http://nodejs.org/dist/node-latest.tar.gz -O ~/halBox-master/_/node.tar.gz ) > /dev/null
+
+            if [[ -f ~/halBox-master/_/node.tar.gz ]]; then
+                ( cd ~/halBox-master/_/ && tar -xzvf ./node.tar.gz && cd ./node-*/ && ./configure && make install && cd ~ ) > /dev/null 2>&1
+            fi
+        elif [[ $halBox_OS == "ubuntu" ]]; then
+            ( apt-get -qq -y install nodejs npm ) > /dev/null
+        fi
     elif [[ $halBox_package == "php" ]]; then
         ( apt-get -qq -y install php5-cli php5-fpm ) > /dev/null
     elif [[ $halBox_package == "ps_mem" ]]; then
         ( wget -q http://www.pixelbeat.org/scripts/ps_mem.py -O /usr/local/bin/ps_mem && chmod +x /usr/local/bin/ps_mem ) > /dev/null
-    elif [[ $halBox_package == "virtualbox-guest" ]]; then
-        ( DEBIAN_FRONTEND=noninteractive apt-get -qq -y install virtualbox-guest-dkms ) > /dev/null
     else
         ( apt-get -qq -y install $halBox_package ) > /dev/null
 
