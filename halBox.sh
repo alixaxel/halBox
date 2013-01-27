@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.24.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.25.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -344,6 +344,10 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
         fi
     fi
 done
+
+if [[ -d /var/www/ && -n $SUDO_USER ]]; then
+    ( usermod -a -G www-data "$SUDO_USER" && chgrp -R www-data /var/www/ && chmod -R g+rsw /var/www/ ) > /dev/null
+fi
 
 for halBox_service in exim4 nginx mysql php5-fpm inetutils-syslogd xinetd; do
     if [[ -f /etc/init.d/$halBox_service ]]; then
