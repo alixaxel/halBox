@@ -7,9 +7,6 @@
 class AdminerDatabaseHide {
     protected $disabled;
 
-	/**
-	* @param array case insensitive database names in values
-	*/
 	function AdminerDatabaseHide($disabled) {
 		$this->disabled = $disabled;
 	}

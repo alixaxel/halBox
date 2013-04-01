@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.25.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.26.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -45,7 +45,7 @@ fi
 
 echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
 
-for halBox_package in bc bcrypt build-essential curl dialog dstat host htop iftop iotop locales nano scrypt strace units unzip virt-what zip; do
+for halBox_package in bc bcrypt build-essential curl dialog dstat host htop iftop ioping iotop locales nano scrypt strace units unzip virt-what zip; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
 
     if [[ $halBox_package == "locales" ]]; then
@@ -302,7 +302,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                 echo -e "\e[1;32mDave, I'm also installing '$halBox_nginx_package'.\e[0m" && ( apt-get -qq -y install $halBox_nginx_package ) > /dev/null
             done
 
-            mkdir -p /var/{cache/nginx/,www/} && chown -R www-data:www-data /var/{cache/nginx/,www/}
+            mkdir -p /var/{cache/nginx/,www/} && chown -R www-data:www-data /var/{cache/nginx/,www/} && chmod +x /usr/sbin/{n1dissite,n1ensite}
         elif [[ $halBox_package == "php" ]]; then
             echo -e "\e[1;32mDave, I'm also downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/htdocs/adminer/adminer.php ) > /dev/null
 

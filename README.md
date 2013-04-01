@@ -44,6 +44,8 @@ Of course, some features and configurations had to be sacrificed, most notably:
 * MyISAM [`key_buffer_size` directive](http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_key_buffer_size) is set to 8MB
 * *non*-PDO database drivers are disabled by default (this includes `mysql` and `mysqli`)
 
+As of version 0.26.0, halBox comes with two scripts: n1ensite / n1dissite that mimic the behaviour of a2ensite / a2dissite.
+
 Screenshots *(Ubuntu)*
 ======================
 
@@ -64,4 +66,9 @@ Screenshots *(Ubuntu)*
 Credits
 =======
 
-This script is inspired by [TigersWay/VPS](https://github.com/TigersWay/VPS), [Xeoncross/lowendscript](https://github.com/Xeoncross/lowendscript) and [lowendbox/lowendscript](https://github.com/lowendbox/lowendscript), as well as some [Linode StackScripts](http://www.linode.com/stackscripts/).
+This script is inspired by:
+* [TigersWay/VPS](https://github.com/TigersWay/VPS)
+* [Xeoncross/lowendscript](https://github.com/Xeoncross/lowendscript)
+* [lowendbox/lowendscript](https://github.com/lowendbox/lowendscript)
+* [Linode StackScripts](http://www.linode.com/stackscripts/)
+* [perusio/nginx_ensite](https://github.com/perusio/nginx_ensite)

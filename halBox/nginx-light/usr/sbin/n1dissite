@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage: n1dissite [site]" && exit 1
+fi
+
+if [[ -h /etc/nginx/sites-enabled/$1 ]]; then
+    ( rm /etc/nginx/sites-enabled/$1 ) > /dev/null
+
+    if [[ $? == 0 ]]; then
+        echo -e "Site $1 disabled.\nTo activate the new configuration, you need to run:\n  service nginx reload" && exit 0
+    fi
+else
+    echo "ERROR: Site $1 does not exist!" && exit 1
+fi
