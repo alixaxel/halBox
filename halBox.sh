@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.26.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.26.1\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -168,6 +168,15 @@ if [[ $halBox_packages == *"mysql"* ]]; then
         --ok-label "Okay" \
         --title "halBox" \
         --passwordbox "Dave, I also need a root password for MySQL." 0 80 \
+    2>&1 1>&3 )
+
+    halBox_MySQL_remote=$( dialog \
+        --no-cancel \
+        --ok-label "Okay" \
+        --title "halBox" \
+        --radiolist "Dave, do you want to allow remote MySQL access?" 0 80 0 \
+            0 "No" on \
+    1 "Yes" off \
     2>&1 1>&3 )
 fi
 
