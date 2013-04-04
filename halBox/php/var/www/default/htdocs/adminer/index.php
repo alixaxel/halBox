@@ -10,7 +10,6 @@ if (is_file('./adminer.php') === true) {
 			}
 
 			$plugins = array (
-                new AdminerDatabaseHide('^mysql$|_schema$'),
                 new AdminerEditForeign(),
                 new AdminerEnumOption(),
                 new AdminerForeignConvention(),
