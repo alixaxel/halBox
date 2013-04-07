@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.26.4\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.26.5\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -150,6 +150,7 @@ if [[ $halBox_packages == *"php"* ]]; then
             php5-snmp           "SNMP"                                              off \
             php5-sqlite         "SQLite Driver"                                     on \
             php5-ssh2           "SSH2"                                              off \
+            pecl-stats          "Statistical Library"                               off \
             php5-suhosin        "Suhosin Patch"                                     off \
             php5-sybase         "Sybase Driver"                                     off \
             php5-tidy           "Tidy"                                              off \
