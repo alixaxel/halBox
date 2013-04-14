@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.27.1\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.27.2\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -14,11 +14,16 @@ else
     halBox_CPU_Cache=$( grep "^cache size" /proc/cpuinfo | sort -u | awk '{ print int($4 / 1024) }' )
     halBox_CPU_Cores=$( grep "^core id" /proc/cpuinfo | sort -u | wc -l )
     halBox_OS=$( lsb_release -si | awk '{ print tolower($0) }' )
+    halBox_OS_Flavor="server"
     halBox_OS_Codename=$( lsb_release -sc | awk '{ print tolower($0) }' )
     halBox_RAM=$( grep "^MemTotal:" /proc/meminfo | awk '{ print int($2 / 1024) }' )
 
     if [[ `uname -m` == *"64" ]]; then
         halBox_Bits=64
+    fi
+
+    if [[ $halBox_OS == "ubuntu" ]]; then
+        ( dpkg -s "ubuntu-desktop" && halBox_OS_Flavor="desktop" ) > /dev/null 2>&1
     fi
 fi
 
@@ -63,13 +68,15 @@ if [[ $( virt-what ) == "virtualbox" ]]; then
     fi
 fi
 
-echo -e "\e[1;32mDave, I'm removing the bloatware.\e[0m" && for halBox_package in apache2 bind9 nscd php portmap rsyslog samba sendmail; do
-    if [[ -f /etc/init.d/$halBox_package ]]; then
-        ( service $halBox_package stop ) > /dev/null
-    fi
+if [[ $halBox_OS_Flavor == "server" ]]; then
+    echo -e "\e[1;32mDave, I'm removing the bloatware.\e[0m" && for halBox_package in apache2 bind9 nscd php portmap rsyslog samba sendmail; do
+        if [[ -f /etc/init.d/$halBox_package ]]; then
+            ( service $halBox_package stop ) > /dev/null
+        fi
 
-    ( apt-get -qq -y remove --purge "$halBox_package*" ) > /dev/null 2>&1
-done
+        ( apt-get -qq -y remove --purge "$halBox_package*" ) > /dev/null 2>&1
+    done
+fi
 
 echo -e "\e[1;32mDave, I'm defaulting to the UTC timezone.\e[0m" && ( echo "UTC" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata ) > /dev/null 2>&1
 
