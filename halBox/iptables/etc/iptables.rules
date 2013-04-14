@@ -11,5 +11,5 @@
 -A INPUT -p icmp -m icmp --icmp-type 11 -m limit --limit 1/second -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 22 -m limit --limit 5/hour --limit-burst 10 -j ACCEPT
 -A INPUT -p tcp -m tcp -m multiport --dports 80,443 -j ACCEPT
-#-A INPUT -p tcp -m tcp --dport 3306 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 3306 -j ACCEPT
 COMMIT
