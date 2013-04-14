@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.26.5\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.26.6\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -177,7 +177,7 @@ if [[ $halBox_packages == *"mysql"* ]]; then
         --title "halBox" \
         --radiolist "Dave, do you want to allow remote MySQL access?" 0 80 0 \
             0 "No" on \
-    1 "Yes" off \
+            1 "Yes" off \
     2>&1 1>&3 )
 fi
 
@@ -274,6 +274,14 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                 fi
 
                 echo -e "\e[1;31mDave, your MySQL root password is now '$halBox_MySQL_password'.\e[0m"
+
+                if [[ $halBox_MySQL_password == 1 ]]; then
+                    ( mysql -uroot -p$halBox_MySQL_password -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$( printf "%q" "$halBox_MySQL_password" )' WITH GRANT OPTION; FLUSH PRIVILEGES;" ) > /dev/null 2>&1
+
+                    if [[ $? == 0 ]]; then
+                        echo -e "\e[1;31mDave, remote MySQL access is now allowed.\e[0m"
+                    fi
+                fi
             fi
 
             for halBox_MySQL_package in innotop mysqltuner tuning-primer; do
