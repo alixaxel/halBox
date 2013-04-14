@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.27.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.27.1\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -275,7 +275,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 
                 echo -e "\e[1;31mDave, your MySQL root password is now '$halBox_MySQL_password'.\e[0m"
 
-                if [[ $halBox_MySQL_password == 1 ]]; then
+                if [[ $halBox_MySQL_remote == "1" ]]; then
                     ( mysql -uroot -p$halBox_MySQL_password -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$( printf "%q" "$halBox_MySQL_password" )' WITH GRANT OPTION; FLUSH PRIVILEGES;" ) > /dev/null 2>&1
 
                     if [[ $? == 0 ]]; then
