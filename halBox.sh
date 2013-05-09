@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.27.3\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.28.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -74,7 +74,7 @@ if [[ $halBox_OS_Flavor == "server" ]]; then
             ( service $halBox_package stop ) > /dev/null
         fi
 
-        ( apt-get -qq -y remove --purge "$halBox_package*" ) > /dev/null 2>&1
+        ( apt-get -qq -y remove --purge "^$halBox_package*" ) > /dev/null 2>&1
     done
 fi
 
