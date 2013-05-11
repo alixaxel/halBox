@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.29.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.29.1\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -92,7 +92,7 @@ halBox_packages=$( dialog \
             dash                "POSIX-compliant shell"                             on \
             dropbear            "lightweight SSH2 server and client"                on \
             exim4               "mail transport agent"                              on \
-            git-core            "distributed revision control system"               off \
+            git-core            "distributed revision control system"               on \
             inetutils-syslogd   "system logging daemon"                             on \
             iptables            "tools for packet filtering and NAT"                on \
             maldet              "linux malware scanner"                             off \
@@ -110,6 +110,7 @@ halBox_packages=$( dialog \
             rtorrent            "ncurses BitTorrent client"                         off \
             tmux                "terminal multiplexer"                              on \
             vim                 "enhanced vi editor"                                off \
+            zsh                 "shell with lots of features"                       off \
 2>&1 1>&3 )
 
 if [[ $halBox_packages == *"php"* ]]; then
