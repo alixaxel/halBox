@@ -89,7 +89,7 @@ halBox_packages=$( dialog \
     --checklist "Dave, select the packages to install." 0 0 0 \
             chkrootkit          "rootkit detector"                                  off \
             clamav              "anti-virus utility for Unix"                       off \
-            dash                "POSIX-compliant shell"                             on \
+            dash                "POSIX-compliant shell"                             off \
             dropbear            "lightweight SSH2 server and client"                on \
             exim4               "mail transport agent"                              on \
             git-core            "distributed revision control system"               on \
