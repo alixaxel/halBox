@@ -3,7 +3,7 @@ halBox
 
 Bash script with a bit of unicornian magic dust to set up and tweak your Debian/Ubuntu server.
 
-***Nota bene:*** If your antivirus complains that this package is infected, dont't worry: it's the harmless [EICAR test file](http://en.wikipedia.org/wiki/EICAR_test_file) to assess ClamAV.
+***Nota bene:*** If your antivirus complains that this package is infected, dont't worry: it's the [EICAR test file](http://en.wikipedia.org/wiki/EICAR_test_file) to assess ClamAV.
 
 Usage
 =====
