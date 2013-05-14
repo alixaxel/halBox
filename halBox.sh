@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# The MIT License
+# http://creativecommons.org/licenses/MIT/
+#
+# halBox 0.29.2 (github.com/alixaxel/halBox)
+# Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
+
 clear && echo -e "\e[1;31mhalBox 0.29.2\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
