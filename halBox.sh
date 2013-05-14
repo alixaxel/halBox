@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear && echo -e "\e[1;31mhalBox 0.29.1\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.29.2\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -64,6 +64,10 @@ if [[ $( virt-what ) == "virtualbox" ]]; then
 fi
 
 echo -e "\e[1;32mDave, I'm removing the bloatware.\e[0m" && for halBox_package in apache2 bind9 nscd php portmap rsyslog samba sendmail; do
+    if [[ $halBox_package == "php" && -d /etc/php5/fpm/ ]]; then
+        continue
+    fi
+
     if [[ -f /etc/init.d/$halBox_package ]]; then
         ( service $halBox_package stop ) > /dev/null
     fi
