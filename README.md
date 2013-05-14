@@ -46,7 +46,7 @@ Of course, some features and configurations had to be sacrificed, most notably:
 * MyISAM [`key_buffer_size` directive](http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_key_buffer_size) is set to 8MB
 * *non*-PDO database drivers are disabled by default (this includes `mysql` and `mysqli`)
 
-As of version 0.26.0, halBox comes with two scripts: n1ensite / n1dissite that mimic the behaviour of [a2ensite / a2dissite](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html).
+As of version 0.26.0, halBox comes with two scripts for nginx: `n1ensite` / `n1dissite` that mimic [`a2ensite` / `a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html).
 
 Screenshots *(Ubuntu)*
 ======================
