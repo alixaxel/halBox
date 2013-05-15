@@ -3,9 +3,9 @@ halBox
 
 Bash script with a bit of unicornian magic dust to set up and tweak your Debian/Ubuntu server.
 
-***Nota bene:*** If your antivirus complains that this package is infected, dont't worry: it's the [EICAR test file](http://en.wikipedia.org/wiki/EICAR_test_file) to assess ClamAV.
+***Nota bene:*** If your antivirus complains that this package is infected, dont't worry: it's just the [EICAR test file](http://en.wikipedia.org/wiki/EICAR_test_file) to assess ClamAV.
 
-Usage
+Setup
 =====
 
 As *root*, copy+paste the following on your command-line:
@@ -50,6 +50,8 @@ As of version 0.26.0, halBox comes with two scripts for nginx: `n1ensite` / `n1d
 
 Screenshots *(Ubuntu)*
 ======================
+
+*These may not reflect the current version of the script / packages.*
 
 ![Pre-Requesites and Must-Haves](http://i.imgur.com/h2y7q.png "Pre-Requesites and Must-Haves")
 ---
