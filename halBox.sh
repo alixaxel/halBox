@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.29.3 (github.com/alixaxel/halBox)
+# halBox 0.29.4 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.29.3\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.29.4\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -262,7 +262,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
             fi
         elif [[ $halBox_package == "exim4" ]]; then
             if [[ -f /etc/exim4/update-exim4.conf.conf ]]; then
-                sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
+                sed -i "s~dc_eximconfig_configtype='local'~dc_eximconfig_configtype='internet'~" /etc/exim4/update-exim4.conf.conf
             fi
         elif [[ $halBox_package == "inetutils-syslogd" ]]; then
             for halBox_path in /var/log/{"*.*",debug,messages,syslog,fsck/,news/}; do
@@ -281,7 +281,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
 
             if [[ $? == 0 ]]; then
                 if [[ -f ~/.my.cnf ]]; then
-                    ( sed -i -r "s/^pass([[:blank:]]*)=$;/pass\1= $halBox_MySQL_password;/" ~/.my.cnf && chmod 0600 ~/.my.cnf )
+                    ( sed -i -r "s~^pass([[:blank:]]*)=$;~pass\1= $halBox_MySQL_password;~" ~/.my.cnf && chmod 0600 ~/.my.cnf )
                 fi
 
                 echo -e "\e[1;31mDave, your MySQL root password is now '$halBox_MySQL_password'.\e[0m"
@@ -290,7 +290,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                     ( mysql -uroot -p$( printf "%q" "$halBox_MySQL_password" ) -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$( printf "%q" "$halBox_MySQL_password" )' WITH GRANT OPTION; FLUSH PRIVILEGES;" ) > /dev/null 2>&1
 
                     if [[ $? == 0 ]]; then
-                        ( sed -i "s/skip-networking/#skip-networking/" /etc/mysql/conf.d/halBox.cnf && echo -e "\e[1;31mDave, remote MySQL access is now enabled.\e[0m" )
+                        ( sed -i "s~skip-networking~#skip-networking~" /etc/mysql/conf.d/halBox.cnf && echo -e "\e[1;31mDave, remote MySQL access is now enabled.\e[0m" )
                     fi
                 fi
             fi
@@ -321,7 +321,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
         elif [[ $halBox_package == "nginx-light" ]]; then
             if [[ -f /etc/nginx/nginx.conf ]]; then
                 if [[ $halBox_CPU_Cores -ge 2 ]]; then
-                    sed -i -r "s/worker_processes([[:blank:]]*)[0-9]*;/worker_processes\1$halBox_CPU_Cores;/" /etc/nginx/nginx.conf
+                    sed -i -r "s~worker_processes([[:blank:]]*)[0-9]*;~worker_processes\1$halBox_CPU_Cores;~" /etc/nginx/nginx.conf
                 fi
 
                 ( make-ssl-cert generate-default-snakeoil --force-overwrite ) > /dev/null
