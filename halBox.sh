@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.29.5 (github.com/alixaxel/halBox)
+# halBox 0.29.6 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.29.5\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.29.6\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -51,7 +51,7 @@ fi
 
 echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
 
-for halBox_package in bc bcrypt build-essential curl dialog dstat factor figlet host htop iftop ioping iotop libnss-myhostname locales nano scrypt strace units unzip virt-what zip; do
+for halBox_package in bc bcrypt build-essential curl dialog dstat figlet host htop iftop ioping iotop libnss-myhostname locales nano scrypt strace units unzip virt-what zip; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
 
     if [[ $halBox_package == "locales" ]]; then
