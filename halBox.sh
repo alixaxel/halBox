@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.29.6 (github.com/alixaxel/halBox)
+# halBox 0.29.7 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.29.6\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.29.7\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -167,7 +167,7 @@ if [[ $halBox_packages == *"php"* ]]; then
             php5-tidy           "Tidy"                                              off \
             pecl-timezonedb     "Olson timezone database"                           on \
             php5-xdebug         "Xdebug"                                            off \
-            php5-xhprof         "XHProf"                                            off \
+            pecl-xhprof-beta    "XHProf"                                            on \
             php5-xmlrpc         "XML-RPC"                                           off \
             php5-xsl            "XSL"                                               off \
     2>&1 1>&3 )
@@ -353,6 +353,10 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                         ( printf "no\n" | pecl install pecl_http ) > /dev/null
                     else
                         ( pecl install ${halBox_PHP_extension:5} ) > /dev/null
+
+                        if [[ $halBox_PHP_extension == *"-beta" ]]; then
+                            halBox_PHP_extension=${halBox_PHP_extension:0:-5}
+                        fi
                     fi
 
                     if [[ ! -f /etc/php5/conf.d/00-${halBox_PHP_extension:5}.ini ]]; then
