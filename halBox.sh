@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.29.7 (github.com/alixaxel/halBox)
+# halBox 0.30.0 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.29.7\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.30.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -120,6 +120,7 @@ halBox_packages=$( dialog \
             rtorrent            "ncurses BitTorrent client"                         off \
             tmux                "terminal multiplexer"                              on \
             vim                 "enhanced vi editor"                                off \
+            wkhtmltopdf         "utility to convert HTML to PDF"                    off \
             zsh                 "shell with lots of features"                       off \
 2>&1 1>&3 )
 
