@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.30.0 (github.com/alixaxel/halBox)
+# halBox 0.30.1 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.30.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.30.1\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -51,7 +51,7 @@ fi
 
 echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
 
-for halBox_package in bc bcrypt build-essential curl dialog dstat figlet host htop iftop ioping iotop libnss-myhostname locales nano scrypt strace units unzip virt-what zip; do
+for halBox_package in bc bcrypt build-essential curl dialog dstat figlet host htop iftop ioping iotop libnss-myhostname locales nano scrypt ssdeep strace units unzip virt-what zip; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
 
     if [[ $halBox_package == "locales" ]]; then
@@ -161,6 +161,7 @@ if [[ $halBox_packages == *"php"* ]]; then
             php5-redis          "Redis"                                             off \
             php5-snmp           "SNMP"                                              off \
             php5-sqlite         "SQLite Driver"                                     on \
+            pecl-ssdeep         "Fuzzy Hashing"                                     off \
             php5-ssh2           "SSH2"                                              off \
             pecl-stats          "Statistical Library"                               off \
             php5-suhosin        "Suhosin Patch"                                     off \
@@ -353,6 +354,10 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                     if [[ $halBox_PHP_extension == "pecl_http" ]]; then
                         ( printf "no\n" | pecl install pecl_http ) > /dev/null
                     else
+                        if [[ $halBox_PHP_extension == "pecl-ssdeep" ]]; then
+                            ( apt-get -qq -y install libfuzzy-dev ) > /dev/null
+                        fi
+                        
                         ( pecl install ${halBox_PHP_extension:5} ) > /dev/null
 
                         if [[ $halBox_PHP_extension == *"-beta" ]]; then
