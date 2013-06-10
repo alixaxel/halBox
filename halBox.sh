@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.30.2 (github.com/alixaxel/halBox)
+# halBox 0.31.0 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.30.2\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.31.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -51,7 +51,7 @@ fi
 
 echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
 
-for halBox_package in ack-grep bc bcrypt build-essential curl dialog dstat figlet host htop iftop ioping iotop libnss-myhostname locales nano ncdu scrypt ssdeep strace units unzip virt-what zip; do
+for halBox_package in ack-grep bc bcrypt build-essential cloc curl dialog dstat figlet host htop iftop ioping iotop libnss-myhostname locales nano ncdu scrypt sloccount ssdeep strace units unzip virt-what zip; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
 
     if [[ $halBox_package == "locales" ]]; then
@@ -117,8 +117,11 @@ halBox_packages=$( dialog \
             php                 "server-side, HTML-embedded scripting language"     on \
             ps_mem              "lists processes by memory usage"                   on \
             rkhunter            "rootkit, backdoor, sniffer and exploit scanner"    off \
+            rsync               "file-copying tool & LIFO utilities"                on \
             rtorrent            "ncurses BitTorrent client"                         off \
+            tesseract-ocr       "open source OCR engine"                            off \
             tmux                "terminal multiplexer"                              on \
+            trimage             "lossless image optimizer"                          on \
             vim                 "enhanced vi editor"                                off \
             wkhtmltopdf         "utility to convert HTML to PDF"                    off \
             zsh                 "shell with lots of features"                       off \
@@ -225,6 +228,8 @@ for halBox_package in $halBox_packages; do
         ( apt-get -qq -y install php5-cli php5-fpm ) > /dev/null
     elif [[ $halBox_package == "ps_mem" ]]; then
         ( wget -q http://www.pixelbeat.org/scripts/ps_mem.py -O /usr/local/bin/ps_mem && chmod +x /usr/local/bin/ps_mem ) > /dev/null
+    elif [[ $halBox_package == "zsh" ]]; then
+        echo -e "\e[1;31mSkipping 'zsh' install.\e[0m\n"
     else
         ( apt-get -qq -y install $halBox_package ) > /dev/null
 
@@ -234,7 +239,7 @@ for halBox_package in $halBox_packages; do
     fi
 done
 
-for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysql nginx-light nodejs php; do
+for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysql nginx-light nodejs php rsync; do
     if [[ $halBox_packages == *$halBox_package* ]]; then
         echo -e "\e[1;32mDave, I'm configuring '$halBox_package'.\e[0m"
 
@@ -357,7 +362,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                         if [[ $halBox_PHP_extension == "pecl-ssdeep" ]]; then
                             ( apt-get -qq -y install libfuzzy-dev ) > /dev/null
                         fi
-                        
+
                         ( pecl install ${halBox_PHP_extension:5} ) > /dev/null
 
                         if [[ $halBox_PHP_extension == *"-beta" ]]; then
@@ -382,6 +387,8 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                     echo -e "\e[1;32mDave, I'm removing the non-PDO '$halBox_PHP_INI' file.\e[0m" && ( rm $halBox_PHP_INI ) > /dev/null
                 fi
             done
+        elif [[ $halBox_package == "rsync" ]]; then
+            ( chmod +x /usr/sbin/{rsync_cp,rsync_mv,rsync_rm} )
         fi
     fi
 done
