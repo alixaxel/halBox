@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.31.1 (github.com/alixaxel/halBox)
+# halBox 0.31.2 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.31.1\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.31.2\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -227,6 +227,8 @@ for halBox_package in $halBox_packages; do
         ( apt-get -qq -y install php5-cli php5-fpm ) > /dev/null
     elif [[ $halBox_package == "ps_mem" ]]; then
         ( wget -q http://www.pixelbeat.org/scripts/ps_mem.py -O /usr/local/bin/ps_mem && chmod +x /usr/local/bin/ps_mem ) > /dev/null
+    elif [[ $halBox_package == "trimage" ]]; then
+        ( apt-get -qq -y install trimage ) > /dev/null 2>&1
     else
         ( apt-get -qq -y install $halBox_package ) > /dev/null
 
