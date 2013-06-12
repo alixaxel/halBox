@@ -10,7 +10,7 @@ Setup
 
 As *root*, copy+paste the following on your command-line:
 
-    cd ~ && wget -q https://github.com/alixaxel/halBox/archive/master.tar.gz -O ~/halBox.tar.gz && tar -xzvf ~/halBox.tar.gz && chmod +x ~/halBox-master/halBox.sh && sudo ~/halBox-master/halBox.sh
+    cd ~ && wget -q https://github.com/alixaxel/halBox/archive/master.tar.gz -O ~/halBox.tar.gz && tar -xzvf ~/halBox.tar.gz && chmod +x ~/halBox-master/halBox.sh && ~/halBox-master/halBox.sh
 
 A default install should take less than 5 minutes to complete.
 
