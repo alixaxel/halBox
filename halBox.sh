@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.31.0 (github.com/alixaxel/halBox)
+# halBox 0.31.1 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.31.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.31.1\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -51,7 +51,7 @@ fi
 
 echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
 
-for halBox_package in ack-grep bc bcrypt build-essential cloc curl dialog dstat figlet host htop iftop ioping iotop libnss-myhostname locales nano ncdu scrypt sloccount ssdeep strace units unzip virt-what zip; do
+for halBox_package in ack-grep bc bcrypt build-essential cloc curl dialog dstat host htop iftop ioping iotop libnss-myhostname locales nano ncdu scrypt sloccount ssdeep strace units unzip virt-what zip; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null
 
     if [[ $halBox_package == "locales" ]]; then
@@ -124,7 +124,6 @@ halBox_packages=$( dialog \
             trimage             "lossless image optimizer"                          on \
             vim                 "enhanced vi editor"                                off \
             wkhtmltopdf         "utility to convert HTML to PDF"                    off \
-            zsh                 "shell with lots of features"                       off \
 2>&1 1>&3 )
 
 if [[ $halBox_packages == *"php"* ]]; then
@@ -143,7 +142,7 @@ if [[ $halBox_packages == *"php"* ]]; then
             php5-geoip          "MaxMind Geo IP"                                    off \
             php5-gmp            "GNU Multiple Precision"                            on \
             pecl_http           "HTTP (Beta)"                                       off \
-            php5-imagick        "ImageMagick"                                       off \
+            php5-imagick        "ImageMagick"                                       on \
             php5-imap           "IMAP"                                              on \
             php5-interbase      "Firebird/InterBase Driver"                         off \
             php5-intl           "Internationalization"                              on \
@@ -169,7 +168,7 @@ if [[ $halBox_packages == *"php"* ]]; then
             pecl-stats          "Statistical Library"                               off \
             php5-suhosin        "Suhosin Patch"                                     off \
             php5-sybase         "Sybase Driver"                                     off \
-            php5-tidy           "Tidy"                                              off \
+            php5-tidy           "Tidy"                                              on \
             pecl-timezonedb     "Olson timezone database"                           on \
             php5-xdebug         "Xdebug"                                            off \
             pecl-xhprof-beta    "XHProf"                                            on \
@@ -228,8 +227,6 @@ for halBox_package in $halBox_packages; do
         ( apt-get -qq -y install php5-cli php5-fpm ) > /dev/null
     elif [[ $halBox_package == "ps_mem" ]]; then
         ( wget -q http://www.pixelbeat.org/scripts/ps_mem.py -O /usr/local/bin/ps_mem && chmod +x /usr/local/bin/ps_mem ) > /dev/null
-    elif [[ $halBox_package == "zsh" ]]; then
-        echo -e "\e[1;31mSkipping 'zsh' install.\e[0m\n"
     else
         ( apt-get -qq -y install $halBox_package ) > /dev/null
 
