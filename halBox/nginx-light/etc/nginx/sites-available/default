@@ -16,6 +16,7 @@ server {
     include             /etc/nginx/include.d/http_stub_status.conf;
 
     location / {
+        autoindex       on;
         try_files       $uri $uri/ @php;
     }
 
