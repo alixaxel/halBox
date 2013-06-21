@@ -3,7 +3,7 @@ halBox
 
 Bash script with a bit of unicornian magic dust to set up and tweak your Debian/Ubuntu server.
 
-***Nota bene:*** If your antivirus complains that this package is infected, dont't worry: it's just the [EICAR test file](http://en.wikipedia.org/wiki/EICAR_test_file) to assess ClamAV.
+***Nota bene:*** halBox ships with the [EICAR test virus file](http://en.wikipedia.org/wiki/EICAR_test_file) to assess ClamAV.
 
 Setup
 =====
@@ -46,7 +46,16 @@ Of course, some features and configurations had to be sacrificed, most notably:
 * MyISAM [`key_buffer_size` directive](http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_key_buffer_size) is set to 8MB
 * *non*-PDO database drivers are disabled by default (this includes `mysql` and `mysqli`)
 
-As of version 0.26.0, halBox comes with two scripts for nginx: `n1ensite` / `n1dissite` that mimic [`a2ensite` / `a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html).
+As of version 0.26.0, halBox comes with two custom scripts for nginx:
+
+* [`n1ensite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx-light/usr/sbin/n1ensite) (mimics Apache [`a2ensite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html))
+* [`n1dissite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx-light/usr/sbin/n1dissite) (mimics Apache [`a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2dissite.8.html))
+
+As of version 0.31.0, halBox also ships with custom rsync LIFO directory utilities:
+
+* [`rsync_cp`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/sbin/rsync_cp)
+* [`rsync_mv`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/sbin/rsync_mv)
+* [`rsync_rm`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/sbin/rsync_rm)
 
 Screenshots *(Ubuntu)*
 ======================

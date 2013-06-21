@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.31.3 (github.com/alixaxel/halBox)
+# halBox 0.32.0 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.31.3\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.32.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -124,6 +124,7 @@ halBox_packages=$( dialog \
             trimage             "lossless image optimizer"                          on \
             vim                 "enhanced vi editor"                                off \
             wkhtmltopdf         "utility to convert HTML to PDF"                    off \
+            yui-compressor      "JavaScript/CSS minifier & obfuscator"              on \
 2>&1 1>&3 )
 
 if [[ $halBox_packages == *"php"* ]]; then
@@ -340,7 +341,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
             ( mkdir -p /var/{cache/nginx/,www/} && chown -R www-data:www-data /var/{cache/nginx/,www/} && chmod +x /usr/sbin/{n1dissite,n1ensite} )
         elif [[ $halBox_package == "php" ]]; then
             if [[ $halBox_packages == *"nginx-light"* ]]; then
-                echo -e "\e[1;32mDave, I'm also downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/htdocs/adminer/adminer.php ) > /dev/null
+                echo -e "\e[1;32mDave, I'm also downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/localhost/htdocs/adminer/adminer.php ) > /dev/null
             fi
 
             if [[ ! -f /usr/local/bin/composer ]]; then

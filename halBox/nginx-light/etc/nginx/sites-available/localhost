@@ -1,7 +1,7 @@
 server {
     listen              80;
     listen              443 ssl;
-    server_name         default;
+    server_name         localhost;
     ssl_certificate     /etc/ssl/certs/ssl-cert-snakeoil.pem;
     ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
 
