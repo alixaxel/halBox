@@ -100,7 +100,7 @@ halBox_packages=$( dialog \
             chkrootkit          "rootkit detector"                                  off \
             clamav              "anti-virus utility for Unix"                       off \
             dash                "POSIX-compliant shell"                             off \
-            dropbear            "lightweight SSH2 server and client"                on \
+            dropbear            "lightweight SSH2 server and client"                off \
             exim4               "mail transport agent"                              on \
             git-core            "distributed revision control system"               on \
             inetutils-syslogd   "system logging daemon"                             on \
