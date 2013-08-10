@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.32.2 (github.com/alixaxel/halBox)
+# halBox 0.33.0 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.32.2\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.33.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -341,7 +341,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
             ( mkdir -p /var/{cache/nginx/,www/} && chown -R www-data:www-data /var/{cache/nginx/,www/} && chmod +x /usr/sbin/{n1dissite,n1ensite} )
         elif [[ $halBox_package == "php" ]]; then
             if [[ $halBox_packages == *"nginx-light"* ]]; then
-                echo -e "\e[1;32mDave, I'm also downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/localhost/htdocs/adminer/adminer.php ) > /dev/null
+                echo -e "\e[1;32mDave, I'm also downloading 'adminer'.\e[0m" && ( wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/default/htdocs/adminer/adminer.php ) > /dev/null
             fi
 
             if [[ ! -f /usr/local/bin/composer ]]; then
@@ -370,8 +370,8 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                         fi
                     fi
 
-                    if [[ ! -f /etc/php5/conf.d/00-${halBox_PHP_extension:5}.ini ]]; then
-                        echo -e "[${halBox_PHP_extension:5}]\nextension=${halBox_PHP_extension:5}.so\n" > /etc/php5/conf.d/00-${halBox_PHP_extension:5}.ini
+                    if [[ ! -f /etc/php5/fpm/conf.d/00-${halBox_PHP_extension:5}.ini ]]; then
+                        echo -e "[${halBox_PHP_extension:5}]\nextension=${halBox_PHP_extension:5}.so\n" > /etc/php5/fpm/conf.d/00-${halBox_PHP_extension:5}.ini
                     fi
                 elif [[ $halBox_PHP_extension == "php-pear" ]]; then
                     ( apt-get -qq -y install php-pear php5-dev ) > /dev/null
@@ -382,7 +382,7 @@ for halBox_package in clamav dash dropbear exim4 inetutils-syslogd iptables mysq
                 fi
             done
 
-            for halBox_PHP_INI in /etc/php5/conf.d/{,20-}{interbase,mssql,mysql,odbc,pgsql,sqlite}*ini; do
+            for halBox_PHP_INI in /etc/php5/fpm/conf.d/{,20-}{interbase,mssql,mysql,odbc,pgsql,sqlite}*ini; do
                 if [[ -f $halBox_PHP_INI ]]; then
                     echo -e "\e[1;32mDave, I'm removing the non-PDO '$halBox_PHP_INI' file.\e[0m" && ( rm $halBox_PHP_INI ) > /dev/null
                 fi
