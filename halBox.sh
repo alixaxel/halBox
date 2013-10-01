@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.34.3 (github.com/alixaxel/halBox)
+# halBox 0.35.0 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.34.3\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.35.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -229,7 +229,7 @@ for halBox_package in $halBox_packages; do
                 ( cd ~/halBox-master/_/ && tar -xzvf ./node.tar.gz && cd ./node-*/ && ./configure && make install && cd ~ ) > /dev/null 2>&1
             fi
         elif [[ $halBox_OS == "ubuntu" ]]; then
-            ( apt-get -qq -y install nodejs ) > /dev/null
+            ( apt-get -qq -y install nodejs npm ) > /dev/null
         fi
     elif [[ $halBox_package == "php" ]]; then
         ( apt-get -qq -y install php5-cli php5-fpm ) > /dev/null
