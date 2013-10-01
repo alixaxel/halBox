@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.33.0 (github.com/alixaxel/halBox)
+# halBox 0.34.0 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.33.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.34.0\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -103,6 +103,7 @@ halBox_packages=$( dialog \
             dropbear            "lightweight SSH2 server and client"                off \
             exim4               "mail transport agent"                              on \
             git-core            "distributed revision control system"               on \
+            hub                 "git + hub = github"                                on \
             inetutils-syslogd   "system logging daemon"                             on \
             iptables            "tools for packet filtering and NAT"                on \
             maldet              "linux malware scanner"                             off \
@@ -204,7 +205,13 @@ clear && echo -e "\e[1;31mI'm completely operational, and all my circuits are fu
 for halBox_package in $halBox_packages; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m"
 
-    if [[ $halBox_package == "maldet" ]]; then
+    if [[ $halBox_package == "hub" ]]; then
+        for halBox_hub_prerequisite in ruby git-core; do
+            ( apt-get -qq -y install $halBox_hub_prerequisite ) > /dev/null
+        done
+        
+        ( wget -q http://hub.github.com/standalone -O /usr/local/bin/hub && chmod +x /usr/local/bin/hub ) > /dev/null
+    elif [[ $halBox_package == "maldet" ]]; then
         ( wget -q http://www.rfxn.com/downloads/maldetect-current.tar.gz -O ~/halBox-master/_/maldet.tar.gz ) > /dev/null
 
         if [[ -f ~/halBox-master/_/maldet.tar.gz ]]; then
