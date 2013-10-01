@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.34.0 (github.com/alixaxel/halBox)
+# halBox 0.34.1 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.34.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.34.1\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -49,7 +49,7 @@ elif [[ $halBox_OS == "ubuntu" ]]; then
     done
 fi
 
-echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade ) > /dev/null 2>&1
+echo -e "\e[1;32mDave, I'm updating the repositories...\e[0m" && ( apt-get -qq -y update && apt-get -qq -y upgrade && apt-get -qq -y install whiptail ) > /dev/null 2>&1
 
 for halBox_package in ack-grep bc bcrypt build-essential cloc curl dialog dstat host htop iftop ioping iotop libnss-myhostname locales nano ncdu scrypt sloccount ssdeep strace units unzip virt-what zip; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && ( apt-get -qq -y install $halBox_package ) > /dev/null

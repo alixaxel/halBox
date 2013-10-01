@@ -8,6 +8,14 @@ Bash script with a bit of unicornian magic dust to set up and tweak your Debian/
 Setup
 =====
 
+First of all, if your terminal locale is not `en_US.UTF-8` be sure to do:
+    
+    locale-gen lc_CC.UTF-8
+
+To avoid getting a bunch of annoying errors due to non-existing locales.
+
+---
+
 As *root*, copy+paste the following on your command-line:
 
     cd ~ && wget -q https://github.com/alixaxel/halBox/archive/master.tar.gz -O ~/halBox.tar.gz && tar -xzvf ~/halBox.tar.gz && chmod +x ~/halBox-master/halBox.sh && ~/halBox-master/halBox.sh
