@@ -32,7 +32,7 @@ server {
         include         /etc/nginx/include.d/http_fastcgi.conf;
     }
 
-    location ~* [.](?:appcache|html?|jsonp?|manifest|xml)$ {
+    location ~* [.](?:appcache|jsonp?|manifest|xml)$ {
         expires         -1;
     }
 
