@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.35.0 (github.com/alixaxel/halBox)
+# halBox 0.35.1 (github.com/alixaxel/halBox)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.35.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.35.1\e[0m\n"
 
 if [[ $( whoami ) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -75,7 +75,7 @@ echo -e "\e[1;32mDave, I'm removing the bloatware.\e[0m" && for halBox_package i
     fi
 
     if [[ -f /etc/init.d/$halBox_package ]]; then
-        ( service $halBox_package stop ) > /dev/null
+        ( service $halBox_package stop ) > /dev/null 2>&1
     fi
 
     ( apt-get -qq -y remove --purge "^$halBox_package*" ) > /dev/null 2>&1
