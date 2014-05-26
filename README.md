@@ -69,15 +69,15 @@ Of course, some features and configurations had to be sacrificed, most notably:
 
 As of version 0.31.0, halBox also ships with custom rsync LIFO directory utilities:
 
-* [`rsync_cp`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/local/bin/rsync_cp)
-* [`rsync_mv`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/local/bin/rsync_mv)
-* [`rsync_rm`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/local/bin/rsync_rm)
+* [`rsync_cp`](https://github.com/alixaxel/halBox/blob/master/config/rsync/usr/local/bin/rsync_cp)
+* [`rsync_mv`](https://github.com/alixaxel/halBox/blob/master/config/rsync/usr/local/bin/rsync_mv)
+* [`rsync_rm`](https://github.com/alixaxel/halBox/blob/master/config/rsync/usr/local/bin/rsync_rm)
 
 As of version 0.40.0, halBox comes with three helper scripts for nginx:
 
-* [`ngxensite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/ngxensite) (mimics Apache [`a2ensite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html))
-* [`ngxdissite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/ngxdissite) (mimics Apache [`a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2dissite.8.html))
-* [`ngxgzip`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/ngxgzip) (asset pre-compressor for [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html))
+* [`ngxensite`](https://github.com/alixaxel/halBox/blob/master/config/nginx/usr/local/sbin/ngxensite) (mimics Apache [`a2ensite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html))
+* [`ngxdissite`](https://github.com/alixaxel/halBox/blob/master/config/nginx/usr/local/sbin/ngxdissite) (mimics Apache [`a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2dissite.8.html))
+* [`ngxgzip`](https://github.com/alixaxel/halBox/blob/master/config/nginx/usr/local/sbin/ngxgzip) (asset pre-compressor for [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html))
 
 Screenshots *(Ubuntu)*
 ======================
