@@ -1,24 +1,24 @@
 halBox
 ======
 
-Bash script with a bit of unicornian magic dust to set up and tweak your Debian/Ubuntu server.
+Bash script with a bit of unicornian magic dust to set up and tweak your Ubuntu server.
 
-***Nota bene:*** halBox ships with the [EICAR test virus file](http://en.wikipedia.org/wiki/EICAR_test_file) to assess ClamAV.
+***Nota bene:*** halBox ships with the harmless [EICAR test virus file](http://en.wikipedia.org/wiki/EICAR_test_file) to assess ClamAV.
+
+As of version 0.40.0, halBox compatibility is reduced to Ubuntu 14.04 LTS only.
 
 Setup
 =====
 
-First of all, if your terminal locale is not `en_US.UTF-8` be sure to do:
-    
-    locale-gen lc_CC.UTF-8
-
-To avoid getting a bunch of annoying errors due to non-existing locales.
-
----
-
 As *root*, copy+paste the following on your command-line:
 
-    cd ~ && wget -q https://github.com/alixaxel/halBox/archive/master.tar.gz -O ~/halBox.tar.gz && tar -xzvf ~/halBox.tar.gz && chmod +x ~/halBox-master/halBox.sh && ~/halBox-master/halBox.sh
+```shell
+cd ~ && \
+wget -q https://github.com/alixaxel/halBox/archive/master.tar.gz -O ~/halBox.tar.gz && \
+tar -xzvf ~/halBox.tar.gz && \
+chmod +x ~/halBox-master/halBox.sh && \
+~/halBox-master/halBox.sh
+```
 
 A default install should take less than 5 minutes to complete.
 
@@ -27,69 +27,265 @@ Memory Usage
 
 halBox is VPS-oriented, it has been crafted to consume as little memory as possible.
 
-Here's what a default install looks like after a fresh *reboot* (under Ubuntu 12.04 LTS *minimal*):
+Here's what a default install looks like after a fresh *reboot* (under Ubuntu 14.04 LTS):
 
-    # ps_mem
-     Private  +   Shared  =  RAM used       Program
+	root@trusty:~# ps_mem
+	  Private + Shared    =  RAM used	Program
 
-    100.0 KiB +  40.5 KiB = 140.5 KiB       sleep
-     80.0 KiB +  85.0 KiB = 165.0 KiB       dash
-    104.0 KiB +  83.0 KiB = 187.0 KiB       ondemand
-    128.0 KiB +  71.0 KiB = 199.0 KiB       syslogd
-    304.0 KiB +  75.5 KiB = 379.5 KiB       cron
-    304.0 KiB + 105.0 KiB = 409.0 KiB       xinetd
-    476.0 KiB +  89.0 KiB = 565.0 KiB       exim4
-    472.0 KiB + 116.5 KiB = 588.5 KiB       dropbear
-    748.0 KiB + 119.5 KiB = 867.5 KiB       init
-    664.0 KiB + 598.5 KiB =   1.2 MiB       nginx (3)
-    784.0 KiB +   3.3 MiB =   4.1 MiB       php5-fpm (3)
-      7.1 MiB + 160.0 KiB =   7.2 MiB       mysqld
-    ---------------------------------
-                             16.0 MiB
-    =================================
+	 96.0 KiB +  35.0 KiB = 131.0 KiB	lockfile-touch
+	104.0 KiB +  35.0 KiB = 139.0 KiB	lockfile-create
+	188.0 KiB +  25.0 KiB = 213.0 KiB	ureadahead
+	184.0 KiB +  31.5 KiB = 215.5 KiB	atd
+	172.0 KiB +  65.5 KiB = 237.5 KiB	acpid
+	192.0 KiB +  50.5 KiB = 242.5 KiB	ondemand
+	180.0 KiB +  84.0 KiB = 264.0 KiB	sleep (2)
+	284.0 KiB + 100.0 KiB = 384.0 KiB	cron
+	288.0 KiB + 142.5 KiB = 430.5 KiB	ping (2)
+	380.0 KiB +  60.5 KiB = 440.5 KiB	upstart-socket-bridge
+	364.0 KiB +  97.0 KiB = 461.0 KiB	upstart-udev-bridge
+	412.0 KiB +  60.0 KiB = 472.0 KiB	upstart-file-bridge
+	568.0 KiB + 179.5 KiB = 747.5 KiB	systemd-logind
+	728.0 KiB +  66.0 KiB = 794.0 KiB	dbus-daemon
+	588.0 KiB + 230.5 KiB = 818.5 KiB	ntpdate (3)
+	860.0 KiB +  92.5 KiB = 952.5 KiB	systemd-udevd
+	  1.0 MiB +  79.0 KiB =   1.1 MiB	rsyslogd
+	952.0 KiB + 339.0 KiB =   1.3 MiB	getty (6)
+	  1.6 MiB + 146.5 KiB =   1.7 MiB	init
+	  2.6 MiB + 110.0 KiB =   2.7 MiB	bash
+	  2.0 MiB + 834.0 KiB =   2.8 MiB	nginx (3)
+	  2.1 MiB +   1.4 MiB =   3.5 MiB	sshd (2)
+	  9.3 MiB + 324.5 KiB =   9.6 MiB	mysqld
+	 12.1 MiB +   7.4 MiB =  19.5 MiB	php5-fpm (3)
+	---------------------------------
+	                         48.9 MiB
+	=================================
+
 
 Of course, some features and configurations had to be sacrificed, most notably:
 
-* InnoDB engine is disabled
+* InnoDB engine is disabled if your server has less than 512MB of RAM
 * MyISAM [`key_buffer_size` directive](http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_key_buffer_size) is set to 8MB
 * *non*-PDO database drivers are disabled by default (this includes `mysql` and `mysqli`)
 
-As of version 0.26.0, halBox comes with two custom scripts for nginx:
-
-* [`n1ensite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx-light/usr/sbin/n1ensite) (mimics Apache [`a2ensite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html))
-* [`n1dissite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx-light/usr/sbin/n1dissite) (mimics Apache [`a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2dissite.8.html))
-
 As of version 0.31.0, halBox also ships with custom rsync LIFO directory utilities:
 
-* [`rsync_cp`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/sbin/rsync_cp)
-* [`rsync_mv`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/sbin/rsync_mv)
-* [`rsync_rm`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/sbin/rsync_rm)
+* [`rsync_cp`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/local/bin/rsync_cp)
+* [`rsync_mv`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/local/bin/rsync_mv)
+* [`rsync_rm`](https://github.com/alixaxel/halBox/blob/master/halBox/rsync/usr/local/bin/rsync_rm)
+
+As of version 0.40.0, halBox comes with three helper scripts for nginx:
+
+* [`ngxensite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/n1ensite) (mimics Apache [`a2ensite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html))
+* [`ngxdissite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/n1dissite) (mimics Apache [`a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2dissite.8.html))
+* [`ngxgzip`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/ngxgzip) (asset pre-compressor for [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html))
 
 Screenshots *(Ubuntu)*
 ======================
 
-*These may not reflect the current version of the script / packages.*
+*These may not (and probably do not) reflect the current version of the script / packages.*
 
-![Pre-Requesites and Must-Haves](http://i.imgur.com/h2y7q.png "Pre-Requesites and Must-Haves")
+![Pre-Requesites and Must-Haves](http://i.imgur.com/NesMKeI.png "Pre-Requesites and Must-Haves")
 ---
-![Package Selection](http://i.imgur.com/pXFaf.png "Package Selection")
+![Package Selection](http://i.imgur.com/E2Xf6gN.png "Package Selection")
 ---
-![PHP Extensions](http://i.imgur.com/dMMWM.png "PHP Extensions")
+![PHP Extensions](http://i.imgur.com/hI2LOmK.png "PHP Extensions")
 ---
-![MySQL Root Password](http://i.imgur.com/8ptkh.png "MySQL Root Password")
+![MySQL Root Password](http://i.imgur.com/OoRJFeW.png "MySQL Root Password")
 ---
-![Progress](http://i.imgur.com/6frQn.png "Progress")
+![MySQL Remote Access](http://i.imgur.com/1REcEXX.png "MySQL Remote Access")
 ---
-![index.html](http://i.imgur.com/K8fg8.png "index.html")
----
-![info.php](http://i.imgur.com/Ftld3.png "info.php")
+![Progress](http://i.imgur.com/VwTVVi8.png "Progress")
+
+Software
+========
+
+```
+ack-grep
+apache2-utils
+bc
+bcrypt
+beanstalkd
+build-essential
+chkrootkit
+clamav
+cloc
+curl
+dash
+dialog
+dstat
+exim4
+git
+golang
+host
+htop
+httperf
+hub
+iftop
+imagemagick
+innotop
+ioping
+iotop
+iptables
+jpegoptim
+julia
+libav-tools
+maldet
+mc
+memcached
+mongodb
+mysql
+mysqltuner
+nano
+ncdu
+nginx
+ngxdissite
+ngxensite
+ngxgzip
+ngxtop
+nodejs
+ntp
+optipng
+pandoc
+php5
+php5-adminer
+php5-amqp
+php5-apcu
+php5-bitset
+php5-chdb
+php5-cld
+php5-composer
+php5-curl
+php5-discount
+php5-doublemetaphone
+php5-eio
+php5-enchant
+php5-ev
+php5-event
+php5-fann
+php5-gd
+php5-gearman
+php5-gender
+php5-geoip
+php5-gmp
+php5-gnupg
+php5-http
+php5-igbinary
+php5-imagick
+php5-imap
+php5-inotify
+php5-interbase
+php5-intl
+php5-jsmin
+php5-json
+php5-judy
+php5-lasso
+php5-ldap
+php5-leveldb
+php5-libevent
+php5-librdf
+php5-lzf
+php5-mailparse
+php5-mapscript
+php5-mcrypt
+php5-memcache
+php5-memcached
+php5-mogilefs
+php5-mongo
+php5-msgpack
+php5-mssql
+php5-mysql
+php5-mysqlnd
+php5-oauth
+php5-odbc
+php5-opcache
+php5-pgsql
+php5-phalcon
+php5-phpunit
+php5-pinba
+php5-protocolbuffers
+php5-ps
+php5-pspell
+php5-quickhash
+php5-radius
+php5-rar
+php5-readline
+php5-recode
+php5-redis
+php5-scream
+php5-scrypt
+php5-solr
+php5-sphinx
+php5-spidermonkey
+php5-sqlite
+php5-ssdeep
+php5-ssh2
+php5-stats
+php5-stem
+php5-stomp
+php5-sundown
+php5-svm
+php5-svn
+php5-swoole
+php5-tidy
+php5-timezonedb
+php5-tokyo_tyrant
+php5-translit
+php5-uuid
+php5-v8js
+php5-varnish
+php5-xcache
+php5-xdebug
+php5-xhprof
+php5-xmlrpc
+php5-xsl
+php5-yaf
+php5-yaml
+php5-yar
+postgresql
+ps_mem
+r
+rake
+redis-server
+rkhunter
+rsync
+rsync_cp
+rsync_mv
+rsync_rm
+rtorrent
+ruby
+scout_realtime
+scrypt
+siege
+sqlite
+ssdeep
+strace
+tesseract-ocr
+tmux
+tuning-primer
+units
+unzip
+vim
+virt-what
+vmtouch
+wkhtmltopdf
+yui-compressor
+zip
+zsh
+```
 
 Credits
 =======
 
 This script is inspired by:
+
 * [TigersWay/VPS](https://github.com/TigersWay/VPS)
 * [Xeoncross/lowendscript](https://github.com/Xeoncross/lowendscript)
 * [lowendbox/lowendscript](https://github.com/lowendbox/lowendscript)
 * [Linode StackScripts](http://www.linode.com/stackscripts/)
 * [perusio/nginx_ensite](https://github.com/perusio/nginx_ensite)
+* [fideloper/Vaprobash](https://github.com/fideloper/Vaprobash)
+
+License
+=======
+
+MIT

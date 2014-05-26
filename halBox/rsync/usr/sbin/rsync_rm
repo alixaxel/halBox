@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if [[ $# -eq 1 && -d $1 ]]; then
-	rsync -av --delete `mktemp -d`/ $1 && rmdir $1
-else
-	echo "Usage: rsync_rm DIRECTORY/" 1>&2 && exit 1
-fi

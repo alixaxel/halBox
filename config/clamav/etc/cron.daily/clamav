@@ -1,0 +1,3 @@
+#!/bin/sh
+
+freshclam && clamscan -ir /var/www/ --log=/var/log/clamscan.log --move=/var/quarantine/ --scan-mail=no
