@@ -75,8 +75,8 @@ As of version 0.31.0, halBox also ships with custom rsync LIFO directory utiliti
 
 As of version 0.40.0, halBox comes with three helper scripts for nginx:
 
-* [`ngxensite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/n1ensite) (mimics Apache [`a2ensite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html))
-* [`ngxdissite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/n1dissite) (mimics Apache [`a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2dissite.8.html))
+* [`ngxensite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/ngxensite) (mimics Apache [`a2ensite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html))
+* [`ngxdissite`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/ngxdissite) (mimics Apache [`a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2dissite.8.html))
 * [`ngxgzip`](https://github.com/alixaxel/halBox/blob/master/halBox/nginx/usr/local/sbin/ngxgzip) (asset pre-compressor for [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html))
 
 Screenshots *(Ubuntu)*
