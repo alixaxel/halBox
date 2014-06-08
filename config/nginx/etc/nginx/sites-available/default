@@ -1,8 +1,6 @@
 server {
 	listen				80 default_server;
 	listen				443 default_server ssl;
-	listen				[::]:80 default_server ipv6only=on;
-	listen				[::]:443 default_server ssl ipv6only=on;
 	server_name			localhost;
 
 	index				index.html index.php;

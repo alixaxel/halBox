@@ -1,5 +1,7 @@
 #!/bin/bash
 
+apt-get -qq install php-pear php5-dev re2c libpcre3-dev > /dev/null
+
 if [[ ! $(type -P git) ]]; then
 	apt-get -qq install git > /dev/null
 fi

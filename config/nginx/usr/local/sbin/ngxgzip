@@ -46,12 +46,12 @@ function compress()
 }
 
 if [ -d "$path" ]; then
-	for file in "$path"/*.{css,cur,eot,htc,html,ico,js,json,otf,svg,ttc,ttf,woff,xml}; do
+	for file in "$path"/*.{css,cur,eot,htc,html,ico,js,json,otf,svg,ttc,ttf,xml}; do
 		compress "$file"
 	done
 
 	if [[ $recursive -gt 0 ]]; then
-		for file in "$path"/**/*.{css,cur,eot,htc,html,ico,js,json,otf,svg,ttc,ttf,woff,xml}; do
+		for file in "$path"/**/*.{css,cur,eot,htc,html,ico,js,json,otf,svg,ttc,ttf,xml}; do
 			compress "$file"
 		done
 	fi
