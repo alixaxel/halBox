@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ -f /etc/init.d/apache2 ]]; then
-	echo -e "\e[1;32mDave, I'm uninstalling 'apache2'.\e[0m" && service apache2 stop && apt-get -qq remove --purge apache2 > /dev/null
+	echo -e "\e[1;32mDave, I'm uninstalling 'apache2'.\e[0m" && service apache2 stop && apt-get -qq remove --purge apache2 > /dev/null && rm -rf /var/www/html/
 fi
 
 apt-get -qq install nginx-light ssl-cert > /dev/null
