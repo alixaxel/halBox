@@ -4,7 +4,7 @@ apt-get -qq install golang > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
 	if [[ ! -d ~/Go/ ]]; then
-		echo "export GOPATH=~/Go" >> ~/.profile
+		echo -e '\nexport GOPATH=$HOME/Go\nexport PATH=$PATH:$GOPATH/bin\n' >> ~/.profile
 	fi
 
 	mkdir -p ~/Go/{bin/,pkg/,src/}
