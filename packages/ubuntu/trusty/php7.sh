@@ -6,7 +6,7 @@ if [[ $? == 0 ]]; then
     apt-get -qq update > /dev/null
 fi
 
-apt-get -qq install php7.0-cli php7.0-fpm > /dev/null 2>&1
+LC_ALL=en_US.UTF-8 apt-get -qq install php7.0-cli php7.0-fpm > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
     cp -r $halBox_Base/overlay/php/* / && cp -r $halBox_Base/overlay/php7/* /

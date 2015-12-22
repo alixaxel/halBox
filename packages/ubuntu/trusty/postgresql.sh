@@ -15,9 +15,9 @@ apt-get -qq install postgresql-9.4 postgresql-server-dev-9.4 > /dev/null 2>&1
 if [[ $? == 0 ]]; then
     cp -r $halBox_Base/overlay/postgresql/* /etc/postgresql/[0..9]*/
 
-    su - postgres <<-EOF
-        psql -c "CREATE ROLE root WITH SUPERUSER LOGIN ENCRYPTED PASSWORD '$halBox_PostgreSQL_password';" > /dev/null
-    EOF
+su - postgres <<-EOF
+    psql -c "CREATE ROLE root WITH SUPERUSER LOGIN ENCRYPTED PASSWORD '$halBox_PostgreSQL_password';" > /dev/null
+EOF
 
     echo -e "\e[1;31mDave, your PostgreSQL root password is now '$halBox_PostgreSQL_password'.\e[0m"
 

@@ -26,6 +26,10 @@ if [[ $? == 0 ]]; then
     fi
 
     for halBox_nginx_package in apache2-utils httperf letsencrypt ngxtop siege; do
+        if [[ ($halBox_nginx_package == "letsencrypt") && ( -d ~/.letsencrypt ) ]]; then
+            continue
+        fi
+
         echo -e "\e[1;32mDave, I'm also installing '$halBox_nginx_package'.\e[0m"
 
         if [[ -f $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/$halBox_nginx_package.sh ]]; then
