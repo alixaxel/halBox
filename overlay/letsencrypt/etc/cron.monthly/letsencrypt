@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+halBox_LetsEncrypt_domains=$(ls /etc/letsencrypt/live)
+
+if [[ ${#halBox_LetsEncrypt_domains[@]} -gt 0 ]]; then
+    service nginx stop > /dev/null
+
+    for halBox_LetsEncrypt_domain in $halBox_LetsEncrypt_domains; do
+        ~/.letsencrypt/letsencrypt-auto certonly --config /etc/letsencrypt/letsencrypt.ini --domain $halBox_LetsEncrypt_domain > /dev/null
+
+        if [[ $? != 0 ]]; then
+            echo "Unable to renew the SSL certificate for the '$halBox_LetsEncrypt_domain' domain."
+        fi
+    done
+
+    service nginx start > /dev/null
+fi

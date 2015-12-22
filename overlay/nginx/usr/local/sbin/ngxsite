@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage: $0 HOST" && exit 1
+fi
+
+if [[ -r /etc/nginx/sites-available/$1 ]]; then
+    echo "Site $1 already exists." && exit 1
+else
+    if [[ -d /var/www/localhost/ ]]; then
+        cp -r /var/www/localhost/ /var/www/$1/
+    else
+        mkdir -p /var/www/$1/{error/,public/}
+    fi
+
+    chown -R www-data:www-data /var/www/$1/
+
+    if [[ -f /etc/nginx/sites-available/example.com ]]; then
+        cp /etc/nginx/sites-available/example.com /etc/nginx/sites-available/$1 && sed -i "s~example.com~$1~" /etc/nginx/sites-available/$1
+
+        if [[ $? == 0 ]]; then
+            service nginx stop > /dev/null
+
+            if [[ -f ~/.letsencrypt/letsencrypt-auto ]]; then
+                ~/.letsencrypt/letsencrypt-auto certonly --config /etc/letsencrypt/letsencrypt.ini --domain $1 > /dev/null
+            fi
+
+            service nginx start > /dev/null
+        fi
+
+        ngxensite $1
+    fi
+fi

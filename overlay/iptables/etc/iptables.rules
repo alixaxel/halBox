@@ -1,0 +1,29 @@
+# //help.ubuntu.com/community/IptablesHowTo
+
+*filter
+:INPUT DROP [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m state --state INVALID -j DROP
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Pings
+-A INPUT -p icmp -m icmp --icmp-type 8 -m limit --limit 1/second -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 11 -m limit --limit 1/second -j ACCEPT
+
+# SSH
+-A INPUT -p tcp -m tcp --dport 22 -m limit --limit 30/hour --limit-burst 60 -j ACCEPT
+
+# HTTP/HTTPS
+-A INPUT -p tcp -m tcp -m multiport --dports 80,443 -j DROP
+
+# MySQL
+-A INPUT -p tcp -m tcp --dport 3306 -j DROP
+
+# PostgreSQL
+-A INPUT -p tcp -m tcp --dport 5432 -j DROP
+
+# Scout Realtime
+-A INPUT -p tcp -m tcp --dport 5555 -j DROP
+COMMIT

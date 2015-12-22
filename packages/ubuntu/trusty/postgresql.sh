@@ -1,29 +1,49 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-apt-get -qq install postgresql postgresql-client postgresql-contrib > /dev/null 2>&1
+if [[ ! -f /etc/apt/sources.list.d/postgresql.list ]]; then
+    echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/postgresql.list
+fi
 
-if [[ $? == 0 && -d $halBox_Base/config/postgresql/ ]]; then
-	cp -r $halBox_Base/config/postgresql/* /etc/postgresql/[0..9]*/
+wget -q -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - > /dev/null
 
-	su - postgres <<-EOF
-		psql -c "CREATE ROLE root WITH SUPERUSER LOGIN ENCRYPTED PASSWORD '$halBox_PostgreSQL_password';" > /dev/null
-	EOF
+if [[ $? == 0 ]]; then
+    apt-get -qq update > /dev/null
+fi
 
-	echo -e "\e[1;31mDave, your PostgreSQL root password is now '$halBox_PostgreSQL_password'.\e[0m"
+apt-get -qq install postgresql-9.4 postgresql-server-dev-9.4 > /dev/null 2>&1
 
-	if [[ $halBox_PostgreSQL_networking == "1" ]]; then
-		sed -i "s~#listen_addresses = 'localhost'~listen_addresses = '*'~" /etc/postgresql/[0..9]*/main/postgresql.conf && echo -e "\e[1;31mDave, remote PostgreSQL access is now enabled.\e[0m"
-	else
-		sed -i "s~#listen_addresses = 'localhost'~listen_addresses = 'localhost'~" /etc/postgresql/[0..9]*/main/postgresql.conf
-	fi
+if [[ $? == 0 ]]; then
+    cp -r $halBox_Base/overlay/postgresql/* /etc/postgresql/[0..9]*/
 
-	if [[ -f /etc/iptables.rules ]]; then
-		sed -i -r "s~(--dport 5432) -j DROP~\1 -j ACCEPT~" /etc/iptables.rules && iptables-restore < /etc/iptables.rules
-	fi
+    su - postgres <<-EOF
+        psql -c "CREATE ROLE root WITH SUPERUSER LOGIN ENCRYPTED PASSWORD '$halBox_PostgreSQL_password';" > /dev/null
+    EOF
+
+    echo -e "\e[1;31mDave, your PostgreSQL root password is now '$halBox_PostgreSQL_password'.\e[0m"
+
+    if [[ $halBox_PostgreSQL_networking == "1" ]]; then
+        sed -i "s~#listen_addresses = 'localhost'~listen_addresses = '*'~" /etc/postgresql/[0..9]*/main/postgresql.conf && echo -e "\e[1;31mDave, remote PostgreSQL access is now enabled.\e[0m"
+    else
+        sed -i "s~#listen_addresses = 'localhost'~listen_addresses = 'localhost'~" /etc/postgresql/[0..9]*/main/postgresql.conf
+    fi
+
+    for halBox_PostgreSQL_package in pgcli pgtop pgtune; do
+        echo -e "\e[1;32mDave, I'm also installing '$halBox_PostgreSQL_package'.\e[0m"
+
+        if [[ -f $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/$halBox_PostgreSQL_package.sh ]]; then
+            source $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/$halBox_PostgreSQL_package.sh
+        else
+            apt-get -qq install $halBox_PostgreSQL_package > /dev/null
+        fi
+    done
+
+    if [[ -f /etc/iptables.rules ]]; then
+        sed -i -r "s~(--dport 5432) -j DROP~\1 -j ACCEPT~" /etc/iptables.rules && iptables-restore < /etc/iptables.rules
+    fi
 else
-	echo -e "\e[1;31mSomething went wrong installing 'postgresql'.\e[0m"
+    echo -e "\e[1;31mSomething went wrong installing '$halBox_package'.\e[0m"
 fi
 
 if [[ -f /etc/init.d/postgresql ]]; then
-	echo -e "\e[1;32mDave, I'm restarting the 'postgresql' service.\e[0m" && service postgresql restart > /dev/null
+    echo -e "\e[1;32mDave, I'm restarting the 'postgresql' service.\e[0m" && service postgresql restart > /dev/null
 fi

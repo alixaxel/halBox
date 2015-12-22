@@ -1,0 +1,33 @@
+[mysqld]
+bind-address                = 0.0.0.0
+bulk_insert_buffer_size     = 4M
+character-set-server        = utf8
+collation-server            = utf8_general_ci
+concurrent_insert           = 2
+default_storage_engine      = MyISAM
+join_buffer_size            = 128K
+key_buffer_size             = 8M
+low-priority-updates        = 1
+lower_case_table_names      = 0
+max_allowed_packet          = 4M
+max_connections             = 128
+max_heap_table_size         = 4M
+myisam_sort_buffer_size     = 8M
+net_buffer_length           = 1K
+preload_buffer_size         = 32K
+query_cache_limit           = 512K
+query_cache_min_res_unit    = 1K
+query_cache_size            = 4M
+query_cache_type            = 1
+read_buffer_size            = 128K
+read_rnd_buffer_size        = 128K
+skip-external-locking
+skip-innodb
+skip-name-resolve
+skip-networking
+sort_buffer_size            = 256K
+table_definition_cache      = 512
+table_open_cache            = 256
+thread_cache_size           = 2
+thread_stack                = 128K
+tmp_table_size              = 4M

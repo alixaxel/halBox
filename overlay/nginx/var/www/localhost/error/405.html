@@ -1,0 +1,17 @@
+<!DOCTYPE html> <!-- adapted from //connorhd.co.uk/project/genetic/ -->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Method Not Allowed</title>
+    </head>
+    <body style="background: url(//i.imgur.com/JICJt1C.png); font: 2em/1.6 monospace; margin: 40px 0; text-align: center;">
+        <script type="text/javascript">
+            var t="Method Not Allowed!",c=Math;function e(){return"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghjiklmnopqrstuvwxyz,! ".charAt(c.floor(55*c.random()))}var f=!0,g,h,i,j,k,l,m=0;
+            l=setInterval(function(){a:{var a,d;if(f){f=!1;k=[];for(a=0;20>a;a++){var b="";for(d=0;t.length>d;d++)b+=e();k[a]=b}}else for(a=0;20>a;a++)t.length==a&&(d=g,g=h,h=d),splitAt=c.floor(t.length*c.random()),k[a]=g.substring(0,splitAt)+h.substring(splitAt,t.length),0.75>Math.random()&&(mutateAt=c.floor(t.length*c.random())+1,k[a]=k[a].substring(0,mutateAt-1)+e()+k[a].substring(mutateAt,t.length));m+=20;g=k[0];h=k[1];i=j=-1E4;for(a=0;20>a;a++){d=k[a];for(b=count=0;t.length>b;b++)count-=Math.abs(d.charCodeAt(b)-
+            t.charCodeAt(b)),d.substring(b,b+1)==t.substring(b,b+1)&&(count+=130);score=count;if(score>i){if(g=k[a],i=score,t==g){document.getElementById("output").innerHTML=t;m=m-20+a;document.getElementById("counter").innerHTML=m;clearInterval(l);break a}}else score>j&&(h=k[a],j=score)}document.getElementById("output").innerHTML=g;document.getElementById("counter").innerHTML=m;}},25);
+        </script>
+        <img alt="halBox" src="//i.imgur.com/jEhtE.png" style="height: 300px;">
+        <div id="output" style="font-size: 4em;"></div>
+        <div><span id="counter">0</span> strings genetically engineered.</div>
+    </body>
+</html>

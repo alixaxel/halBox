@@ -29,36 +29,36 @@ halBox is VPS-oriented, it has been crafted to consume as little memory as possi
 
 Here's what a default install looks like after a fresh *reboot* (under Ubuntu 14.04 LTS):
 
-	root@trusty:~# ps_mem
-	  Private + Shared    =  RAM used	Program
+    root@trusty:~# ps_mem
+      Private + Shared    = RAM         Program
 
-	 96.0 KiB +  35.0 KiB = 131.0 KiB	lockfile-touch
-	104.0 KiB +  35.0 KiB = 139.0 KiB	lockfile-create
-	188.0 KiB +  25.0 KiB = 213.0 KiB	ureadahead
-	184.0 KiB +  31.5 KiB = 215.5 KiB	atd
-	172.0 KiB +  65.5 KiB = 237.5 KiB	acpid
-	192.0 KiB +  50.5 KiB = 242.5 KiB	ondemand
-	180.0 KiB +  84.0 KiB = 264.0 KiB	sleep (2)
-	284.0 KiB + 100.0 KiB = 384.0 KiB	cron
-	288.0 KiB + 142.5 KiB = 430.5 KiB	ping (2)
-	380.0 KiB +  60.5 KiB = 440.5 KiB	upstart-socket-bridge
-	364.0 KiB +  97.0 KiB = 461.0 KiB	upstart-udev-bridge
-	412.0 KiB +  60.0 KiB = 472.0 KiB	upstart-file-bridge
-	568.0 KiB + 179.5 KiB = 747.5 KiB	systemd-logind
-	728.0 KiB +  66.0 KiB = 794.0 KiB	dbus-daemon
-	588.0 KiB + 230.5 KiB = 818.5 KiB	ntpdate (3)
-	860.0 KiB +  92.5 KiB = 952.5 KiB	systemd-udevd
-	  1.0 MiB +  79.0 KiB =   1.1 MiB	rsyslogd
-	952.0 KiB + 339.0 KiB =   1.3 MiB	getty (6)
-	  1.6 MiB + 146.5 KiB =   1.7 MiB	init
-	  2.6 MiB + 110.0 KiB =   2.7 MiB	bash
-	  2.0 MiB + 834.0 KiB =   2.8 MiB	nginx (3)
-	  2.1 MiB +   1.4 MiB =   3.5 MiB	sshd (2)
-	  9.3 MiB + 324.5 KiB =   9.6 MiB	mysqld
-	 12.1 MiB +   7.4 MiB =  19.5 MiB	php5-fpm (3)
-	---------------------------------
-	                         48.9 MiB
-	=================================
+     96.0 KiB +  35.0 KiB = 131.0 KiB   lockfile-touch
+    104.0 KiB +  35.0 KiB = 139.0 KiB   lockfile-create
+    188.0 KiB +  25.0 KiB = 213.0 KiB   ureadahead
+    184.0 KiB +  31.5 KiB = 215.5 KiB   atd
+    172.0 KiB +  65.5 KiB = 237.5 KiB   acpid
+    192.0 KiB +  50.5 KiB = 242.5 KiB   ondemand
+    180.0 KiB +  84.0 KiB = 264.0 KiB   sleep (2)
+    284.0 KiB + 100.0 KiB = 384.0 KiB   cron
+    288.0 KiB + 142.5 KiB = 430.5 KiB   ping (2)
+    380.0 KiB +  60.5 KiB = 440.5 KiB   upstart-socket-bridge
+    364.0 KiB +  97.0 KiB = 461.0 KiB   upstart-udev-bridge
+    412.0 KiB +  60.0 KiB = 472.0 KiB   upstart-file-bridge
+    568.0 KiB + 179.5 KiB = 747.5 KiB   systemd-logind
+    728.0 KiB +  66.0 KiB = 794.0 KiB   dbus-daemon
+    588.0 KiB + 230.5 KiB = 818.5 KiB   ntpdate (3)
+    860.0 KiB +  92.5 KiB = 952.5 KiB   systemd-udevd
+      1.0 MiB +  79.0 KiB =   1.1 MiB   rsyslogd
+    952.0 KiB + 339.0 KiB =   1.3 MiB   getty (6)
+      1.6 MiB + 146.5 KiB =   1.7 MiB   init
+      2.6 MiB + 110.0 KiB =   2.7 MiB   bash
+      2.0 MiB + 834.0 KiB =   2.8 MiB   nginx (3)
+      2.1 MiB +   1.4 MiB =   3.5 MiB   sshd (2)
+      9.3 MiB + 324.5 KiB =   9.6 MiB   mysqld
+     12.1 MiB +   7.4 MiB =  19.5 MiB   php5-fpm (3)
+    ---------------------------------
+                             48.9 MiB
+    =================================
 
 
 Of course, some features and configurations had to be sacrificed, most notably:
@@ -69,15 +69,19 @@ Of course, some features and configurations had to be sacrificed, most notably:
 
 As of version 0.31.0, halBox also ships with custom rsync LIFO directory utilities:
 
-* [`rsync_cp`](https://github.com/alixaxel/halBox/blob/master/config/rsync/usr/local/bin/rsync_cp)
-* [`rsync_mv`](https://github.com/alixaxel/halBox/blob/master/config/rsync/usr/local/bin/rsync_mv)
-* [`rsync_rm`](https://github.com/alixaxel/halBox/blob/master/config/rsync/usr/local/bin/rsync_rm)
+* [`rsync_cp`](https://github.com/alixaxel/halBox/blob/master/overlay/rsync/usr/local/bin/rsync_cp)
+* [`rsync_mv`](https://github.com/alixaxel/halBox/blob/master/overlay/rsync/usr/local/bin/rsync_mv)
+* [`rsync_rm`](https://github.com/alixaxel/halBox/blob/master/overlay/rsync/usr/local/bin/rsync_rm)
 
 As of version 0.40.0, halBox comes with three helper scripts for nginx:
 
-* [`ngxensite`](https://github.com/alixaxel/halBox/blob/master/config/nginx/usr/local/sbin/ngxensite) (mimics Apache [`a2ensite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html))
-* [`ngxdissite`](https://github.com/alixaxel/halBox/blob/master/config/nginx/usr/local/sbin/ngxdissite) (mimics Apache [`a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2dissite.8.html))
-* [`ngxgzip`](https://github.com/alixaxel/halBox/blob/master/config/nginx/usr/local/sbin/ngxgzip) (optimal asset pre-compressor for [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html))
+* [`ngxensite`](https://github.com/alixaxel/halBox/blob/master/overlay/nginx/usr/local/sbin/ngxensite) (mimics Apache [`a2ensite`](http://manpages.ubuntu.com/manpages/precise/man8/a2ensite.8.html))
+* [`ngxdissite`](https://github.com/alixaxel/halBox/blob/master/overlay/nginx/usr/local/sbin/ngxdissite) (mimics Apache [`a2dissite`](http://manpages.ubuntu.com/manpages/precise/man8/a2dissite.8.html))
+* [`ngxgzip`](https://github.com/alixaxel/halBox/blob/master/overlay/nginx/usr/local/sbin/ngxgzip) (optimal asset pre-compressor for [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html))
+
+As of version 0.50.0, halBox ships with [Let's Encrypt](https://letsencrypt.org/) and:
+
+* [`ngxsite`](https://github.com/alixaxel/halBox/blob/master/overlay/nginx/usr/local/sbin/ngxsite) (deploys a new nginx virtual host with SSL and *www to non-www* redirection)
 
 Screenshots *(Ubuntu)*
 ======================
@@ -106,12 +110,14 @@ bc
 bcrypt
 beanstalkd
 build-essential
+caddy
 chkrootkit
 clamav
 cloc
 curl
 dash
 dialog
+docker
 dstat
 exim4
 git
@@ -127,12 +133,17 @@ ioping
 iotop
 iptables
 jpegoptim
+jq
 julia
+lets-encrypt
+letsencrypt
 libav-tools
 maldet
+mariadb
 mc
 memcached
 mongodb
+mycli
 mysql
 mysqltuner
 nano
@@ -146,13 +157,13 @@ nodejs
 ntp
 optipng
 pandoc
+pgcli
 php5
 php5-adminer
 php5-amqp
 php5-apcu
 php5-bitset
 php5-chdb
-php5-cld
 php5-composer
 php5-curl
 php5-discount
@@ -160,7 +171,6 @@ php5-doublemetaphone
 php5-eio
 php5-enchant
 php5-ev
-php5-event
 php5-fann
 php5-gd
 php5-gearman
@@ -229,9 +239,7 @@ php5-swoole
 php5-tidy
 php5-timezonedb
 php5-tokyo_tyrant
-php5-translit
 php5-uuid
-php5-v8js
 php5-varnish
 php5-xcache
 php5-xdebug
@@ -241,6 +249,29 @@ php5-xsl
 php5-yaf
 php5-yaml
 php5-yar
+php7
+php7-composer
+php7-curl
+php7-gd
+php7-imap
+php7-interbase
+php7-intl
+php7-json
+php7-ldap
+php7-mcrypt
+php7-mysql
+php7-odbc
+php7-opcache
+php7-pgsql
+php7-phpunit
+php7-pspell
+php7-readline
+php7-recode
+php7-redis
+php7-sqlite
+php7-tidy
+php7-timezonedb
+php7-xmlrpc
 postgresql
 ps_mem
 r
@@ -256,7 +287,6 @@ ruby
 scout_realtime
 scrypt
 siege
-sqlite
 ssdeep
 strace
 tesseract-ocr
@@ -276,14 +306,15 @@ zsh
 Credits
 =======
 
-This script is inspired by:
+This Bash script is inspired by:
 
+* [fideloper/Vaprobash](https://github.com/fideloper/Vaprobash)
+* [kr41/bash-booster](https://bitbucket.org/kr41/bash-booster)
+* [Linode StackScripts](http://www.linode.com/stackscripts/)
+* [lowendbox/lowendscript](https://github.com/lowendbox/lowendscript)
+* [perusio/nginx_ensite](https://github.com/perusio/nginx_ensite)
 * [TigersWay/VPS](https://github.com/TigersWay/VPS)
 * [Xeoncross/lowendscript](https://github.com/Xeoncross/lowendscript)
-* [lowendbox/lowendscript](https://github.com/lowendbox/lowendscript)
-* [Linode StackScripts](http://www.linode.com/stackscripts/)
-* [perusio/nginx_ensite](https://github.com/perusio/nginx_ensite)
-* [fideloper/Vaprobash](https://github.com/fideloper/Vaprobash)
 
 License
 =======
