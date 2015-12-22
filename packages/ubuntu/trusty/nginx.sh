@@ -25,8 +25,6 @@ if [[ $? == 0 ]]; then
         fi
     fi
 
-    openssl dhparam -out /etc/ssl/private/dhparam.pem 4096 > /dev/null 2>&1
-
     for halBox_nginx_package in apache2-utils httperf letsencrypt ngxtop siege; do
         echo -e "\e[1;32mDave, I'm also installing '$halBox_nginx_package'.\e[0m"
 

@@ -260,11 +260,10 @@ fi
 
 if [[ $halBox_packages == *"letsencrypt"* ]]; then
     halBox_LetsEncrypt_email=$(dialog \
-        --insecure \
         --no-cancel \
         --ok-label "Okay" \
         --title "halBox" \
-        --passwordbox "Dave, I also need an email for Let's Encrypt." 0 80 \
+        --inputbox "Dave, I also need an email for Let's Encrypt." 0 80 \
     2>&1 1>&3)
 fi
 

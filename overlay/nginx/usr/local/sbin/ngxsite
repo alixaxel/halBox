@@ -19,6 +19,10 @@ else
         cp /etc/nginx/sites-available/example.com /etc/nginx/sites-available/$1 && sed -i "s~example.com~$1~" /etc/nginx/sites-available/$1
 
         if [[ $? == 0 ]]; then
+            if [[ ! -f /etc/ssl/private/dhparam.pem ]]; then
+                openssl dhparam -out /etc/ssl/private/dhparam.pem 4096 > /dev/null 2>&1
+            fi
+
             service nginx stop > /dev/null
 
             if [[ -f ~/.letsencrypt/letsencrypt-auto ]]; then
