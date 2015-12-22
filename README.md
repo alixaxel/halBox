@@ -60,7 +60,6 @@ Here's what a default install looks like after a fresh *reboot* (under Ubuntu 14
                              48.9 MiB
     =================================
 
-
 Of course, some features and configurations had to be sacrificed, most notably:
 
 * InnoDB engine is disabled if your server has less than 512MB of RAM
@@ -83,22 +82,12 @@ As of version 0.50.0, halBox ships with [Let's Encrypt](https://letsencrypt.org/
 
 * [`ngxsite`](https://github.com/alixaxel/halBox/blob/master/overlay/nginx/usr/local/sbin/ngxsite) (deploys a new nginx virtual host with SSL and *www to non-www* redirection)
 
-Screenshots *(Ubuntu)*
-======================
+Screens *(Ubuntu)*
+==================
 
 *These may not (and probably do not) reflect the current version of the script / packages.*
 
-![Pre-Requesites and Must-Haves](http://i.imgur.com/NesMKeI.png "Pre-Requesites and Must-Haves")
----
-![Package Selection](http://i.imgur.com/E2Xf6gN.png "Package Selection")
----
-![PHP Extensions](http://i.imgur.com/hI2LOmK.png "PHP Extensions")
----
-![MySQL Root Password](http://i.imgur.com/OoRJFeW.png "MySQL Root Password")
----
-![MySQL Remote Access](http://i.imgur.com/1REcEXX.png "MySQL Remote Access")
----
-![Progress](http://i.imgur.com/VwTVVi8.png "Progress")
+![Demo](http://i.imgur.com/hzYf9DL.gif "Demo")
 
 Software
 ========
