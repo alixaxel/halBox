@@ -27,7 +27,7 @@ else
         if [[ -f ~/.letsencrypt/letsencrypt-auto ]]; then
             echo "Obtaining SSL certificate..." && ~/.letsencrypt/letsencrypt-auto certonly --config /etc/letsencrypt/letsencrypt.ini --domain $1 --domain cdn.$1 --domain www.$1 > /dev/null 2>&1
 
-            if [[ $? != 0 ]]; then
+            if [[ ! -d /etc/letsencrypt/live/$1/ ]]; then
                 echo "Unable to obtain the SSL certificate for '$1'."
             fi
         fi
@@ -38,6 +38,8 @@ else
             echo -e "127.0.0.1\t$1 cdn.$1 www.$1" >> /etc/hosts
         fi
 
-        ngxensite $1
+        if [[ -d /etc/letsencrypt/live/$1/ ]]; then
+            ngxensite $1
+        fi
     fi
 fi

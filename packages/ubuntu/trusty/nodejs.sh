@@ -12,6 +12,10 @@ fi
 
 apt-get -qq install nodejs > /dev/null 2>&1
 
-if [[ $? != 0 ]]; then
+if [[ $? == 0 ]]; then
+    for halBox_NodeJS_package in bower gulp nixar; do
+        echo -e "\e[1;32mDave, I'm also installing '$halBox_NodeJS_package'.\e[0m" && npm install --global $halBox_NodeJS_package > /dev/null 2>&1
+    done
+else
     echo -e "\e[1;31mSomething went wrong installing '$halBox_package'.\e[0m"
 fi

@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.51.0 (github.com/alixaxel/halBox/)
+# halBox 0.51.1 (github.com/alixaxel/halBox/)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.51.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.51.1\e[0m\n"
 
 if [[ $(whoami) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -52,6 +52,7 @@ halBox_packages=$(dialog \
             dash                    "lightweight POSIX-compliant shell"                 off \
             docker                  "lightweight software containers"                   off \
             exim4                   "mail transport agent"                              off \
+            fail2ban                "log-based intrusion prevention tool"               off \
             git                     "distributed revision control system"               on \
             golang                  "Go programming language"                           off \
             imagemagick             "image manipulation programs"                       off \
