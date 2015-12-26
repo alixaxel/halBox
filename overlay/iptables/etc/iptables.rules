@@ -26,4 +26,13 @@
 
 # Scout Realtime
 -A INPUT -p tcp -m tcp --dport 5555 -j DROP
+
+# Redis
+-A INPUT -p tcp -m tcp --dport 6379 -j DROP
+
+# Memcached
+-A INPUT -p tcp -m tcp --dport 11211 -j DROP
+
+# Beanstalk
+-A INPUT -p tcp -m tcp --dport 11300 -j DROP
 COMMIT
