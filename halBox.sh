@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.50.0 (github.com/alixaxel/halBox/)
+# halBox 0.51.0 (github.com/alixaxel/halBox/)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.50.0\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.51.0\e[0m\n"
 
 if [[ $(whoami) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -68,20 +68,20 @@ halBox_packages=$(dialog \
             mysql                   "MySQL database server and client"                  off \
             nginx                   "small, powerful & scalable web/proxy server"       on \
             nodejs                  "event-based server-side JavaScript engine"         off \
-            ntp                     "network time protocol deamon"                      off \
             pandoc                  "general markup converter"                          off \
             php5                    "server-side scripting language"                    off \
             php7                    "server-side scripting language"                    on \
             postgresql              "object-relational SQL database"                    off \
             ps_mem                  "lists processes by memory usage"                   on \
             r                       "language for statistical computing and graphics"   off \
-            redis-server            "persistent key-value database"                     off \
+            redis                   "persistent key-value database"                     off \
             rkhunter                "rootkit, backdoor, sniffer and exploit scanner"    off \
             rsync                   "file-copying tool & LIFO utilities"                on \
             rtorrent                "ncurses BitTorrent client"                         off \
             ruby                    "Ruby scripting language"                           off \
             scout_realtime          "modern top for the browser"                        off \
             sqlite                  "command line interface for SQLite 3"               on \
+            supervisor              "process control system"                            off \
             tesseract-ocr           "open source OCR engine"                            off \
             vmtouch                 "file system cache diagnostics and control"         off \
             wkhtmltopdf             "HTML to PDF converter"                             off \
@@ -203,7 +203,6 @@ if [[ $halBox_packages == *"php7"* ]]; then
             php7-intl               "Internationalization Module"                       on \
             php7-json               "JSON Module"                                       on \
             php7-ldap               "LDAP Module"                                       off \
-            php7-mcrypt             "Mcrypt Module"                                     on \
             php7-mysql              "MySQL Module"                                      on \
             php7-odbc               "ODBC Module"                                       off \
             php7-opcache            "Zend OPcache Module"                               on \

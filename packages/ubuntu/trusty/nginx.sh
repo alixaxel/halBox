@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
-    echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" > /etc/apt/sources.list.d/nginx.list
+    echo "deb http://nginx.org/packages/mainline/ubuntu/ $halBox_OS_Codename nginx" > /etc/apt/sources.list.d/nginx.list
 fi
 
 wget -q -O - http://nginx.org/packages/keys/nginx_signing.key | apt-key add - > /dev/null
@@ -39,10 +39,14 @@ if [[ $? == 0 ]]; then
         fi
     done
 
-    chown -R www-data:www-data /var/{cache/nginx/,www/} && chmod +x /usr/local/sbin/{ngxdissite,ngxensite,ngxgzip}
+    chown -R www-data:www-data /var/www/ && chmod +x /usr/local/sbin/{ngxdissite,ngxensite,ngxgzip,ngxsite}
 
     if [[ -n $SUDO_USER ]]; then
         usermod -a -G www-data "$SUDO_USER" && chgrp -R www-data /var/www/ && chmod -R g+rsw /var/www/
+    fi
+
+    if [[ ! -d /etc/nginx/sites-enabled/ ]]; then
+        mkdir -p /etc/nginx/sites-enabled/ && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
     fi
 
     if [[ -f /etc/iptables.rules ]]; then

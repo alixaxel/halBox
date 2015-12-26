@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ ! -f /etc/apt/sources.list.d/postgresql.list ]]; then
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/postgresql.list
+    echo "deb http://apt.postgresql.org/pub/repos/apt/ $halBox_OS_Codename-pgdg main" > /etc/apt/sources.list.d/postgresql.list
 fi
 
 wget -q -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - > /dev/null
@@ -27,7 +27,7 @@ EOF
         sed -i "s~#listen_addresses = 'localhost'~listen_addresses = 'localhost'~" /etc/postgresql/[0..9]*/main/postgresql.conf
     fi
 
-    for halBox_PostgreSQL_package in pgcli pgtop pgtune; do
+    for halBox_PostgreSQL_package in pgcli pgloader pgtop pgtune; do
         echo -e "\e[1;32mDave, I'm also installing '$halBox_PostgreSQL_package'.\e[0m"
 
         if [[ -f $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/$halBox_PostgreSQL_package.sh ]]; then

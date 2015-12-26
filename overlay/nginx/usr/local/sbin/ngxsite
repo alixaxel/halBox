@@ -1,35 +1,41 @@
 #!/usr/bin/env bash
 
 if [[ $# -ne 1 ]]; then
-    echo "Usage: $0 HOST" && exit 1
+    echo "Usage: $0 DOMAIN" && exit 1
 fi
 
 if [[ -r /etc/nginx/sites-available/$1 ]]; then
-    echo "Site $1 already exists." && exit 1
+    echo "Domain $1 already exists." && exit 1
 else
-    if [[ -d /var/www/localhost/ ]]; then
-        cp -r /var/www/localhost/ /var/www/$1/
+    if [[ -d /var/www/default/ ]]; then
+        cp -rp /var/www/default/ /var/www/$1/
     else
-        mkdir -p /var/www/$1/{error/,public/}
+        mkdir -p /var/www/$1/{error/,public/} && touch /var/www/public/index.html
     fi
 
-    chown -R www-data:www-data /var/www/$1/
+    chown -R www-data:www-data /var/www/
 
     if [[ -f /etc/nginx/sites-available/example.com ]]; then
-        cp /etc/nginx/sites-available/example.com /etc/nginx/sites-available/$1 && sed -i "s~example.com~$1~" /etc/nginx/sites-available/$1
+        cp /etc/nginx/sites-available/example.com /etc/nginx/sites-available/$1 && sed -i "s~example.com~$1~g" /etc/nginx/sites-available/$1
 
-        if [[ $? == 0 ]]; then
-            if [[ ! -f /etc/ssl/private/dhparam.pem ]]; then
-                openssl dhparam -out /etc/ssl/private/dhparam.pem 4096 > /dev/null 2>&1
+        if [[ ! -f /etc/ssl/private/dhparam.pem ]]; then
+            echo "Generating Diffie-Hellman Parameters, this may take a while..." && openssl dhparam -out /etc/ssl/private/dhparam.pem 4096 > /dev/null 2>&1
+        fi
+
+        service nginx stop > /dev/null
+
+        if [[ -f ~/.letsencrypt/letsencrypt-auto ]]; then
+            echo "Obtaining SSL certificate..." && ~/.letsencrypt/letsencrypt-auto certonly --config /etc/letsencrypt/letsencrypt.ini --domain $1 --domain cdn.$1 --domain www.$1 > /dev/null 2>&1
+
+            if [[ $? != 0 ]]; then
+                echo "Unable to obtain the SSL certificate for '$1'."
             fi
+        fi
 
-            service nginx stop > /dev/null
+        service nginx start > /dev/null
 
-            if [[ -f ~/.letsencrypt/letsencrypt-auto ]]; then
-                ~/.letsencrypt/letsencrypt-auto certonly --config /etc/letsencrypt/letsencrypt.ini --domain $1 > /dev/null
-            fi
-
-            service nginx start > /dev/null
+        if ! grep -q $1 /etc/hosts; then
+            echo -e "127.0.0.1\t$1 cdn.$1 www.$1" >> /etc/hosts
         fi
 
         ngxensite $1

@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+if [[ ! -f /etc/apt/sources.list.d/mysql.list ]]; then
+    echo "deb http://repo.mysql.com/apt/ubuntu $halBox_OS_Codename mysql-5.7" > /etc/apt/sources.list.d/mysql.list
+fi
+
+apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 5072E1F5 > /dev/null 2>&1
+
+if [[ $? == 0 ]]; then
+    apt-get -qq update > /dev/null
+fi
+
 cp -r $halBox_Base/overlay/mysql/* / && DEBIAN_FRONTEND=noninteractive apt-get -qq install expect mysql-server mysql-client > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
@@ -12,7 +22,7 @@ if [[ $? == 0 ]]; then
     echo -e "\e[1;31mDave, your MySQL root password is now '$halBox_MySQL_password'.\e[0m"
 
     if [[ $halBox_MySQL_networking == "1" ]]; then
-        mysql -uroot -p$( printf "%q" "$halBox_MySQL_password") -e "GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$(printf "%q" "$halBox_MySQL_password")' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+        mysql --user="root" --password="$( printf "%q" "$halBox_MySQL_password")" -e "GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$(printf "%q" "$halBox_MySQL_password")' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 
         if [[ $? == 0 ]]; then
             sed -i "s~skip-networking~#skip-networking~" /etc/mysql/conf.d/halBox.cnf && echo -e "\e[1;31mDave, remote MySQL access is now enabled.\e[0m"

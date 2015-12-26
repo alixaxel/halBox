@@ -2,11 +2,11 @@
 
 echo -e "\e[1;32mDave, I'm updating the package list...\e[0m" && apt-get -qq update > /dev/null && apt-get -qq install whiptail locales > /dev/null
 
-if [[ $(type -P locale-gen) && $(type -P update-locale) ]]; then
-    echo -e "\e[1;32mDave, I'm defaulting to the 'en_US.UTF-8' locale.\e[0m" && locale-gen en_US.UTF-8 > /dev/null && update-locale LANG=en_US.UTF-8
+if ! grep -q "LC_ALL" /etc/default/locale; then
+    echo -e "\e[1;32mDave, I'm defaulting to the 'en_US.UTF-8' locale.\e[0m" && echo 'LC_ALL="en_US.UTF-8"' >> /etc/default/locale && locale-gen en_US.UTF-8 > /dev/null && export LC_ALL=en_US.UTF-8
 fi
 
-for halBox_package in ack-grep bc bcrypt build-essential cloc curl dialog dstat host htop iftop ioping iotop jpegoptim nano ncdu optipng scrypt ssdeep strace tmux units unzip vim virt-what zip; do
+for halBox_package in ack-grep bc bcrypt build-essential cloc curl dialog dstat host htop iftop ioping iotop jpegoptim nano ncdu ntp optipng scrypt ssdeep strace tmux units unzip vim virt-what zip; do
     echo -e "\e[1;32mDave, I'm installing '$halBox_package'.\e[0m" && apt-get -qq install $halBox_package > /dev/null
 done
 

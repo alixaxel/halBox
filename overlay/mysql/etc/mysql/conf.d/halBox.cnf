@@ -26,6 +26,7 @@ skip-innodb
 skip-name-resolve
 skip-networking
 sort_buffer_size            = 256K
+sql_mode                    = ANSI
 table_definition_cache      = 512
 table_open_cache            = 256
 thread_cache_size           = 2

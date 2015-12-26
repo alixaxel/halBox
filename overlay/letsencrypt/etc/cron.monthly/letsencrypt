@@ -3,19 +3,19 @@
 halBox_LetsEncrypt_domains=$(ls /etc/letsencrypt/live)
 
 if [[ ${#halBox_LetsEncrypt_domains[@]} -gt 0 ]]; then
-    if [[ -f /etc/init.d/nginx ]]; then
-        service nginx stop > /dev/null
-    fi
-
     for halBox_LetsEncrypt_domain in $halBox_LetsEncrypt_domains; do
-        ~/.letsencrypt/letsencrypt-auto certonly --config /etc/letsencrypt/letsencrypt.ini --domain $halBox_LetsEncrypt_domain > /dev/null
+        ~/.letsencrypt/letsencrypt-auto certonly -a webroot --config /etc/letsencrypt/letsencrypt.ini --domain $halBox_LetsEncrypt_domain --webroot-path /var/www/$halBox_LetsEncrypt_domain/ > /dev/null 2>&1
 
         if [[ $? != 0 ]]; then
-            echo "Unable to renew the SSL certificate for the '$halBox_LetsEncrypt_domain' domain."
+            echo "Unable to renew the SSL certificate for '$halBox_LetsEncrypt_domain'." >> /var/log/cron.letsencrypt.log
+        else
+            echo "SSL certificate for '$halBox_LetsEncrypt_domain' renewed successfully." >> /var/log/cron.letsencrypt.log
         fi
+
+        rm -rf /var/www/$halBox_LetsEncrypt_domain/.well-known/
     done
 
     if [[ -f /etc/init.d/nginx ]]; then
-        service nginx start > /dev/null
+        service nginx reload > /dev/null
     fi
 fi

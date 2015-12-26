@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php-7.0 > /dev/null 2>&1
+add-apt-repository -y ppa:ondrej/php-7.0 > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
     apt-get -qq update > /dev/null
 fi
 
-LC_ALL=en_US.UTF-8 apt-get -qq install php7.0-cli php7.0-fpm > /dev/null 2>&1
+apt-get -qq install php7.0-cli php7.0-fpm > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
     cp -r $halBox_Base/overlay/php/* / && cp -r $halBox_Base/overlay/php7/* /
@@ -37,7 +37,7 @@ if [[ $? == 0 ]]; then
     done
 
     if [[ -f /etc/init.d/nginx ]]; then
-        echo -e "\e[1;32mDave, I'm also installing 'adminer'.\e[0m" && wget -q http://sourceforge.net/projects/adminer/files/latest/download -O /var/www/localhost/public/adminer/adminer.php
+        echo -e "\e[1;32mDave, I'm also installing 'adminer'.\e[0m" && wget -q https://www.adminer.org/latest.php -O /var/www/default/public/adminer/adminer.php && wget -q https://raw.githubusercontent.com/vrana/adminer/master/plugins/plugin.php -O /var/www/default/public/adminer/plugins/plugin.php
     fi
 else
     echo -e "\e[1;31mSomething went wrong installing '$halBox_package'.\e[0m"

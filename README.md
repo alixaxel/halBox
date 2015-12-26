@@ -80,7 +80,7 @@ As of version 0.40.0, halBox comes with three helper scripts for nginx:
 
 As of version 0.50.0, halBox ships with [Let's Encrypt](https://letsencrypt.org/) and:
 
-* [`ngxsite`](https://github.com/alixaxel/halBox/blob/master/overlay/nginx/usr/local/sbin/ngxsite) (deploys a new nginx virtual host with SSL and *www to non-www* redirection)
+* [`ngxsite`](https://github.com/alixaxel/halBox/blob/master/overlay/nginx/usr/local/sbin/ngxsite) (deploys a new nginx virtual host with SSL and *non-www to www* redirection)
 
 Screens *(Ubuntu)*
 ==================
@@ -147,6 +147,9 @@ ntp
 optipng
 pandoc
 pgcli
+pgloader
+pgtop
+pgtune
 php5
 php5-adminer
 php5-amqp
@@ -278,6 +281,7 @@ scrypt
 siege
 ssdeep
 strace
+supervisor
 tesseract-ocr
 tmux
 tuning-primer

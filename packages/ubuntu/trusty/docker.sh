@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ ! -f /etc/apt/sources.list.d/docker.list ]]; then
-    echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
+    echo "deb https://apt.dockerproject.org/repo ubuntu-$halBox_OS_Codename main" > /etc/apt/sources.list.d/docker.list
 fi
 
 apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D > /dev/null 2>&1
