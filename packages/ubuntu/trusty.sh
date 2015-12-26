@@ -15,3 +15,20 @@ if [[ $(virt-what) == "virtualbox" && -f $halBox_Base/packages/$halBox_OS/$halBo
 fi
 
 echo -e "\e[1;32mDave, I'm defaulting to the UTC timezone.\e[0m" && echo "UTC" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata > /dev/null 2>&1
+
+if [[ $(ulimit -n) -le 65536 ]]; then
+    echo -e "\e[1;32mDave, I'm increasing the maximum number of open files to 65536.\e[0m"
+
+    if [[ ! -f /etc/sysctl.d/60-file-max.conf ]]; then
+        echo 'fs.file-max = 65536' >> /etc/sysctl.d/60-file-max.conf
+    fi
+
+    if [[ ! -f /etc/security/limits.d/60-nofile-limit.conf ]]; then
+        echo "*       soft    nofile    65536" >> /etc/security/limits.d/60-nofile-limit.conf
+        echo "*       hard    nofile    65536" >> /etc/security/limits.d/60-nofile-limit.conf
+        echo "root    soft    nofile    65536" >> /etc/security/limits.d/60-nofile-limit.conf
+        echo "root    hard    nofile    65536" >> /etc/security/limits.d/60-nofile-limit.conf
+    fi
+
+    ulimit -n 65536
+fi
