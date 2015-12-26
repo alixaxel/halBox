@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.51.1 (github.com/alixaxel/halBox/)
+# halBox 0.51.2 (github.com/alixaxel/halBox/)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.51.1\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.51.2\e[0m\n"
 
 if [[ $(whoami) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -204,6 +204,7 @@ if [[ $halBox_packages == *"php7"* ]]; then
             php7-intl               "Internationalization Module"                       on \
             php7-json               "JSON Module"                                       on \
             php7-ldap               "LDAP Module"                                       off \
+            php7-memcached          "Memcached Module"                                  on \
             php7-mysql              "MySQL Module"                                      on \
             php7-odbc               "ODBC Module"                                       off \
             php7-opcache            "Zend OPcache Module"                               on \
