@@ -19,7 +19,7 @@ else
     halBox_Bits=$([[ $(uname -m) == *"64" ]] && echo "64" || echo "32")
     halBox_CPU=$(grep "^physical id" /proc/cpuinfo | sort -u | wc -l)
     halBox_CPU_Cache=$(grep "^cache size" /proc/cpuinfo | sort -u | awk '{ print int($4 / 1024) }')
-    halBox_CPU_Cores=$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)
+    halBox_CPU_Cores=$(grep "^processor" /proc/cpuinfo | sort -u | wc -l)
     halBox_OS=$(lsb_release -si | awk '{ print tolower($0) }')
     halBox_OS_Codename=$(lsb_release -sc | awk '{ print tolower($0) }')
     halBox_RAM=$(grep "^MemTotal:" /proc/meminfo | awk '{ print int($2 / 1024) }')

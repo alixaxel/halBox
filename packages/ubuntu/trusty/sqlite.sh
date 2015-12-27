@@ -7,3 +7,11 @@ if [[ $? == 0 ]]; then
 fi
 
 cd ~ && rm -rf /tmp/sqlite-autoconf-3090200*
+
+if [[ -f /etc/init.d/php5-fpm ]]; then
+    echo -e "\e[1;32mDave, I'm restarting the 'php5-fpm' service.\e[0m" && service php5-fpm restart > /dev/null
+fi
+
+if [[ -f /etc/init.d/php7.0-fpm ]]; then
+    echo -e "\e[1;32mDave, I'm restarting the 'php7.0-fpm' service.\e[0m" && service php7.0-fpm restart > /dev/null
+fi

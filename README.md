@@ -13,6 +13,7 @@ Setup
 As *root*, copy+paste the following on your command-line:
 
 ```shell
+export LC_ALL=en_US.UTF-8 && \
 cd ~ && \
 wget -q https://github.com/alixaxel/halBox/archive/master.tar.gz -O ~/halBox.tar.gz && \
 tar -xzvf ~/halBox.tar.gz && \
