@@ -15,7 +15,7 @@ server {
     ssl_trusted_certificate     /etc/letsencrypt/live/example.com/chain.pem;
 
     location / {
-        try_files               $uri $uri/ /index.php?$query_string;                # $uri $uri/ @php @proxy
+        try_files               $uri $uri/ /index.php$is_args$args;             # $uri $uri/ @php @proxy
     }
 
     location @php {

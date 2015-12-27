@@ -10,7 +10,7 @@ server {
     include                     /etc/nginx/conf.d/http_gzip_static.conf;
 
     location / {
-        try_files               $uri $uri/ /index.php?$query_string;                # $uri $uri/ @php @proxy
+        try_files               $uri $uri/ /index.php$is_args$args;             # $uri $uri/ @php @proxy
     }
 
     location @php {
