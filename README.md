@@ -108,6 +108,7 @@ curl
 devd
 dexec
 dialog
+direnv
 docker
 dstat
 errcheck
@@ -147,7 +148,6 @@ mariadb
 mc
 memcached
 mongodb
-mycli
 mycli
 mysql
 mysqltuner
