@@ -24,8 +24,9 @@ server {
 
     location @proxy {
         proxy_pass              http://localhost:3000;
-        proxy_http_version      1.1;
         proxy_buffering         off;
+        proxy_cache             off;
+        proxy_http_version      1.1;
         proxy_redirect          off;
         proxy_set_header        Host $host;
         proxy_set_header        Upgrade $http_upgrade;
@@ -75,20 +76,6 @@ server {
 }
 
 server {
-    listen                      80;
-    server_name                 cdn.example.com;
-
-    return                      301 https://cdn.example.com$request_uri;
-}
-
-server {
-    listen                      80;
-    server_name                 example.com www.example.com;
-
-    return                      301 https://www.example.com$request_uri;
-}
-
-server {
     listen                      443 ssl http2;
     server_name                 example.com;
 
@@ -99,4 +86,18 @@ server {
     ssl_trusted_certificate     /etc/letsencrypt/live/example.com/chain.pem;
 
     return                      301 https://www.example.com$request_uri;
+}
+
+server {
+    listen                      80;
+    server_name                 example.com www.example.com;
+
+    return                      301 https://www.example.com$request_uri;
+}
+
+server {
+    listen                      80;
+    server_name                 cdn.example.com;
+
+    return                      301 https://cdn.example.com$request_uri;
 }

@@ -7,7 +7,7 @@ fi
 git clone -q https://github.com/letsencrypt/letsencrypt ~/.letsencrypt
 
 if [[ $? == 0 ]]; then
-    cp -r $halBox_Base/overlay/letsencrypt/* /
+    cp -r $halBox_Base/overlay/letsencrypt/. /
 
     if [[ -f /etc/letsencrypt/letsencrypt.ini ]]; then
         if [[ $halBox_LetsEncrypt_email == *"@"* ]]; then

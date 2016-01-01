@@ -18,8 +18,8 @@ else
     if [[ -f /etc/nginx/sites-available/example.com ]]; then
         cp /etc/nginx/sites-available/example.com /etc/nginx/sites-available/$1 && sed -i "s~example.com~$1~g" /etc/nginx/sites-available/$1
 
-        if [[ ! -f /etc/ssl/private/dhparam.pem ]]; then
-            echo "Generating Diffie-Hellman Parameters, this may take a while..." && openssl dhparam -out /etc/ssl/private/dhparam.pem 4096 > /dev/null 2>&1
+        if [[ ! -f /etc/ssl/dhparam.pem ]]; then
+            echo "Generating Diffie-Hellman Parameters, this may take a while..." && openssl dhparam -out /etc/ssl/dhparam.pem 2048 > /dev/null 2>&1
         fi
 
         service nginx stop > /dev/null

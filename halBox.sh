@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.51.4 (github.com/alixaxel/halBox/)
+# halBox 0.52.0 (github.com/alixaxel/halBox/)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.51.4\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.52.0\e[0m\n"
 
 if [[ $(whoami) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -16,23 +16,36 @@ if [[ ! -f /etc/debian_version ]]; then
     echo -e "\e[1;31mI think you know what the problem is just as well as I do.\e[0m" && exit 1
 else
     halBox_Base=${0%/*}
-    halBox_Bits=$([[ $(uname -m) == *"64" ]] && echo "64" || echo "32")
-    halBox_CPU=$(grep "^physical id" /proc/cpuinfo | sort -u | wc -l)
-    halBox_CPU_Cache=$(grep "^cache size" /proc/cpuinfo | sort -u | awk '{ print int($4 / 1024) }')
-    halBox_CPU_Cores=$(grep "^processor" /proc/cpuinfo | sort -u | wc -l)
+    halBox_Arch=$(uname -m)
+    halBox_Bits=$(file /usr/bin/env | awk '{ print int($3) }')
+    halBox_CPU=$(grep -P "^(physical id|Processor)" /proc/cpuinfo | sort -u | wc -l)
+    halBox_CPU_Cores=$(grep -P "^(processor)" /proc/cpuinfo | sort -u | wc -l)
+    halBox_CPU_Cache=$(grep -P "^(cache size)" /proc/cpuinfo | sort -u | awk '{ print int($4 / 1024) }')    # in MB
+    halBox_RAM=$(grep -P "^(MemTotal)" /proc/meminfo | awk '{ print int($2 / 1024) }')                      # in MB
     halBox_OS=$(lsb_release -si | awk '{ print tolower($0) }')
     halBox_OS_Codename=$(lsb_release -sc | awk '{ print tolower($0) }')
-    halBox_RAM=$(grep "^MemTotal:" /proc/meminfo | awk '{ print int($2 / 1024) }')
+
+    case $halBox_Arch in
+        arm*)
+            halBox_Arch="arm"
+        ;;
+        i*86)
+            halBox_Arch="386"
+        ;;
+        x86_64)
+            halBox_Arch="amd64"
+        ;;
+    esac
 fi
 
-if [[ ! -d $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/ ]]; then
-    echo -e "\e[1;31mI'm sorry, Dave. I'm afraid my circuits do not function properly on this system.\e[0m" && exit 1
-elif [[ -f $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename.sh ]]; then
+if [[ -f $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename.sh ]]; then
     source $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename.sh
+else
+    echo -e "\e[1;31mI'm sorry, Dave. I'm afraid my circuits do not function properly on this system.\e[0m" && exit 1
 fi
 
 if [[ ! $(type -P dialog) ]]; then
-    echo -e "\e[1;31mI'm sorry, Dave. I'm afraid I can't do that.\e[0m" && exit 1
+    echo -e "\e[1;31mI'm sorry, Dave. I'm afraid we need 'dialog' to do that.\e[0m" && exit 1
 else
     sleep 3
 fi
@@ -49,12 +62,12 @@ halBox_packages=$(dialog \
             caddy                   "HTTP/2 web server with automatic HTTPS"            off \
             chkrootkit              "rootkit detector"                                  off \
             clamav                  "anti-virus utility"                                off \
-            dash                    "lightweight POSIX-compliant shell"                 off \
-            docker                  "lightweight software containers"                   off \
+            dexec                   "polyglot code execution within Docker"             off \
+            docker                  "lightweight software containers"                   on \
             exim4                   "mail transport agent"                              off \
             fail2ban                "log-based intrusion prevention tool"               off \
             git                     "distributed revision control system"               on \
-            golang                  "Go programming language"                           off \
+            go                      "Go programming language"                           off \
             imagemagick             "image manipulation programs"                       off \
             iptables                "tools for packet filtering and NAT"                on \
             jq                      "command-line JSON processor"                       off \
@@ -68,7 +81,9 @@ halBox_packages=$(dialog \
             mongodb                 "object/document-oriented database"                 off \
             mysql                   "MySQL database server and client"                  off \
             nginx                   "small, powerful & scalable web/proxy server"       on \
+            ngrok                   "introspected, secure tunnels to localhost"         off \
             nodejs                  "event-based server-side JavaScript engine"         off \
+            ntp                     "network time protocol deamon"                      off \
             pandoc                  "general markup converter"                          off \
             php5                    "server-side scripting language"                    off \
             php7                    "server-side scripting language"                    on \
@@ -80,6 +95,7 @@ halBox_packages=$(dialog \
             rsync                   "file-copying tool & LIFO utilities"                on \
             rtorrent                "ncurses BitTorrent client"                         off \
             ruby                    "Ruby scripting language"                           off \
+            rust                    "Rust programming language"                         off \
             scout_realtime          "modern top for the browser"                        off \
             sqlite                  "command line interface for SQLite 3"               on \
             supervisor              "process control system"                            off \
@@ -155,7 +171,7 @@ if [[ $halBox_packages == *"php5"* ]]; then
             php5-quickhash          "QuickHash PECL Module"                             off \
             php5-radius             "Radius PECL Module"                                off \
             php5-rar                "RAR PECL Module"                                   off \
-            php5-readline           "GNU Readline Module"                               off \
+            php5-readline           "GNU Readline Module"                               on \
             php5-recode             "GNU Recode Module"                                 off \
             php5-redis              "Redis Module"                                      off \
             php5-scream             "Scream PECL Module"                                off \
@@ -211,7 +227,7 @@ if [[ $halBox_packages == *"php7"* ]]; then
             php7-pgsql              "PostgreSQL Module"                                 on \
             php7-phpunit            "PHPUnit Module"                                    on \
             php7-pspell             "GNU Aspell Module"                                 off \
-            php7-readline           "GNU Readline Module"                               off \
+            php7-readline           "GNU Readline Module"                               on \
             php7-recode             "GNU Recode Module"                                 off \
             php7-redis              "Redis Module"                                      off \
             php7-sqlite             "SQLite Module"                                     on \

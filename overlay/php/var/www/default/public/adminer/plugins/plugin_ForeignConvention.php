@@ -6,10 +6,14 @@
 */
 class AdminerForeignConvention {
     function foreignKeys($table) {
-        $result = array();
+        $result = [];
 
         foreach (preg_grep('~^(?:id|by)_.|._(?:id|by)$~', array_keys(fields($table))) as $field) {
-            $result[] = array('table' => preg_replace('~^(?:id|by)_|_(?:id|by)$~', '', $field), 'source' => array($field), 'target' => array('id'));
+            $result[] = [
+                'table' => preg_replace('~^(?:id|by)_|_(?:id|by)$~', '', $field),
+                'source' => [$field],
+                'target' => ['id'],
+            ];
         }
 
         return $result;

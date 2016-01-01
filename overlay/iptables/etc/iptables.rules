@@ -12,6 +12,9 @@
 -A INPUT -p icmp -m icmp --icmp-type 8 -m limit --limit 1/second -j ACCEPT
 -A INPUT -p icmp -m icmp --icmp-type 11 -m limit --limit 1/second -j ACCEPT
 
+# NTP
+-A INPUT -p udp -m udp --dport 123 -j DROP
+
 # SSH
 -A INPUT -p tcp -m tcp --dport 22 -m limit --limit 30/hour --limit-burst 60 -j ACCEPT
 

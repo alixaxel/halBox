@@ -3,7 +3,7 @@
 apt-get -qq install clamav clamav-freshclam > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
-    cp -r $halBox_Base/overlay/clamav/* /
+    cp -r $halBox_Base/overlay/clamav/. /
 
     if [[ -f /etc/cron.daily/clamav ]]; then
         chmod +x /etc/cron.daily/clamav

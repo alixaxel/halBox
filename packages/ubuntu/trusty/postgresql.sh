@@ -4,7 +4,7 @@ if [[ ! -f /etc/apt/sources.list.d/postgresql.list ]]; then
     echo "deb http://apt.postgresql.org/pub/repos/apt/ $halBox_OS_Codename-pgdg main" > /etc/apt/sources.list.d/postgresql.list
 fi
 
-wget -q -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - > /dev/null
+wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | apt-key add - > /dev/null
 
 if [[ $? == 0 ]]; then
     apt-get -qq update > /dev/null
@@ -13,7 +13,7 @@ fi
 apt-get -qq install postgresql-9.4 postgresql-server-dev-9.4 > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
-    cp -r $halBox_Base/overlay/postgresql/* /etc/postgresql/[0..9]*/
+    cp -r $halBox_Base/overlay/postgresql/. /etc/postgresql/[0..9]*/
 
 su - postgres <<-EOF
     psql -c "CREATE ROLE root WITH SUPERUSER LOGIN ENCRYPTED PASSWORD '$halBox_PostgreSQL_password';" > /dev/null
@@ -30,8 +30,8 @@ EOF
     for halBox_PostgreSQL_package in pgcli pgloader pgtop pgtune; do
         echo -e "\e[1;32mDave, I'm also installing '$halBox_PostgreSQL_package'.\e[0m"
 
-        if [[ -f $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/$halBox_PostgreSQL_package.sh ]]; then
-            source $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/$halBox_PostgreSQL_package.sh
+        if [[ -f $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/postgresql/$halBox_PostgreSQL_package.sh ]]; then
+            source $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/postgresql/$halBox_PostgreSQL_package.sh
         else
             apt-get -qq install $halBox_PostgreSQL_package > /dev/null
         fi

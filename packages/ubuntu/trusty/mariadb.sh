@@ -10,7 +10,7 @@ if [[ $? == 0 ]]; then
     apt-get -qq update > /dev/null
 fi
 
-cp -r $halBox_Base/overlay/mysql/* / && DEBIAN_FRONTEND=noninteractive apt-get -qq install expect mariadb-server mariadb-client > /dev/null 2>&1
+cp -r $halBox_Base/overlay/mysql/. / && DEBIAN_FRONTEND=noninteractive apt-get -qq install expect mariadb-server mariadb-client > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
     chmod +x $halBox_Base/bin/mysql_secure_installation.sh && expect -f $halBox_Base/bin/mysql_secure_installation.sh $halBox_MySQL_password > /dev/null
@@ -33,11 +33,11 @@ if [[ $? == 0 ]]; then
         sed -i "s~skip-innodb~#skip-innodb~" /etc/mysql/conf.d/halBox.cnf && echo -e "\e[1;31mDave, MariaDB InnoDB storage engine is now enabled.\e[0m"
     fi
 
-    for halBox_MySQL_package in innotop mysqltuner tuning-primer; do
+    for halBox_MySQL_package in innotop mycli mysqltuner tuning-primer; do
         echo -e "\e[1;32mDave, I'm also installing '$halBox_MySQL_package'.\e[0m"
 
-        if [[ -f $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/$halBox_MySQL_package.sh ]]; then
-            source $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/$halBox_MySQL_package.sh
+        if [[ -f $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/mysql/$halBox_MySQL_package.sh ]]; then
+            source $halBox_Base/packages/$halBox_OS/$halBox_OS_Codename/mysql/$halBox_MySQL_package.sh
         else
             apt-get -qq install $halBox_MySQL_package > /dev/null
         fi

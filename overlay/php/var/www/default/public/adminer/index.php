@@ -9,11 +9,10 @@ if (is_file('./adminer.php') === true) {
                 include_once($plugin);
             }
 
-            $plugins = array (
+            $plugins = [
                 new AdminerEditForeign(),
                 new AdminerEnumOption(),
-                new AdminerForeignConvention(),
-            );
+            ];
 
             return new AdminerPlugin($plugins);
         }

@@ -10,7 +10,7 @@ if [[ ! -f /etc/php5/mods-available/solr.ini ]]; then
     if [[ $(cat /etc/php5/mods-available/solr.ini | wc -c) -le 1 ]]; then
         echo -e "\e[1;31mSomething went wrong installing '$halBox_PHP5_package'.\e[0m" && rm -f /etc/php5/mods-available/solr.ini
     else
-        cp -r $halBox_Base/overlay/php5-solr/* / && php5enmod solr
+        cp -r $halBox_Base/overlay/php5-solr/. / && php5enmod solr
     fi
 
     pear config-set php_ini "" > /dev/null

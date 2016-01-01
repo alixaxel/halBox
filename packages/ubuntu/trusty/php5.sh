@@ -3,7 +3,7 @@
 apt-get -qq install php5-cli php5-fpm > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
-    cp -r $halBox_Base/overlay/php/* / && cp -r $halBox_Base/overlay/php5/* /
+    cp -r $halBox_Base/overlay/php/. / && cp -r $halBox_Base/overlay/php5/. /
 
     if [[ -f /etc/php5/mods-available/halBox-dev.ini ]]; then
         php5enmod halBox-dev
