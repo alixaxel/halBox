@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.52.2 (github.com/alixaxel/halBox/)
+# halBox 0.52.3 (github.com/alixaxel/halBox/)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.52.2\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.52.3\e[0m\n"
 
 if [[ $(whoami) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -63,6 +63,7 @@ halBox_packages=$(dialog \
             chkrootkit              "rootkit detector"                                  off \
             clamav                  "anti-virus utility"                                off \
             dexec                   "polyglot code execution within Docker"             off \
+            direnv                  "environment switcher for the shell"                off \
             docker                  "lightweight software containers"                   on \
             exim4                   "mail transport agent"                              off \
             fail2ban                "log-based intrusion prevention tool"               off \

@@ -16,8 +16,7 @@ plugins=(composer docker extract git git-extras history last-working-dir vagrant
 
 source $ZSH/oh-my-zsh.sh
 
-eval "$(direnv hook zsh)"
-
+[[ -f /usr/local/bin/direnv ]] && eval "$(direnv hook zsh)"
 [[ -f ~/.gvm/scripts/gvm ]] && source ~/.gvm/scripts/gvm
 [[ -f /etc/profile.d/go.sh ]] && source /etc/profile.d/go.sh
 [[ -f /etc/profile.d/nodejs.sh ]] && source /etc/profile.d/nodejs.sh
