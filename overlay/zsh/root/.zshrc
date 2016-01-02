@@ -12,7 +12,7 @@ DISABLE_AUTO_TITLE="false"
 DISABLE_AUTO_UPDATE="false"
 DISABLE_UNTRACKED_FILES_DIRTY="false"
 
-plugins=(composer docker extract git git-extras history last-working-dir npm vagrant)
+plugins=(composer docker extract git git-extras history last-working-dir vagrant)
 
 source $ZSH/oh-my-zsh.sh
 

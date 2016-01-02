@@ -4,7 +4,7 @@ if [[ ! $(type -P git) ]]; then
     apt-get -qq install git > /dev/null
 fi
 
-git clone -q https://github.com/letsencrypt/letsencrypt ~/.letsencrypt
+git clone -q https://github.com/letsencrypt/letsencrypt ~/.letsencrypt/
 
 if [[ $? == 0 ]]; then
     cp -r $halBox_Base/overlay/letsencrypt/. /
