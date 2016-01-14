@@ -10,7 +10,7 @@ if [[ $? == 0 ]]; then
     apt-get -qq update > /dev/null
 fi
 
-apt-get -qq install postgresql-9.4 postgresql-server-dev-9.4 > /dev/null 2>&1
+apt-get -qq install postgresql-9.5 postgresql-server-dev-9.5 > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
     cp -r $halBox_Base/overlay/postgresql/. /etc/postgresql/[0..9]*/

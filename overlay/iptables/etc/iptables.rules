@@ -4,6 +4,7 @@
 :INPUT DROP [0:0]
 :FORWARD ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
+
 -A INPUT -i lo -j ACCEPT
 -A INPUT -m state --state INVALID -j DROP
 -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT

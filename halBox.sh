@@ -3,10 +3,10 @@
 # The MIT License
 # http://creativecommons.org/licenses/MIT/
 #
-# halBox 0.52.3 (github.com/alixaxel/halBox/)
+# halBox 0.52.4 (github.com/alixaxel/halBox/)
 # Copyright (c) 2012 Alix Axel <alix.axel@gmail.com>
 
-clear && echo -e "\e[1;31mhalBox 0.52.3\e[0m\n"
+clear && echo -e "\e[1;31mhalBox 0.52.4\e[0m\n"
 
 if [[ $(whoami) != "root" ]]; then
     echo -e "\e[1;31mDave, is that you?\e[0m" && exit 1
@@ -24,6 +24,7 @@ else
     halBox_RAM=$(grep -P "^(MemTotal)" /proc/meminfo | awk '{ print int($2 / 1024) }')                      # in MB
     halBox_OS=$(lsb_release -si | awk '{ print tolower($0) }')
     halBox_OS_Codename=$(lsb_release -sc | awk '{ print tolower($0) }')
+    halBox_OS_Kernel=$(uname -r)
 
     case $halBox_Arch in
         arm*)

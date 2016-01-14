@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
-if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
-    echo "deb http://nginx.org/packages/mainline/ubuntu/ $halBox_OS_Codename nginx" > /etc/apt/sources.list.d/nginx.list
-fi
+if [[ $halBox_Arch != "arm" ]]; then
+    if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
+        echo "deb http://nginx.org/packages/mainline/ubuntu/ $halBox_OS_Codename nginx" > /etc/apt/sources.list.d/nginx.list
+    fi
 
-wget -q http://nginx.org/packages/keys/nginx_signing.key -O - | apt-key add - > /dev/null
+    wget -q http://nginx.org/packages/keys/nginx_signing.key -O - | apt-key add - > /dev/null
 
-if [[ $? == 0 ]]; then
-    apt-get -qq update > /dev/null
+    if [[ $? == 0 ]]; then
+        apt-get -qq update > /dev/null
+    fi
 fi
 
 if [[ -f /etc/init.d/apache2 ]]; then
@@ -41,11 +43,13 @@ if [[ $? == 0 ]]; then
         fi
     done
 
-    chown -R www-data:www-data /var/www/ && chmod +x /usr/local/sbin/{ngxdissite,ngxensite,ngxgzip,ngxsite}
+    chown -R www-data /var/www/ && chmod +x /usr/local/sbin/{ngxdissite,ngxensite,ngxgzip,ngxsite}
 
     if [[ -n $SUDO_USER ]]; then
-        usermod -a -G www-data "$SUDO_USER" && chgrp -R www-data /var/www/ && chmod -R ug+rwXs /var/www/
+        usermod -a -G www-data "$SUDO_USER"
     fi
+
+    chgrp -R www-data /var/www/ && chmod -R ug+rwXs /var/www/
 
     if [[ ! -d /etc/nginx/sites-enabled/ ]]; then
         mkdir -p /etc/nginx/sites-enabled/ && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
