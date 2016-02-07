@@ -10,7 +10,7 @@ else
     if [[ -d /var/www/default/ ]]; then
         cp -rp /var/www/default/ /var/www/$1/
     else
-        mkdir -p /var/www/$1/{error/,public/} && touch /var/www/public/index.html
+        mkdir -p /var/www/$1/{error/,public/} && touch /var/www/$1/public/index.html
     fi
 
     chown -R www-data:www-data /var/www/

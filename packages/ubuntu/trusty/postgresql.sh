@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-if [[ ! -f /etc/apt/sources.list.d/postgresql.list ]]; then
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ $halBox_OS_Codename-pgdg main" > /etc/apt/sources.list.d/postgresql.list
-fi
-
 wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | apt-key add - > /dev/null
 
 if [[ $? == 0 ]]; then
+    if [[ ! -f /etc/apt/sources.list.d/postgresql.list ]]; then
+        echo "deb http://apt.postgresql.org/pub/repos/apt/ $halBox_OS_Codename-pgdg main" > /etc/apt/sources.list.d/postgresql.list
+    fi
+
     apt-get -qq update > /dev/null
 fi
 

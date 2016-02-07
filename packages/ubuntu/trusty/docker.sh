@@ -1,21 +1,17 @@
 #!/usr/bin/env bash
 
-function version {
-    echo "$@" | awk -F . '{ printf("%03d%03d%03d\n", $1,$2,$3); }';
-}
-
 if [[ $halBox_Bits -eq 64 ]]; then
-    if [[ ! -f /etc/apt/sources.list.d/docker.list ]]; then
-        echo "deb https://apt.dockerproject.org/repo ubuntu-$halBox_OS_Codename main" > /etc/apt/sources.list.d/docker.list
-    fi
-
     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D > /dev/null 2>&1
 
     if [[ $? == 0 ]]; then
+        if [[ ! -f /etc/apt/sources.list.d/docker.list ]]; then
+            echo "deb https://apt.dockerproject.org/repo ubuntu-$halBox_OS_Codename main" > /etc/apt/sources.list.d/docker.list
+        fi
+
         apt-get -qq update > /dev/null
     fi
 
-    if [ $(version "$halBox_OS_Kernel") -lt $(version "3.10") ]; then
+    if [[ $(dpkg --compare-versions $halBox_OS_Kernel lt 3.10) ]]; then
         echo -e "\e[1;31mDave, I'm upgrading the kernel.\e[0m" && apt-get -qq install linux-image-extra-$halBox_OS_Kernel > /dev/null
     fi
 

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-if [[ ! -f /etc/apt/sources.list.d/nodejs.list ]]; then
-    echo "deb https://deb.nodesource.com/node_5.x $halBox_OS_Codename main" > /etc/apt/sources.list.d/nodejs.list
-fi
-
 wget -q https://deb.nodesource.com/gpgkey/nodesource.gpg.key -O - | apt-key add - > /dev/null
 
 if [[ $? == 0 ]]; then
+    if [[ ! -f /etc/apt/sources.list.d/nodejs.list ]]; then
+        echo "deb https://deb.nodesource.com/node_5.x $halBox_OS_Codename main" > /etc/apt/sources.list.d/nodejs.list
+    fi
+
     apt-get -qq update > /dev/null
 fi
 

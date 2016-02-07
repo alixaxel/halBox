@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 if [[ $halBox_Arch != "arm" ]]; then
-    if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
-        echo "deb http://nginx.org/packages/mainline/ubuntu/ $halBox_OS_Codename nginx" > /etc/apt/sources.list.d/nginx.list
-    fi
-
     wget -q http://nginx.org/packages/keys/nginx_signing.key -O - | apt-key add - > /dev/null
 
     if [[ $? == 0 ]]; then
+        if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
+            echo "deb http://nginx.org/packages/mainline/ubuntu/ $halBox_OS_Codename nginx" > /etc/apt/sources.list.d/nginx.list
+        fi
+
         apt-get -qq update > /dev/null
     fi
 fi

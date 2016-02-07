@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-if [[ ! -f /etc/apt/sources.list.d/mariadb.list ]]; then
-    echo "deb http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.1/ubuntu $halBox_OS_Codename main" > /etc/apt/sources.list.d/mariadb.list
-fi
-
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xcbcb082a1bb943db > /dev/null 2>&1
 
 if [[ $? == 0 ]]; then
+    if [[ ! -f /etc/apt/sources.list.d/mariadb.list ]]; then
+        echo "deb http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.1/ubuntu $halBox_OS_Codename main" > /etc/apt/sources.list.d/mariadb.list
+    fi
+
     apt-get -qq update > /dev/null
 fi
 
